@@ -5,17 +5,11 @@
 </head>
 <body>
 
-<a href="../"><h1>MyMagaz</h1></a></br>
-<a href="web/tasks.php"><h2>Tasks</h2></a><br>
+<a href=""><h1>MyMagaz</h1></a></br>
+<a href="tasks.php"><h2>Tasks</h2></a><br>
 <p></p>
 
 <?php
-
-	class user
-	{
-		var $UserName;
-		var $UserEmail;
-	}
 
 	$user = new user;
 	$user->UserName = "admin";
