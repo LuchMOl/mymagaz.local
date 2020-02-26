@@ -8,18 +8,13 @@
 	<a href="/testhello/dima"><h2>/testhello/dima</h2></a>
 </p>
 
-
-
-
-
-
 <?php
 
 	$home = "mymagaz.local";
 
 	$link = $_SERVER['REQUEST_URI'];
 
-	$arr_str = preg_match_all("/([a-zA-z0-9]+)/", $link, $rez);
+	$arr_str = preg_match_all("/([a-zA-z0-9]+)/", $_SERVER['REQUEST_URI'], $rez);
 	//print_r ($rez[0][0]);
 	//print_r ($rez[0][1]);
 
@@ -29,26 +24,13 @@ if ($rez[0][0] === "testhello"){
 	echo "Hello, {$rez[0][1]}!";
 	}
 
-?>
 
-
-
-
-
-
-
-
-
-
-
-
-<?php
 if ($link === "/"){
 	echo "<h1>$home</h1>";
 	}
 
 
-if ($rez[0][0] === "tasks"){
+if ($link === "/tasks"){
 
 echo "
 <p>
