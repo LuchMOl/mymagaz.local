@@ -1,7 +1,7 @@
 ﻿<?php
 	class user
 	{
-		var $UserName;
-		var $UserEmail;
+		var $UserName = "admin";
+		var $UserEmail = "admin@mymagaz.local";
 	}
 ?>
