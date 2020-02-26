@@ -11,9 +11,9 @@
 
 <?php
 
-	$user = new user;
-	$user->UserName = "admin";
-	$user->UserEmail = "admin@mymagaz.local";
+//	$user = new user;
+//	$user->UserName = "admin";
+//	$user->UserEmail = "admin@mymagaz.local";
 
 	//print_r($user);
 	//print_r($_POST);
