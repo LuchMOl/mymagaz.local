@@ -5,23 +5,32 @@
 <p>
     <a href="/tasks"><h2>tasks</h2></a>
 </p>
-<p>
-    <a href="/testhello/dima"><h2>/testhello/dima</h2></a>
-</p>
-<p>
-    <a href="/testhello/dima/33"><h2>/testhello/dima/33</h2></a>
-</p>
 
 <?php
 
-include '../app/services/routeservice.php';
-
-//$home = "mymagaz.local";
+include '../services/RouteService.php';
 
 $routeService = new RouteService();
 
-echo "<p></p>";
+if ($routeService->getFirstPart() === tasks)
+{
+	include '../views/tasks/tasks.php';
+}
 
-var_dump($routeService);
+if ($routeService->getFirstPart() <> NULL)
+{
+	$first = $routeService->getFirstPart();
+	echo "1.$first. ";
+	if ($routeService->getSecondPart() <> NULL)
+	{
+		$Second = $routeService->getSecondPart();
+		echo "2.$Second. ";
+		if ($routeService->getThirdPart() <> NULL)
+		{
+			$Third = $routeService->getThirdPart();
+			echo "3.$Third. ";
+		}
+	}
+}
 
 ?>
