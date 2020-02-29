@@ -29,4 +29,4 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/windows
-/nbproject/private/
+/nbproject
