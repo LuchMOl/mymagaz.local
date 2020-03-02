@@ -2,35 +2,26 @@
 
 class RouteService
 {
-	var $route;
-	var $pieces;
 
-		function getFirstPart()
-		{
-			$route = $_SERVER['REQUEST_URI'];
-			$pieces = explode('/', $_SERVER['REQUEST_URI']);
+    private function getRoute()
+    {
+        return explode('/', $_SERVER['REQUEST_URI']);
+    }
 
-			return $pieces[1];
-		}
+    function getFirstPart()
+    {
+        return $this->getRoute()[1];
+    }
 
-		function getSecondPart()
-		{
-			$route = $_SERVER['REQUEST_URI'];
-			$pieces = explode('/', $_SERVER['REQUEST_URI']);
+    function getSecondPart()
+    {
+        return $this->getRoute()[2];
+    }
 
-			return $pieces[2];
-
-		}
-
-		function getThirdPart()
-		{
-			$route = $_SERVER['REQUEST_URI'];
-			$pieces = explode('/', $_SERVER['REQUEST_URI']);
-
-			return $pieces[3];
-
-		}
+    function getThirdPart()
+    {
+        return $this->getRoute()[3];
+    }
 
 }
-
 ?>
