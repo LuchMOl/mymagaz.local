@@ -3,22 +3,28 @@
 class RouteService
 {
 
+    private $route = array(0);
+
     private function getRoute()
     {
-        return explode('/', $_SERVER['REQUEST_URI']);
+        if ($this->route !== explode('/', $_SERVER['REQUEST_URI'])) {
+            return $route = explode('/', $_SERVER['REQUEST_URI']);
+        } else {
+            return $route;
+        }
     }
 
-    function getFirstPart()
+    public function getFirstPart()
     {
         return $this->getRoute()[1];
     }
 
-    function getSecondPart()
+    public function getSecondPart()
     {
         return $this->getRoute()[2];
     }
 
-    function getThirdPart()
+    public function getThirdPart()
     {
         return $this->getRoute()[3];
     }
