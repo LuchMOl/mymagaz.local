@@ -29,5 +29,7 @@ $RECYCLE.BIN/
 *.lnk
 
 # End of https://www.gitignore.io/api/windows
+#игнорировать директорию nbproject в корневом каталоге
 /nbproject
+#игнорировать все файлы в каталоге /web/nbproject/private/
 /web/nbproject/private/

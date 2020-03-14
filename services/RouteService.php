@@ -2,29 +2,32 @@
 
 class RouteService
 {
-
-    private $route = array(0);
+    private $route = [];
 
     private function getRoute()
+    //возвращает массив из частей маршрута
     {
-        if ($this->route !== explode('/', $_SERVER['REQUEST_URI'])) {
-            return $route = explode('/', $_SERVER['REQUEST_URI']);
+        if ($this->route == NULL) {
+            return $this->route = explode('/', $_SERVER['REQUEST_URI']);
         } else {
-            return $route;
+            return $this->route;
         }
     }
 
     public function getFirstPart()
+    //возвращает первую часть маршрута
     {
         return $this->getRoute()[1];
     }
 
     public function getSecondPart()
+    //возвращает вторую часть маршрута
     {
         return $this->getRoute()[2];
     }
 
     public function getThirdPart()
+    //возвращает третью часть маршрута
     {
         return $this->getRoute()[3];
     }

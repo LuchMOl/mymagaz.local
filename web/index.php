@@ -7,55 +7,32 @@ error_reporting(E_ALL);
 
 <! -- includs -->
 <?php
-include '../services/RouteService.php';
-include '../services/TasksService.php';
+require '../services/AutoLoadServices.php';
+$autoLoadServices = new AutoLoadServices();
 ?>
 
-<! -- routeService -->
-<?php
-$routeService = new RouteService();
+<a href='http://mymagaz.local/views/tasks/'><br><br>tasks<br><br></a>
 
-if ($routeService->getFirstPart() != NULL) {
-    $first = $routeService->getFirstPart();
-    echo "1.$first. ";
-    if ($routeService->getSecondPart() != NULL) {
-        $Second = $routeService->getSecondPart();
-        echo "2.$Second. ";
-        if ($routeService->getThirdPart() != NULL) {
-            $Third = $routeService->getThirdPart();
-            echo "3.$Third. ";
-        }
-    }
-}
+<! -- task 5 -->
+<?php
+//echo ImageService::getImgTag('1');
+//echo ImageService::getImgTag('1', '100px');
+//echo ImageService::getImgTag('1', '.png');
+//echo ImageService::getImgTag('3211');
+//echo ImageService::getImgTag('1', '.jpg');
+//echo ImageService::getImgTag('1', '.png', '100px', '300px');
 ?>
 
 <! -- tasks -->
 <?php
-echo "<a href='http://mymagaz.local/views/tasks/'><br><br>tasks<br><br></a>";
+$routeService = new RouteService();
 
-if ($routeService->getFirstPart() === 'views') {
-    if ($routeService->getSecondPart() === 'tasks') {
+if ($routeService->getFirstPart() === 'views' && $routeService->getSecondPart() === 'tasks') {
 
-        $tasksService = new TasksService();
-        $files = $tasksService->getFilesNames();
+    $tasksService = new TasksService();
 
-        $counter = 0;
-        foreach ($files as $file) {
-            if ($counter > 1) {
-                echo "<a href = '$file'>$file</a><br>";
-            }
-            $counter++;
-        }
+    $tasksService->renderTasksList();
 
-        $third = $routeService->getThirdPart();
-
-        if ($third != NULL) {
-            if (in_array("$third", $files)) {
-                $tasksService->getTask($third);
-            } else {
-                echo 'ОШИБКА. ТАКОГО ЗАДАНИЯ НЕТ.';
-            }
-        }
-    }
+    echo $tasksService->getTask($routeService->getThirdPart());
 }
 ?>
