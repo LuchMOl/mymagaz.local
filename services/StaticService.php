@@ -9,12 +9,19 @@ class StaticService
         return scandir($dir);
     }
 
-    static function printClassMethodName()
+    static function return404()
     {
-        echo __CLASS__;
-        echo '<br>';
-        echo __METHOD__;
-        echo '<br><br>';
+        header("HTTP/1.0 404 Not Found");
+        echo file_get_contents('../404.php');
+        die();
+    }
+
+    static function renderLinks()
+    {
+        echo "<a href = 'http://mymagaz.local/'>mymagaz.local</a><br><br>";
+        echo "<a href = 'http://mymagaz.local/task/'>task</a><br><br>";
+        echo "<a href = 'http://mymagaz.local/user/'>user</a><br><br>";
+        echo "<a href = 'http://mymagaz.local/product/'>product</a><br><br>";
     }
 
 }

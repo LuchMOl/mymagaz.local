@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 class RouteService
 {
@@ -36,25 +36,26 @@ class RouteService
     public function run()
     {
         $first = $this->getFirstPart();
-        $className = ucfirst($first) . 'Controller';
-
-        if (file_exists('../controllers/' . $className . '.php')) {
-
-            ${$first . 'Controller'} = new $className();
-
-            $second = $this->getSecondPart();
-            $methodName = "action" . ucfirst($second);
-            if (method_exists(${$first . 'Controller'}, $methodName)) {
-
-                ${$first . 'Controller'}->$methodName($this->getThirdPart());
-            } elseif ($second != NULL) {
-                echo 'Method ' . $methodName . ' in objeck ' . $className . ' not exist!';
-            } else {
+        if ($first != NULL) {
+            $className = ucfirst($first) . 'Controller';
+            if ($first != NULL && !file_exists('../controllers/' . $className . '.php')) {
+                StaticService::return404();
+            } elseif (file_exists('../controllers/' . $className . '.php') && $this->getSecondPart() == NULL) {
+                ${$first . 'Controller'} = new $className();
                 ${$first . 'Controller'}->actionIndex();
+            } else {
+                ${$first . 'Controller'} = new $className();
+                $second = $this->getSecondPart();
+                $methodName = "action" . ucfirst($second);
+                if (!method_exists(${$first . 'Controller'}, $methodName)) {
+                    StaticService::return404();
+                } else {
+                    ${$first . 'Controller'}->$methodName($this->getThirdPart());
+                }
             }
-        } elseif ($first != NULL) {
-            echo $className . ' not exist!';
-        }//else отсутствие чего либо после mymagaz.local/
+        }else{
+            StaticService::renderLinks();
+        }
     }
 
 }

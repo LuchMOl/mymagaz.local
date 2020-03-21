@@ -3,18 +3,11 @@
 class TaskController
 {
 
-    public function __construct()
-    {
-        echo __CLASS__ . '<br>' . __METHOD__ . '<br><br>';
-
-        echo '<a href="http://mymagaz.local/task/create/">createNew<br><br></a>';
-    }
-
     public function actionIndex()
     //выводит список маршрутов к файлам в папке $dir
     {
-        echo __CLASS__ . '<br>' . __METHOD__ . '<br><br>';
-
+        echo __METHOD__ . '<br><br>';
+        StaticService::renderLinks();
         $counter = 0;
         foreach (StaticService::getFilesNames('../views/tasks') as $file) {
             if ($counter > 1) {
@@ -27,20 +20,18 @@ class TaskController
     public function actionView($third)
     //возвращает содержимое файла $third в виде строки (если $third существует в маршруте и соответствует файлу в папке $dir)
     {
-        echo __CLASS__ . '<br>' . __METHOD__ . '<br><br>';
-
         $filename = "../views/tasks/$third";
-
-        if (file_exists($filename)) {
-            echo file_get_contents("../views/tasks/$third");
+        if (!file_exists($filename)) {
+            StaticService::return404();
         } else {
-            echo "Файл $filename не существует";
+            echo __METHOD__ . '<br><br>';
+            echo file_get_contents("../views/tasks/$third");
         }
     }
 
     public function actionCreate()
     {
-        echo __CLASS__ . '<br>' . __METHOD__ . '<br><br>';
+        echo __METHOD__ . '<br><br>';
 
         echo 'Тут создание нового файла задания.<br>';
 
