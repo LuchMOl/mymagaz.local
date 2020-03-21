@@ -7,11 +7,14 @@ error_reporting(E_ALL);
 
 <! -- includs -->
 <?php
-require '../services/AutoLoadServices.php';
-$autoLoadServices = new AutoLoadServices();
+require_once '../autoLoader.php';
+spl_autoload_register('autoLoader');
 ?>
 
-<a href='http://mymagaz.local/views/tasks/'><br><br>tasks<br><br></a>
+<a href='http://mymagaz.local/'><br>mymagaz.local</a>
+<a href='http://mymagaz.local/task/'><br><br>tasks</a>
+<a href='http://mymagaz.local/user/'><span style="margin-left: 50px">users</span></a>
+<a href='http://mymagaz.local/product/'><span style="margin-left: 50px">product</span><br><br></a>
 
 <! -- task 5 -->
 <?php
@@ -23,16 +26,8 @@ $autoLoadServices = new AutoLoadServices();
 //echo ImageService::getImgTag('1', '.png', '100px', '300px');
 ?>
 
-<! -- tasks -->
+<! -- task 6 -->
 <?php
 $routeService = new RouteService();
-
-if ($routeService->getFirstPart() === 'views' && $routeService->getSecondPart() === 'tasks') {
-
-    $tasksService = new TasksService();
-
-    $tasksService->renderTasksList();
-
-    echo $tasksService->getTask($routeService->getThirdPart());
-}
+$routeService->run();
 ?>

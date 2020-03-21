@@ -3,15 +3,14 @@
 class ImageService
 {
 
-    var $imgName;
-    var $extension;
-    var $width;
-    var $height;
-    var $dir;
-    var $imgFileName;
-    var $thrueName;
+    private $imgName;
+    private $extension;
+    private $width;
+    private $height;
+    private $imgFileName;
+    private $thrueName;
 
-    public static function getImgFolderPath()
+    public static function getImgFolderPath($dir)
     {
         return '/img/';
     }
@@ -24,18 +23,16 @@ class ImageService
             $width = "$extension";
             $extension = '.png';
         }
-/*
-        //проверка на наличие запрашиваемого файла в папке
-        $dir = '../web/img/';
         $imgFileName = "$imgName$extension";
-        if (in_array($imgFileName, scandir("$dir"))) {
+        //проверка на наличие запрашиваемого файла в папке
+        if (file_exists("../web/img/$imgFileName")) {
             $thrueName = $imgName;
         } else {
             $thrueName = 'error';
             $extension = '.png';
         }
- */
-        return "<img src=" . ImageService::getImgFolderPath() . $imgName . $extension . " width=" . $width . " height=" . $height . ">";
+
+        return "<img src=" . ImageService::getImgFolderPath() . $thrueName . $extension . " width=" . $width . " height=" . $height . ">";
     }
 
 }
