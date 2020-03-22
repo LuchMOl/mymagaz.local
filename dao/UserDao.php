@@ -13,8 +13,10 @@ class UserDao
 
             foreach ($dbh->query('SELECT * from user') as $users) {
 
+                //var_dump($users);
                 return $users;
             }
+
             $dbh = null;
         } catch (PDOException $e) {
             echo $e->getMessage();
