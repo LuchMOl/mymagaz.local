@@ -3,13 +3,19 @@
 class UserService
 {
 
-    public function getUsers()
+    public function getUsers($userName)
     {
         $userDao = new UserDao();
         $data = $userDao->getUsers();
-        var_dump($data);
+        //var_dump($data);
         $userMapper = new UserMapper();
-        $userMapper->map($data);
+
+        foreach ($data as $row) {
+
+            if ($row['name'] == $userName) {
+                $userMapper->map($row);
+            }
+        }
     }
 
 }

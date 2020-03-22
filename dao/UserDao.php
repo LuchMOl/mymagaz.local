@@ -10,12 +10,9 @@ class UserDao
                 \PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 , \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
             ]);
-
-            foreach ($dbh->query('SELECT * from user') as $users) {
-
-                //var_dump($users);
-                return $users;
-            }
+            $query = $dbh->prepare("SELECT * FROM user");
+            $query->execute(array());
+            return $query->fetchAll();
 
             $dbh = null;
         } catch (PDOException $e) {

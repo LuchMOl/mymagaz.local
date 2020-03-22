@@ -9,7 +9,10 @@ class UserController
         StaticService::renderLinks();
 
         $userService = new UserService();
-        $users = $userService->getUsers();
+        $userService->getUsers('admin');
+        $userService->getUsers('user');
+        $userService->getUsers('admin');
+        $userService->getUsers('guest');
 
         die;
     }
