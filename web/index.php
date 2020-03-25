@@ -20,3 +20,4 @@ $routeService = new RouteService();
 $routeService->run();
 //StaticService::renderLinks();
 ?>
+

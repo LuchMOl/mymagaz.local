@@ -3,18 +3,18 @@
 class UserService
 {
 
-    public function getUsers($userName)
+    public function getUsers($email, $password)
     {
+
         $userDao = new UserDao();
-        $data = $userDao->getUsers();
+        $data = $userDao->getUsers($email, $password);
         //var_dump($data);
-        $userMapper = new UserMapper();
-
-        foreach ($data as $row) {
-
-            if ($row['name'] == $userName) {
-                $userMapper->map($row);
-            }
+        //echo $data['password'];
+        if (!is_null($data)) {
+            $userMapper = new UserMapper();
+            $userMapper->map($data);
+        } else {
+            echo 'Нет такого!';
         }
     }
 

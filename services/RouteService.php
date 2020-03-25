@@ -49,14 +49,15 @@ class RouteService
                 $methodName = "action" . ucfirst($second);
                 if (!method_exists(${$first . 'Controller'}, $methodName)) {
                     StaticService::return404();
-                } else {
+                } elseif ($this->getThirdPart() !== NULL) {
                     ${$first . 'Controller'}->$methodName($this->getThirdPart());
                 }
             }
-        }else{
+        } else {
             StaticService::renderLinks();
         }
     }
 
 }
+
 ?>

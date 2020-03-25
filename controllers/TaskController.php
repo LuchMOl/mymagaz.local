@@ -35,32 +35,6 @@ class TaskController
 
         echo 'Тут создание нового файла задания.<br>';
 
-        /*  echo '<form action="write" method="post">
-          <p>Имя файла: <input type="text" name="name" /></p>
-          <p>Текст: <textarea name="comment"></textarea></p>
-          <p><input type="submit" /></p>
-          </form>';
-          }
-
-          public function actionWrite($fileName)
-          {
-          if (!file_exists("../views/tasks/$fileName")) {
-          $data = $_POST['comment'];
-          $content = "
-          <!DOCTYPE html>
-          <html>
-          <head>
-          <meta charset='UTF-8'>
-          </head>
-          <body>
-          $data
-          </body>
-          </html>";
-          file_put_contents("../views/tasks/$fileName", $content);
-          echo "Создан файл с именем $fileName!";
-          } else {
-          echo "Файл с именем $fileName уже существует!";
-          } */
     }
 
 }

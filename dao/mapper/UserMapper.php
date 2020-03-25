@@ -13,6 +13,8 @@ class UserMapper
         $user->setName($data['name']);
 
         var_dump($user);
+        //echo $user->getEmail();
+
     }
 
 }

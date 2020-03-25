@@ -27,5 +27,9 @@ class User
         $this->name = $name;
     }
 
+        public function getEmail()
+    {
+        return $this->email;
+    }
 }
 ?>

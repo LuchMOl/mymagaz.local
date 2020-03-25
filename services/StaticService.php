@@ -24,4 +24,5 @@ class StaticService
         echo "<a href = 'http://mymagaz.local/product/'>product</a><br><br>";
     }
 
+
 }
