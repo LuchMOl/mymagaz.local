@@ -10,6 +10,7 @@ class AutoLoadServices
 
     public function __construct()
     {
+        echo __METHOD__ . '<br>';
         $dir = '../services/';
         $arrs = scandir($dir);
         $counter = 0;

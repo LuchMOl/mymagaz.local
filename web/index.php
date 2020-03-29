@@ -1,4 +1,5 @@
 <?php
+//$start = microtime(true);
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -19,5 +20,8 @@ spl_autoload_register('autoLoader');
 $routeService = new RouteService();
 $routeService->run();
 //StaticService::renderLinks();
+
+
+//echo 'Время выполнения скрипта: '.(microtime(true) - $start).' сек.';
 ?>
 

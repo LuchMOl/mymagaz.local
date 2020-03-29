@@ -3,18 +3,17 @@
 class UserService
 {
 
-    public function getUsers($email, $password)
+    public function getUser($email, $password)
     {
-
+        echo __METHOD__ . '<br>';
         $userDao = new UserDao();
-        $data = $userDao->getUsers($email, $password);
+        $data = $userDao->getUser($email, $password);
         //var_dump($data);
-        //echo $data['password'];
-        if (!is_null($data)) {
+        if (is_array($data)) {
             $userMapper = new UserMapper();
             $userMapper->map($data);
         } else {
-            echo 'Нет такого!';
+            return $userExist = FALSE;
         }
     }
 
