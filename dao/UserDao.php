@@ -5,7 +5,6 @@ class UserDao
 
     public function getUser($email, $password)
     {
-        echo __METHOD__ . '<br>';
         try {
             $dbh = new PDO('mysql:host=mymagaz.local;dbname=mymagaz', 'root', '', [
                 \PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC

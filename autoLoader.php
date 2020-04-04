@@ -1,7 +1,7 @@
 <?php
 
 function autoLoader($className)
-{echo __METHOD__ . '<br>';
+{
     if (strstr($className, 'Controller')) {
         require_once '/../controllers/' . $className . '.php';
     } elseif (strstr($className, 'Service')) {

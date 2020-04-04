@@ -6,9 +6,7 @@ class RouteService
     private $route = [];
 
     private function getRoute()
-    //возвращает массив из частей маршрута
     {
-        echo __METHOD__ . '<br>';
         if ($this->route == NULL) {
             return $this->route = explode('/', $_SERVER['REQUEST_URI']);
         } else {
@@ -17,25 +15,22 @@ class RouteService
     }
 
     public function getFirstPart()
-    //возвращает первую часть маршрута
-    {echo __METHOD__ . '<br>';
+    {
         return $this->getRoute()[1];
     }
 
     public function getSecondPart()
-    //возвращает вторую часть маршрута
-    {echo __METHOD__ . '<br>';
+    {
         return $this->getRoute()[2];
     }
 
     public function getThirdPart()
-    //возвращает третью часть маршрута
-    {echo __METHOD__ . '<br>';
+    {
         return $this->getRoute()[3];
     }
 
     public function run()
-    {echo __METHOD__ . '<br>';
+    {
         $first = $this->getFirstPart();
         if ($first != NULL) {
             $className = ucfirst($first) . 'Controller';

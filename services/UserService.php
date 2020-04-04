@@ -5,13 +5,13 @@ class UserService
 
     public function getUser($email, $password)
     {
-        echo __METHOD__ . '<br>';
         $userDao = new UserDao();
         $data = $userDao->getUser($email, $password);
-        //var_dump($data);
+
         if (is_array($data)) {
             $userMapper = new UserMapper();
-            $userMapper->map($data);
+            $userExist = $userMapper->map($data);
+            return $userExist;
         } else {
             return $userExist = FALSE;
         }
