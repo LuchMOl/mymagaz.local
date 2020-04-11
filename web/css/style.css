@@ -68,12 +68,6 @@ p {
 	font-size:16px;
     line-height: 1.8;
 }
-.re {
-	margin: 0;
-	color:#e99c2e;
-	font-size:16px;
-    line-height: 1.8;
-}
 img{border:none;max-width:100%; height:auto;}
 ul{
 	padding: 0;
@@ -96,6 +90,15 @@ html,body{height: 100%;}
   -o-transition: opacity 0.3s 0.3s ease;
   transition: opacity 0.3s 0.3s ease;
   opacity: 0;
+}
+.re {
+	margin: 0;
+	color:#e99c2e;
+	font-size:16px;
+    line-height: 1.8;
+}
+.tank{
+    padding: 50px;
 }
 
 /* section-header */

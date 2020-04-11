@@ -10,9 +10,11 @@ class StaticService
 
     static function return404()
     {
-        header("HTTP/1.0 404 Not Found");
+        //header("HTTP/1.0 404 Not Found");
+        echo "<div class='new-arrivals-content'><div class='tank'>";
         echo file_get_contents('../404.php');
-        die();
+        echo "</div></div>";
+        //die();
     }
 
     static function renderLinks()

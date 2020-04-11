@@ -50,7 +50,7 @@ class RouteService
                 }
             }
         } else {
-            StaticService::renderLinks();
+            require_once "magaz.php";
         }
     }
 

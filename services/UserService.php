@@ -17,4 +17,21 @@ class UserService
         }
     }
 
+    public function checkUser($email, $name)
+    {
+        $userDao = new UserDao();
+        $data = $userDao->checkUser($email, $name);
+        if (is_array($data)) {
+            return $userExist = TRUE;
+        } else {
+            return $userExist = FALSE;
+        }
+    }
+
+    public function setUser($email, $name, $password)
+    {
+        $userDao = new UserDao();
+        $userDao->setUser($email, $name, $password);
+    }
+
 }
