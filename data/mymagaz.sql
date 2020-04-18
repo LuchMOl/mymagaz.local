@@ -23,11 +23,12 @@ DROP TABLE IF EXISTS `test`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `test` (
-  `id` int(11) NOT NULL,
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,32 +37,34 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
+INSERT INTO `test` VALUES (1,'admin@mymagaz.local','admin','admin'),(2,'user@mymagaz.local','user','user'),(4,'guest@mymagaz.local','guest','guest'),(5,'agdmin@mymagaz.local','admin','fghjkfghjk'),(6,'addmin@mymagaz.local','admin','addmin');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `user`
+-- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
-  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `user`
+-- Dumping data for table `users`
 --
 
-LOCK TABLES `user` WRITE;
-/*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (0,'admin@mymagaz.local','admin','admin'),(1,'user@mymagaz.local','user','user'),(2,'guest@mymagaz.local','guest','guest'),(3,'test@mymagaz.local','test','test');
-/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+INSERT INTO `users` VALUES (1,'admin@mymagaz.local','admin','admin'),(2,'user@mymagaz.local','user','user'),(3,'guest@mymagaz.local','guest','guest');
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -73,4 +76,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-11 14:10:36
+-- Dump completed on 2020-04-18 14:09:29

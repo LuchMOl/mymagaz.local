@@ -41,7 +41,7 @@ font-family: 'Roboto', sans-serif;
 body{
 	font-family: 'Roboto', sans-serif;
 	font-size:16px;
-	color:#a09e9c;
+	color:#000000;
 	background: #fff;
     max-width:1920px;
     margin:0 auto;
@@ -64,7 +64,7 @@ h1,h2,h3,h4,h5,h6 {
 }
 p {
 	margin: 0;
-	color:#a09e9c;
+	color:#000000;
 	font-size:16px;
     line-height: 1.8;
 }
@@ -830,7 +830,7 @@ span.feature-review {margin-left: 10px;}
 /*-------------------------------------
         10. News-letter
 --------------------------------------*/
-.newsletter{padding:120px 0 75px;}
+.newsletter{padding: 120px 0 75px;}
 
 .hm-footer-widget{margin-bottom: 30px;}
 .hm-foot-title h4 {
@@ -839,7 +839,7 @@ span.feature-review {margin-left: 10px;}
     margin-bottom: 45px;
 }
 .hm-foot-menu ul li a {
-    color: #a09e9c;
+    color: #000000;
     font-size: 16px;
     font-weight: 400;
     margin-bottom: 15px;

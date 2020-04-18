@@ -164,3 +164,6 @@
 
 		</header><!--/.welcome-hero-->
 		<!--welcome-hero end -->
+        <section id='newsletter'  class='newsletter'>
+                <div class='hm-foot-menu'>
+                    <ul>

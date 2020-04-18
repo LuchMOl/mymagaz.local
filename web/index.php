@@ -19,14 +19,12 @@ spl_autoload_register('autoLoader');
 //echo /ImageService::getImgTag('1', '.png', '100px', '300px');
 ?>
 
-<?php require_once 'header.php'; ?>
-
+<?php // require_once 'header.php'; ?>
 
 <?php
 $routeService = new RouteService();
 $routeService->run();
 ?>
 
-
-
-<?php require_once 'footer.php'; ?>
+<?php //require_once 'footer.php';
+die;?>

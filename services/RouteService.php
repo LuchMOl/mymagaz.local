@@ -50,7 +50,9 @@ class RouteService
                 }
             }
         } else {
+            require_once '/../views/layouts/header.php';
             require_once "magaz.php";
+            require_once '/../views/layouts/footer.php';
         }
     }
 
