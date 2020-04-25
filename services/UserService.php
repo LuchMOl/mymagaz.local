@@ -7,7 +7,6 @@ class UserService
     {
         $userDao = new UserDao();
         $data = $userDao->getUser($email, $password);
-
         if (is_array($data)) {
             $userMapper = new UserMapper();
             $userExist = $userMapper->map($data);
@@ -17,14 +16,15 @@ class UserService
         }
     }
 
-    public function checkUser($email, $name)
+    public function checkUser($email)
     {
         $userDao = new UserDao();
-        $data = $userDao->checkUser($email, $name);
-        if (is_array($data)) {
-            return $userExist = TRUE;
-        } else {
+        $data = $userDao->checkUser($email);
+
+        if (empty($data)) {
             return $userExist = FALSE;
+        } else {
+            return $data;
         }
     }
 
@@ -32,6 +32,22 @@ class UserService
     {
         $userDao = new UserDao();
         $userDao->setUser($email, $name, $password);
+    }
+
+    public function setGreetingUser($param)
+    {
+        setcookie('name', $param, time() + 30, '/');
+        $_SESSION['time'] = date("Y-m-d H:i:s");
+    }
+
+    static function getGreetingUser()
+    {
+        if (isset($_COOKIE['name']) && isset($_SESSION['time'])) {
+            echo 'Ну здравствуй, ' . $_COOKIE['name'] . '. ';
+            echo '<br> Дата входа: ' . $_SESSION['time'];
+        } else {
+            echo 'Не регнут.';
+        }
     }
 
 }

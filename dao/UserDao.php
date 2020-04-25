@@ -3,43 +3,21 @@
 class UserDao extends BaseDao
 {
 
+    private $tables = 'users';
+
     public function getUser($email, $password)
     {
-        try {
-
-            $dbh = parent::connection();
-
-            $row = $dbh->query("SELECT * FROM users WHERE email = '$email' AND password = '$password'");
-
-            return $row->fetch();
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
+        return $this->GetRow("SELECT * FROM $this->tables WHERE email = '$email' AND password = '$password'");
     }
 
-    public function checkUser($email, $name)
+    public function checkUser($email)
     {
-        try {
-            $dbh = parent::connection();
-
-            $row = $dbh->query("SELECT * FROM users WHERE email = '$email' OR name = '$name'");
-            return $row->fetch();
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
+        return $this->GetOne("SELECT * FROM $this->tables WHERE email = '$email'");
     }
 
     public function setUser($email, $name, $password)
     {
-        try {
-            $dbh = parent::connection();
-
-            $sql = "INSERT INTO users (email, name, password) VALUES ('$email', '$name', '$password')";
-
-            $dbh->exec($sql);
-        } catch (PDOException $e) {
-            echo $e->getMessage();
-        }
+        $this->Execute("INSERT INTO $this->tables (email, name, password) VALUES ('$email', '$name', '$password')");
     }
 
 }

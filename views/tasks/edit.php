@@ -1,5 +1,17 @@
-<?php echo "<div class='container'><h2>Edit: $third</h2><hr>"; ?>
+<?php require_once '/../layouts/header.php'; ?>
 
-<form method = 'post' action = ''>
-    <textarea rows="30" cols="137" name="text"><?php echo file_get_contents("../views/tasks/$third"); ?></textarea><br><br><hr>
-    <input name = 'submit' type = submit value = 'Write'></form>
+<section id='newsletter'  class='newsletter'>
+    <div class='hm-foot-menu'>
+        <div class='container'>
+            <h2>Edit: <?php echo $third; ?></h2><hr>
+
+            <form method = 'post' action = ''>
+                <textarea rows="30" cols="137" name="text"><?php echo file_get_contents("../views/tasks/$third"); ?></textarea><br><br><hr>
+                <input name = 'submit' type = submit value = 'Write'>
+            </form>
+
+        </div>
+    </div>
+</section>
+
+<?php require_once '/../layouts/footer.php'; ?>

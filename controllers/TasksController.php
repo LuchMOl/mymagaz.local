@@ -10,46 +10,31 @@ class TasksController
 
     public function actionIndex()
     {
-        require_once '/../views/layouts/header.php';
-        echo "<div class='container'><h4>Tasks list</h4><hr>";
-
         $taskList = scandir('../views/tasks');
+        $exclusion = ['view.php', 'index.php', 'create.php', 'edit.php'];
+        $notFile = array_filter($taskList, 'file_exists');
+        $taskList = array_diff($taskList, $exclusion, $notFile);
         natcasesort($taskList);
-        foreach (array_reverse($taskList) as $file) {
-            if (is_file("../views/tasks/$file") && $file !== 'create.php' && $file !== 'edit.php') {
-                echo "<li><a href = '/tasks/view/$file'>$file</a></li>";
-            }
-        }
-        echo "<hr><li><a href = '/tasks/create/'>Create New Task</a></li>";
-        require_once '/../views/layouts/footer.php';
+        $taskList = array_reverse($taskList);
+
+        require_once '../views/tasks/index.php';
     }
 
     public function actionView($third)
     {
-        require_once '/../views/layouts/header.php';
         $fileName = "../views/tasks/$third";
         if (!file_exists($fileName)) {
             StaticService::return404();
         } else {
-            echo "<div class='container'><h2>$third</h2><hr>";
-
             $content = file($fileName);
-            foreach ($content as $value) {
-                echo "$value <br>";
-            }
+            require_once '/../views/tasks/view.php';
         }
-        echo "<hr><li><a href = '/tasks/edit/$third'>Edit Task</a></li>";
-
-        require_once '/../views/layouts/footer.php';
     }
 
     public function actionCreate()
     {
-        require_once '/../views/layouts/header.php';
         $this->newTaskNumber = max(preg_replace("/[^0-9]/", '', scandir('../views/tasks'))) + 1;
         $this->newFileName = 'task' . $this->newTaskNumber . '.txt';
-
-        require_once "../views/tasks/create.php";
 
         if (isset($_POST["submit"])) {
             if (!empty($_POST["text"])) {
@@ -57,26 +42,21 @@ class TasksController
                 fwrite($fp, $_POST["text"]);
                 fclose($fp);
             }
-            echo "<script>location.href= '/tasks/view/$this->newFileName';</script>";
+            header("Location: http://mymagaz.local/tasks/view/$this->newFileName");
         }
-        require_once '/../views/layouts/footer.php';
     }
 
     public function actionEdit($third)
     {
-        require_once "/../views/layouts/header.php";
-
-        require_once "../views/tasks/edit.php";
-
         if (isset($_POST["submit"])) {
             if (!empty($_POST["text"])) {
                 $fp = fopen("../views/tasks/$third", "w+");
                 fwrite($fp, $_POST["text"]);
                 fclose($fp);
             }
-            echo "<script>location.href= '/tasks/view/$third';</script>";
+            header("Location: http://mymagaz.local/tasks/view/$third");
         }
-        require_once '/../views/layouts/footer.php';
+        require_once '/../views/tasks/edit.php';
     }
 
 }

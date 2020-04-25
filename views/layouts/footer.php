@@ -1,7 +1,3 @@
-</ul>
-                </div>
-                    </div>
-                </section>
 <!--newsletter strat -->
 		<section id="newsletter"  class="newsletter">
 			<div class="container">

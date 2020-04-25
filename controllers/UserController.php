@@ -3,68 +3,74 @@
 class UserController
 {
 
+    private $userExist;
+
     public function actionIndex()
     {
-        require_once '/../views/layouts/header.php';
-        echo "
-            <div class='container'>
-            <li><a href = '/user/signin/'>SignIn</a></li>
-            <li><a href = '/user/register/'>Register</a></li>
-             ";
-        require_once '/../views/layouts/footer.php';
+        require_once '../views/user/index.php';
     }
 
     public function actionSignIn()
     {
-        require_once '/../views/layouts/header.php';
-        echo file_get_contents("../views/user/signin.php");
-
+        $message = '';
         if (isset($_POST['submit'])) {
-            if (!empty($_POST["email"] && $_POST["password"])) {
-                if (preg_match('/@/', $_POST["email"])) {
-                    $userService = new UserService();
-                    $userExist = $userService->getUser($_POST["email"], $_POST["password"]);
+            if (!empty($_POST["email"])) {
+                if (preg_match("/^[a-zA-Zа-яА-Я0-9_\-.]+@[a-zA-Zа-яА-Я0-9\-]+\.[a-zA-Zа-яА-Я0-9\-.]+$/", $_POST["email"])) {
+                    if (!empty($_POST["password"])) {
 
-                    if ($userExist === FALSE) {
-                        echo 'Нет такого!';
+                        $userService = new UserService();
+                        $userExist = $userService->getUser($_POST["email"], $_POST["password"]);
+
+                        if ($userExist === FALSE) {
+                            $message = 'Нет такого!';
+                        } else {
+                            $userService->setGreetingUser($userExist->name);
+                            header('Location: http://mymagaz.local/');
+                        }
                     } else {
-                        var_dump($userExist);
+                        $message = 'Не введен пароль.';
                     }
                 } else {
-                    echo $_POST["email"] . ' не Email.';
+                    $message = $_POST["email"] . ' не Email.';
                 }
             } else {
-                echo "Введены не полные данные.";
+                $message = 'Не введен email.';
             }
         }
-        require_once '/../views/layouts/footer.php';
+        require_once '../views/user/signin.php';
     }
 
     public function actionRegister()
     {
-        require_once '/../views/layouts/header.php';
-        echo file_get_contents("../views/user/register.php");
-
+        $message = '';
         if (isset($_POST['submit'])) {
-            if (!empty($_POST["email"] && $_POST["name"] && $_POST["password"])) {
-                if (preg_match('/@/', $_POST["email"])) {
-                    $userService = new UserService();
-                    $userExist = $userService->checkUser($_POST["email"], $_POST["name"]);
-                    if ($userExist === FALSE) {
-                        $userService->setUser($_POST["email"], $_POST["name"], $_POST["password"]);
-
-                        echo '<script>location.href= "/";</script>';
+            if (!empty($_POST["email"])) {
+                if (preg_match("/^[a-zA-Zа-яА-Я0-9_\-.]+@[a-zA-Zа-яА-Я0-9\-]+\.[a-zA-Zа-яА-Я0-9\-.]+$/", $_POST["email"])) {
+                    if (!empty($_POST["name"])) {
+                        if (!empty($_POST["password"])) {
+                            $userService = new UserService();
+                            $userExist = $userService->checkUser($_POST["email"]);
+                            if ($userExist === FALSE) {
+                                $userService->setUser($_POST["email"], $_POST["name"], $_POST["password"]);
+                                $userService->setGreetingUser($_POST["name"]);
+                                header('Location: http://mymagaz.local/');
+                            } else {
+                                $message = 'Пользователь с email - ' . $_POST["email"] . ' - уже существует под id - ' . $userExist . '.';
+                            }
+                        } else {
+                            $message = 'Не введен пароль.';
+                        }
                     } else {
-                        echo "Пользователь с таким email/name уже существует.";
+                        $message = 'Не введено имя.';
                     }
                 } else {
-                    echo $_POST["email"] . ' не Email.';
+                    $message = $_POST["email"] . ' не Email.';
                 }
             } else {
-                echo "Введены не полные данные для регистрации.";
+                $message = 'Не введен email.';
             }
         }
-        require_once '/../views/layouts/footer.php';
+        require_once '/../views/user/register.php';
     }
 
 }
