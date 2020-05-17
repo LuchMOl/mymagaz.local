@@ -15,16 +15,14 @@ class UserController
         $message = '';
         if (isset($_POST['submit'])) {
             if (!empty($_POST["email"])) {
-                if (preg_match("/^[a-zA-Zа-яА-Я0-9_\-.]+@[a-zA-Zа-яА-Я0-9\-]+\.[a-zA-Zа-яА-Я0-9\-.]+$/", $_POST["email"])) {
+                if (preg_match("/^[a-zA-Zа-яА-Я0-9_\-\'.]+@[a-zA-Zа-яА-Я0-9\-]+\.[a-zA-Zа-яА-Я0-9\-.]+$/", $_POST["email"])) {
                     if (!empty($_POST["password"])) {
-
                         $userService = new UserService();
                         $userExist = $userService->getUser($_POST["email"], $_POST["password"]);
-
-                        if ($userExist === FALSE) {
+                        if (!$userExist) {
                             $message = 'Нет такого!';
                         } else {
-                            $userService->setGreetingUser($userExist->name);
+                            $userService->saveUserInSession($userExist);
                             header('Location: http://mymagaz.local/');
                         }
                     } else {
@@ -45,20 +43,35 @@ class UserController
         $message = '';
         if (isset($_POST['submit'])) {
             if (!empty($_POST["email"])) {
-                if (preg_match("/^[a-zA-Zа-яА-Я0-9_\-.]+@[a-zA-Zа-яА-Я0-9\-]+\.[a-zA-Zа-яА-Я0-9\-.]+$/", $_POST["email"])) {
+                if (preg_match("/^[a-zA-Zа-яА-Я0-9_\-\'.]+@[a-zA-Zа-яА-Я0-9\-]+\.[a-zA-Zа-яА-Я0-9\-.]+$/", $_POST["email"])) {
                     if (!empty($_POST["name"])) {
-                        if (!empty($_POST["password"])) {
-                            $userService = new UserService();
-                            $userExist = $userService->checkUser($_POST["email"]);
-                            if ($userExist === FALSE) {
-                                $userService->setUser($_POST["email"], $_POST["name"], $_POST["password"]);
-                                $userService->setGreetingUser($_POST["name"]);
-                                header('Location: http://mymagaz.local/');
+                        if (preg_match("/[a-zA-Z0-9\.\_-]/", $_POST["name"])) {
+                            if (!empty($_POST["password"])) {
+                                if (preg_match("/[a-zA-Z0-9]/", $_POST["password"])) {
+                                    $userService = new UserService();
+                                    $userExist = $userService->checkUser($_POST["email"]);
+                                    if (!$userExist) {
+                                        $writeId = $userService->setUser($_POST["email"], $_POST["name"], $_POST["password"]);
+                                        if (is_numeric($writeId)) {
+                                            $userMapper = new UserMapper();
+                                            $data = ['id' => $writeId, 'email' => $_POST["email"], 'password' => $_POST["password"], 'name' => $_POST["name"], 'session_id' => session_id()];
+                                            $userExist = $userMapper->map($data);
+                                            $userService->saveUserInSession($userExist);
+                                            header('Location: http://mymagaz.local/');
+                                        } else {
+                                            $message = 'Не удачная попытка регистрации.';
+                                        }
+                                    } else {
+                                        $message = 'Пользователь с email - ' . $_POST["email"] . ' - уже существует';
+                                    }
+                                } else {
+                                    $message = 'Пароль может содержать только цифры, заглавные и строчные буквы.';
+                                }
                             } else {
-                                $message = 'Пользователь с email - ' . $_POST["email"] . ' - уже существует под id - ' . $userExist . '.';
+                                $message = 'Не введен пароль.';
                             }
                         } else {
-                            $message = 'Не введен пароль.';
+                            $message = $_POST["name"] . ' - Имя может содержать только цифры, заглавные и строчные буквы.';
                         }
                     } else {
                         $message = 'Не введено имя.';
@@ -71,6 +84,14 @@ class UserController
             }
         }
         require_once '/../views/user/register.php';
+    }
+
+    public function actionExit()
+    {
+        session_destroy();
+        setcookie('sid', '', 1, '/');
+        sleep(2);
+        header('Location: http://mymagaz.local/');
     }
 
 }

@@ -6,6 +6,7 @@
             <ul>
                 <li><a href = '/user/signin/'>SignIn</a></li>
                 <li><a href = '/user/register/'>Register</a></li>
+                <li><a href = '/user/exit/'>Exit</a></li>
             </ul><hr>
         </div>
     </div>

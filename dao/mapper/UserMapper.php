@@ -11,6 +11,7 @@ class UserMapper
         $user->setEmail($data['email']);
         $user->setPassword($data['password']);
         $user->setName($data['name']);
+        $user->setSessionId($data['session_id']);
 
         return $user;
     }

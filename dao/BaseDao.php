@@ -35,6 +35,7 @@ class BaseDao
 
     public function GetRow($sql, $params = array())
     {
+        //var_dump($sql);
         //$stmt = $this->connection()->query($sql);
         $stmt = $this->connection()->prepare($sql);
         if ($this->Execute($stmt, $params)) {

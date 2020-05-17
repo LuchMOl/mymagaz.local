@@ -140,9 +140,11 @@
 
                         </div><!--/.navbar-header-->
                         <!-- End Header Navigation -->
-                        <?php
-                        UserService::getGreetingUser();
-                        ?>
+                        <div style="padding-left: 650px">
+                            <?php
+                            echo UserService::getGreetingUser();
+                            ?>
+                        </div>
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse menu-ui-design" id="navbar-menu">
                             <ul class="nav navbar-nav navbar-center" data-in="fadeInDown" data-out="fadeOutUp">

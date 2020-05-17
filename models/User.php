@@ -1,10 +1,13 @@
 <?php
+
 class User
 {
+
     public $id;
     public $email;
     public $password;
     public $name;
+    public $session_id;
 
     public function setId($id)
     {
@@ -26,5 +29,21 @@ class User
         $this->name = $name;
     }
 
+    public function setSessionId($session_id)
+    {
+        $this->session_id = $session_id;
+    }
+
+     public function getId()
+      {
+      return userService::getCurrentUser()->id;
+      }
+
+    public function getName()
+    {
+        return userService::getCurrentUser()->name;
+    }
+
 }
+
 ?>
