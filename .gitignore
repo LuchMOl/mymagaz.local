@@ -33,3 +33,4 @@ $RECYCLE.BIN/
 /nbproject
 #игнорировать все файлы в каталоге /web/nbproject/private/
 /web/nbproject/private/
+/web/images/products/

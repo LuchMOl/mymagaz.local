@@ -16,6 +16,178 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `categories`
+--
+
+DROP TABLE IF EXISTS `categories`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `categories` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `category` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `categories`
+--
+
+LOCK TABLES `categories` WRITE;
+/*!40000 ALTER TABLE `categories` DISABLE KEYS */;
+INSERT INTO `categories` VALUES (1,'chairs'),(2,'fog gamers'),(3,'sofas');
+/*!40000 ALTER TABLE `categories` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `colours`
+--
+
+DROP TABLE IF EXISTS `colours`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `colours` (
+  `id` tinyint(3) unsigned NOT NULL AUTO_INCREMENT,
+  `colour` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `colours`
+--
+
+LOCK TABLES `colours` WRITE;
+/*!40000 ALTER TABLE `colours` DISABLE KEYS */;
+INSERT INTO `colours` VALUES (1,'black'),(2,'red'),(3,'brown');
+/*!40000 ALTER TABLE `colours` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_category`
+--
+
+DROP TABLE IF EXISTS `product_category`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_category` (
+  `product_id` smallint(5) unsigned NOT NULL,
+  `category_id` smallint(5) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_category`
+--
+
+LOCK TABLES `product_category` WRITE;
+/*!40000 ALTER TABLE `product_category` DISABLE KEYS */;
+INSERT INTO `product_category` VALUES (9,1),(9,2),(10,3),(11,1),(11,2);
+/*!40000 ALTER TABLE `product_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `product_colour_quantity`
+--
+
+DROP TABLE IF EXISTS `product_colour_quantity`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `product_colour_quantity` (
+  `product_id` smallint(5) unsigned NOT NULL,
+  `colour_id` smallint(5) unsigned NOT NULL,
+  `quantity` smallint(5) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `product_colour_quantity`
+--
+
+LOCK TABLES `product_colour_quantity` WRITE;
+/*!40000 ALTER TABLE `product_colour_quantity` DISABLE KEYS */;
+INSERT INTO `product_colour_quantity` VALUES (9,1,3),(9,2,4),(10,3,1),(11,1,6),(11,2,7),(11,3,8);
+/*!40000 ALTER TABLE `product_colour_quantity` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `products` (
+  `id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(500) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `brand` varchar(200) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `size` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `images` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Товары';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (9,'chair','cougar','150-60-60','the best of chairs','a:1:{i:0;s:18:\"5ed3574281af60.png\";}'),(10,'sofa','kall','110-220-80','Shmat kalla','a:1:{i:0;s:18:\"5ed357a7d94830.png\";}'),(11,'king','dx-racer','150-80-80','king size dx-racer','a:3:{i:0;s:18:\"5ed3582258dd80.png\";i:1;s:18:\"5ed3582258dd81.png\";i:2;s:18:\"5ed35822591c02.png\";}');
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `session_user`
+--
+
+DROP TABLE IF EXISTS `session_user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `session_user` (
+  `user_id` int(10) DEFAULT NULL,
+  `session_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `session_user_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `session_user`
+--
+
+LOCK TABLES `session_user` WRITE;
+/*!40000 ALTER TABLE `session_user` DISABLE KEYS */;
+/*!40000 ALTER TABLE `session_user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `session_user_test`
+--
+
+DROP TABLE IF EXISTS `session_user_test`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `session_user_test` (
+  `user_id` int(10) DEFAULT NULL,
+  `session_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  KEY `user_id` (`user_id`),
+  CONSTRAINT `session_user_test_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `test` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `session_user_test`
+--
+
+LOCK TABLES `session_user_test` WRITE;
+/*!40000 ALTER TABLE `session_user_test` DISABLE KEYS */;
+INSERT INTO `session_user_test` VALUES (7,'mf8s4lgmvadfr1vgr8p40dff96'),(8,'2513g7amjfkrf6unntlsqd9if2'),(9,'2513g7amjfkrf6unntlsqd9if2'),(10,'kcc5mk1mnbd0s9pvpfbh7tjkj3'),(11,'dvnop04mf9l4ronb0ns7hqnuh3'),(12,'ces37vie42a73n79vdpacgpgn7');
+/*!40000 ALTER TABLE `session_user_test` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `test`
 --
 
@@ -29,7 +201,7 @@ CREATE TABLE `test` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -38,7 +210,7 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
-INSERT INTO `test` VALUES (1,'admin@mymagaz.local','admin','admin'),(2,'user@mymagaz.local','user','user'),(8,'guest@mymagaz.local','guest','guest');
+INSERT INTO `test` VALUES (7,'admin@mymagaz.local','admin','admin'),(8,'user@mymagaz.local','user','user'),(9,'test@mymagaz.local','test','test'),(10,'jopa@mymagaz.local','jopa','jopa'),(11,'ffadmin@mymagaz.local','ffadmin','ffadmin'),(12,'qwer@mymagaz.local','qwer','qwer');
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -78,4 +250,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-04-25 21:59:00
+-- Dump completed on 2020-05-31 10:50:50

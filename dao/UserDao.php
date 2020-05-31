@@ -6,6 +6,7 @@ class UserDao extends BaseDao
     private $tables = 'test';
     //private $tables = 'users';
     private $sid_tables = 'session_user_test';
+
     //private $sid_tables = 'session_user';
 
     public function getUser($email, $password)
@@ -18,7 +19,7 @@ class UserDao extends BaseDao
         return $this->GetRow($sql, $params);
     }
 
-        public function getSIdUser($sessionId)
+    public function getSIdUser($sessionId)
     {
         $sql = "SELECT t.id, t.email, t.password, t.name, s.session_id "
                 . "FROM $this->tables t INNER JOIN $this->sid_tables s "
@@ -55,7 +56,4 @@ class UserDao extends BaseDao
         $params = ['user_id' => $id, 'session_id' => $sId];
         $this->Execute($sql, $params);
     }
-
 }
-
-?>

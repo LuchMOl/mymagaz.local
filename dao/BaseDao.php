@@ -20,6 +20,7 @@ class BaseDao
 
     public function GetAll($sql, $params = array(), $fetchMode = null)
     {
+        //var_dump($sql);
         //$stmt = $this->connection()->query($sql);
         $stmt = $this->connection()->prepare($sql);
         if ($this->Execute($stmt, $params)) {
@@ -35,11 +36,19 @@ class BaseDao
 
     public function GetRow($sql, $params = array())
     {
-        //var_dump($sql);
         //$stmt = $this->connection()->query($sql);
         $stmt = $this->connection()->prepare($sql);
         if ($this->Execute($stmt, $params)) {
             return $stmt->fetch();
+        }
+        return array();
+    }
+
+    public function GetColumn($sql, $params = array())
+    {
+        $stmt = $this->connection()->query($sql);
+        if ($this->Execute($stmt, $params)) {
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
         }
         return array();
     }

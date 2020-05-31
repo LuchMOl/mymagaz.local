@@ -1,3 +1,6 @@
+<?php
+$greeting = UserService::getGreetingUser();
+?>
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -142,7 +145,7 @@
                         <!-- End Header Navigation -->
                         <div style="padding-left: 650px">
                             <?php
-                            echo UserService::getGreetingUser();
+                            echo $greeting;
                             ?>
                         </div>
                         <!-- Collect the nav links, forms, and other content for toggling -->
