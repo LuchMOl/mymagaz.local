@@ -104,4 +104,24 @@ class ProductDao extends BaseDao
         return $this->Execute($sql, $params);
     }
 
+    public function editCategory($oldCategoryName, $newCategoryName)
+    {
+        $sql = 'UPDATE categories SET category = :newCategoryName WHERE category = :oldCategoryName';
+        $params = ['oldCategoryName' => $oldCategoryName, 'newCategoryName' => $newCategoryName];
+        return $this->Execute($sql, $params);
+    }
+
+    public function deleteCategory($category)
+    {
+        $sql = 'DELETE FROM categories WHERE category = :category';
+        $params = ['category' => $category];
+        return $this->Execute($sql, $params);
+    }
+
+    public function checkOne($table, $column, $item)
+    {
+        $sql = "SELECT id FROM $table WHERE $column = '$item'";
+        return $this->Execute($sql);
+    }
+
 }

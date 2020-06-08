@@ -3,15 +3,104 @@
 class ProductController
 {
 
+    private $productService;
+
+    public function productService()
+    {
+        if ($this->productService === NULL) {
+            $this->productService = new productService();
+        }
+        return $this->productService;
+    }
+
     public function actionIndex()
     {
         $_SESSION['product'] = '';
         require_once '../views/product/index.php';
     }
 
+    public function actionCategory()
+    {
+        require_once '../views/product/category/index.php';
+    }
+
+    public function actionCreateNewCategory()
+    {
+        $mesage = '';
+        if (isset($_POST['insertNewCategory'])) {
+            if (!empty($_POST['newCategory'])) {
+                if ($this->productService()->checkIssetItem('categories', 'category', $_POST['newCategory'])) {
+                    if ($this->productService()->insertNewCategory($_POST['newCategory'])) {
+                        header('Location: /product/showAllCategories/');
+                    } else {
+                        $mesage = 'Запись в базу НЕ прошла.';
+                    }
+                    $mesage = 'Категория "' . $_POST['newCategory'] . '" уже существует.';
+                }
+            } else {
+                $mesage = 'Не указана новая категория.';
+            }
+        }
+        //echo $mesage;
+        require_once '../views/product/category/create.php';
+    }
+
+    public function actionShowAllCategories()
+    {
+        if (empty($categories = $this->productService()->GetColumnTable('category', 'categories'))) {
+            $mesage = 'В базе нет ни одной категории.';
+        }
+        require_once '../views/product/category/showAll.php';
+    }
+
+    public function actionEditCategory()
+    {
+        $mesage = '';
+        if (isset($_GET['categoryname'])) {
+            $item = str_replace('_', ' ', $_GET['categoryname']);
+            //var_dump($item);
+            if ($this->productService()->checkIssetItem('categories', 'category', $item)) {
+                if (isset($_POST['eidtCategory'])) {
+                    if ($_POST['newCategoryName'] !== $item) {
+                        if ($this->productService()->editCategory($item, $_POST['newCategoryName'])) {
+                            header('Location: /product/showAllCategories/');
+                        } else {
+                            $mesage = 'Не удалось отредактировать имя категории.';
+                        }
+                    } else {
+                        $mesage = 'Имя категории не редактировалось.';
+                    }
+                }
+            } else {
+                $mesage = "База не содержит категории $item.";
+            }
+            require_once '../views/product/category/edit.php';
+        }
+    }
+
+    public function actionDellCategory()
+    {
+        $categories = $this->productService()->GetColumnTable('category', 'categories');
+        if (isset($_GET['categoryname'])) {
+            $item = str_replace('_', ' ', $_GET['categoryname']);
+            if ($this->productService()->checkIssetItem('categories', 'category', $item)) {
+                $this->productService()->deleteCategory($item);
+                header('Location: /product/showAllCategories/');
+            } else {
+                $mesage = 'Не удалилось.';
+            }
+        }
+
+        require_once '../views/product/category/showAll.php';
+    }
+
     public function actionAddProduct()
     {
-        if (isset($_POST['next'])) {
+        $productService = new ProductService;
+        $colours = $productService->GetColumnTable('colour', 'colours');
+        $categories = $productService->GetColumnTable('category', 'categories');
+        $warning = '';
+        if (isset($_POST['write'])) {
             if (!empty($_POST["name"])) {
                 if (!empty($_POST["brand"])) {
                     if (!empty($_POST["size"])) {
@@ -27,21 +116,22 @@ class ProductController
                                 $_SESSION['product'] = $product;
                                 header('Location: ../selectColour/');
                             } else {
-                                echo 'Не выбраны изображения.';
+                                $warning = 'Не выбраны изображения.';
                             }
                         } else {
-                            echo 'Не заполнено описание.';
+                            $warning = 'Не заполнено описание.';
                         }
                     } else {
-                        echo 'Не заполнено размер.';
+                        $warning = 'Не заполнено размер.';
                     }
                 } else {
-                    echo 'Не заполнено бренд.';
+                    $warning = 'Не заполнено бренд.';
                 }
             } else {
-                echo 'Не заполнено назвение.';
+                $warning = 'Не заполнено назвение.';
             }
         }
+        echo $warning;
         require_once '../views/product/addProduct.php';
     }
 
@@ -91,16 +181,6 @@ class ProductController
                 echo 'Не выбрано ни одной категории.';
             }
         }
-        if (isset($_POST['insertNewCategory'])) {
-            if (!empty($_POST['newCategory'])) {
-                if ($productService->insertNewCategory($_POST['newCategory'])) {
-                    header("Location:" . $_SERVER['REQUEST_URI']);
-                }
-            } else {
-                echo 'не введена новая категория.';
-            }
-        }
-
         require_once '../views/product/selectCategory.php';
     }
 

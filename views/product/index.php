@@ -3,6 +3,7 @@
     <div class='hm-foot-menu'>
         <div class='container'><h1>Товары</h1><hr>
             <ul>
+                <li><a href = '/product/category/'>Категория</a><br><br></li>
                 <li><a href = '/product/addProduct/'>Добавить новый</a><br><br></li>
                 <li><a href = '/product/showAllProducts/'>Список всех</a></li>
 

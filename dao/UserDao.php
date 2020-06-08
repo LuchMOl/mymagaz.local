@@ -6,7 +6,6 @@ class UserDao extends BaseDao
     private $tables = 'test';
     //private $tables = 'users';
     private $sid_tables = 'session_user_test';
-
     //private $sid_tables = 'session_user';
 
     public function getUser($email, $password)

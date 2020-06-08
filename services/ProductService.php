@@ -3,20 +3,27 @@
 class ProductService
 {
 
+    private $productDao;
+
+    public function productDao()
+    {
+        if ($this->productDao === NULL) {
+            $this->productDao = new ProductDao();
+        }
+        return $this->productDao;
+    }
+
     public function GetProduct($name, $value)
     {
-        $productDao = new ProductDao();
-
-        $product = $productDao->GetProduct($name, $value);
-        $colours = $productDao->GetColoursQuantity($product['id']);
-        $categories = $productDao->GetCategories($product['id']);
+        $product = $this->productDao()->GetProduct($name, $value);
+        $colours = $this->productDao()->GetColoursQuantity($product['id']);
+        $categories = $this->productDao()->GetCategories($product['id']);
         return $this->constituteProduct($product, $colours, $categories);
     }
 
     public function GetNameAndImagesOfProduct()
     {
-        $productDao = new ProductDao();
-        $products = $productDao->GetNameAndImagesOfProduct();
+        $products = $this->productDao()->GetNameAndImagesOfProduct();
         if (!empty($products)) {
             foreach ($products as $product) {
                 $result[] = array_merge($this->rebuildProduct($product));
@@ -29,14 +36,12 @@ class ProductService
 
     public function GetColumnTable($column, $table)
     {
-        $productDao = new ProductDao();
-        return $productDao->GetColumnTable($column, $table);
+        return $this->productDao()->GetColumnTable($column, $table);
     }
 
     public function insertNewColour($newColour)
     {
-        $productDao = new ProductDao();
-        if ($productDao->insertNewColour($newColour)) {
+        if ($this->productDao()->insertNewColour($newColour)) {
             return true;
         } else {
             return false;
@@ -45,18 +50,25 @@ class ProductService
 
     public function insertNewCategory($newCategory)
     {
-        $productDao = new ProductDao();
-        if ($productDao->insertNewCategory($newCategory)) {
-            return true;
-        } else {
-            return false;
-        }
+        return $this->productDao()->insertNewCategory($newCategory);
+    }
+
+    public function checkIssetItem($table, $column, $item)
+    {
+        return $this->productDao()->checkOne($table, $column, $item);
+    }
+
+    public function deleteCategory($category)
+    {
+        return $this->productDao()->deleteCategory($category);
+    }
+    public function editCategory($oldCategoryName, $newCategoryName){
+        return $this->productDao()->editCategory($oldCategoryName, $newCategoryName);
     }
 
     public function insertNewProduct($newProduct)
     {
-        $productDao = new ProductDao();
-        $productId = $productDao->insertNewProduct($newProduct);
+        $productId = $this->productDao()->insertNewProduct($newProduct);
         if (is_numeric($productId)) {
             return $productId;
         } else {
@@ -66,10 +78,9 @@ class ProductService
 
     public function insertColourQuantityOfNewProduct($productId, $colours)
     {
-        $productDao = new ProductDao();
         $counterTrue = 0;
         foreach ($colours as $colour => $quantity) {
-            if ($productDao->insertColourQuantityOfNewProduct($productId, $colour, $quantity)) {
+            if ($this->productDao()->insertColourQuantityOfNewProduct($productId, $colour, $quantity)) {
                 $counterTrue++;
             }
         }
@@ -82,10 +93,9 @@ class ProductService
 
     public function insertCategoryOfNewProduct($productId, $categories)
     {
-        $productDao = new ProductDao();
         $counterTrue = 0;
         foreach ($categories as $category) {
-            if ($productDao->insertCategoryOfNewProduct($productId, $category)) {
+            if ($this->productDao()->insertCategoryOfNewProduct($productId, $category)) {
                 $counterTrue++;
             }
         }

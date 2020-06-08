@@ -12,10 +12,8 @@ class BaseDao
                 \PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
                 , \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
             ]);
-            return $dbh;
-        } else {
-            return $dbh;
         }
+        return $dbh;
     }
 
     public function GetAll($sql, $params = array(), $fetchMode = null)

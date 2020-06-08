@@ -3,59 +3,67 @@
 class UserService
 {
 
+    private static $userDao = [];
+
+    private static function userDao()
+    {
+        if (self::$userDao == NULL) {
+            $userDao = new UserDao();
+        } else {
+            $userDao = self::$userDao;
+        }
+        return $userDao;
+    }
+
     public function getUser($email, $password)
     {
-        $userDao = new UserDao();
-        $data = $userDao->getUser($email, $password);
-        if (is_array($data)) {
+        $user = self::userDao()->getUser($email, $password);
+        if (is_array($user)) {
             $userMapper = new UserMapper();
-            $userExist = $userMapper->map($data);
-            return $userExist;
+            $userExist = $userMapper->map($user);
         } else {
-            return false;
+            $userExist = false;
         }
+        return $userExist;
     }
 
     static function getSIdUser($sessionId)
     {
-        $userDao = new UserDao();
-        $data = $userDao->getSIdUser($sessionId);
-        if (is_array($data)) {
-            $userMapper = new UserMapper();
-            $userExist = $userMapper->map($data);
+        $userExist = self::userDao()->getSIdUser($sessionId);
+        if (is_array($userExist)) {
+            $userExist = $userMapper->map($userExist);
             self::saveUserInSession($userExist);
-            return $userExist;
         } else {
-            return false;
+            $userExist = self::GetUserGuest();
         }
+        return $userExist;
     }
 
     public function checkUser($email)
     {
-        $userDao = new UserDao();
-        $data = $userDao->checkUser($email);
-
+        $data = $this->userDao()->checkUser($email);
         if (is_numeric($data)) {
-            return true;
+            $result = true;
         } else {
-            return false;
+            $result = false;
         }
+        return $result;
     }
 
     public function setUser($email, $name, $password)
     {
-        $userDao = new UserDao();
-        return $userDao->setUser($email, $name, $password);
+        return $this->userDao()->setUser($email, $name, $password);
     }
 
     static function getGreetingUser()
     {
         $user = self::getCurrentUser();
         if (is_numeric($user->id)) {
-            return 'Ну здравствуй, ' . $user->name . '. ';
-        } elseif ($user->id == 'id') {
-            return "<a href = '/user/register/'>Зарегистрируйтесь</a> или <a href = '/user/signin/'>Авторизуйтесь</a>";
+            $greeting = 'Ну здравствуй, ' . $user->name . '. ';
+        } else {
+            $greeting = "<a href = '/user/register/'>Зарегистрируйтесь</a> или <a href = '/user/signin/'>Авторизуйтесь</a>";
         }
+        return $greeting;
     }
 
     static function saveUserInSession($user)
@@ -68,14 +76,20 @@ class UserService
     static function getCurrentUser()
     {
         if (isset($_SESSION['user'])) {
-            return unserialize(base64_decode($_SESSION['user']));
+            $currentUser = unserialize(base64_decode($_SESSION['user']));
         } elseif (isset($_COOKIE['sid'])) {
-            return self::getSIdUser($_COOKIE['sid']);
+            $currentUser = self::getSIdUser($_COOKIE['sid']);
         } else {
-            $userMapper = new UserMapper();
-            $guest = ['id' => 'id', 'email' => '', 'password' => '', 'name' => 'Гость', 'session_id' => ''];
-            return $userMapper->map($guest);
+            $currentUser = self::GetUserGuest();
         }
+        return $currentUser;
+    }
+
+    static function GetUserGuest()
+    {
+        $userMapper = new UserMapper();
+        $guest = ['id' => 'id', 'email' => '', 'password' => '', 'name' => 'Гость', 'session_id' => ''];
+        return $userMapper->map($guest);
     }
 
 }

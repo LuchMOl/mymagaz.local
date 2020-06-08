@@ -158,6 +158,7 @@ $greeting = UserService::getGreetingUser();
                                 <li class="scroll"><a href="#newsletter">contact</a></li>
                                 <li><a href="/tasks/">tasks</a></li>
                                 <li><a href="/user/">user</a></li>
+                                <li><a href="/product/">product</a></li>
                             </ul><!--/.nav -->
                         </div><!-- /.navbar-collapse -->
                     </div><!--/.container-->

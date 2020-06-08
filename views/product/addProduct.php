@@ -11,7 +11,25 @@
                 <input id="file" type="file" name="images[]" multiple>
                 <label for="file-input"> Изображения</label><br><hr>
 
-                <input name = 'next' type = submit value = 'Далее >>'>
+                <?php
+
+                $i = 0;
+                foreach ($colours as $colour) {
+                        ;
+
+
+                    echo "<div style='width: 40px; height: 40px; background: $colour'> $colour <input name = '$i' type = 'number'> </input></div><br><br>";
+                    $i = $i + 1;
+                }
+
+                $i = 0;
+                foreach ($categories as $category) {
+                    echo "<input name = '$i' type = 'checkbox'> $category</input><br><br>";
+                    $i = $i + 1;
+                }
+                ?>
+
+                <input name = 'insertNewProduct' type = submit value = 'Записать продукт в базу'>
             </form>
             <hr>
         </div>
