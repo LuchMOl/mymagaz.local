@@ -6,21 +6,22 @@
                 Все категории</h1><hr>
             <table>
                 <?php
-                if (!empty($categories)) {
-                    foreach ($categories as $category) {
+                if (!empty($categoriesWithParent)) {
+                    foreach ($categoriesWithParent as $category => $parent) {
                         $get = str_replace(' ', '_', $category);
                         echo "<tr>"
                         . "<td style='padding-right: 40px'>$category</td>"
+                        . "<td style='padding-right: 40px'>Родитель - $parent</td>"
                         . "<td style='padding-right: 40px'><ul><li><a href = /product/editCategory/?categoryname=$get>Редактировать</a></li></ul></td>"
-                        . "<td><ul><li><a href = /product/dellCategory/?categoryname=$get> Удалить</a></li></ul></td>"
+                        . "<td><ul><li><a href = /product/deleteCategory/?categoryname=$get> Удалить</a></li></ul></td>"
                         . "</tr>";
                     }
-                } else {
-                    echo 'В базе нет ни одной категории';
                 }
                 ?>
             </table>
-            <br><ul><li><a href = '/product/createNewCategory/'>Создать новую категорию</a><br><br></li></ul><hr>
+            <br><ul><li><a href = '/product/createNewCategory/'>Создать новую категорию</a><br><br></li></ul>
+            <?=$mesage ?>
+            <hr>
         </div>
     </div>
 </section>

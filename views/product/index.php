@@ -4,8 +4,8 @@
         <div class='container'><h1>Товары</h1><hr>
             <ul>
                 <li><a href = '/product/category/'>Категория</a><br><br></li>
-                <li><a href = '/product/addProduct/'>Добавить новый</a><br><br></li>
-                <li><a href = '/product/showAllProducts/'>Список всех</a></li>
+                <li><a href = '/product/addProduct/'>Добавить новый товар</a><br><br></li>
+                <li><a href = '/product/showAllProducts/'>Список всех товаров</a></li>
 
             </ul><hr>
         </div>

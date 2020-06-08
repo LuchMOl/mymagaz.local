@@ -15,105 +15,32 @@ class ProductDao extends BaseDao
         return $this->GetColumn($sql);
     }
 
-    public function GetProduct($param, $value)
-    {
-        $sql = "SELECT id, name, brand, size, description, images "
-                . "FROM products "
-                . "WHERE $param = '$value'";
-        return $this->GetRow($sql);
-    }
-
-    public function GetNameAndImagesOfProduct()
-    {
-        $sql = "SELECT id, name, images FROM products ORDER BY id";
-        return $this->GetAll($sql);
-    }
-
-    public function GetColoursQuantity($id)
-    {
-        $sql = "SELECT colour, quantity "
-                . "FROM colours c "
-                . "INNER JOIN product_colour_quantity pcq "
-                . "ON c.id = pcq.colour_id "
-                . "INNER JOIN products p "
-                . "ON pcq.product_id = p.id "
-                . "WHERE p.id = '$id'";
-        return $this->GetAll($sql);
-    }
-
-    public function GetCategories($id)
-    {
-        $sql = "SELECT category "
-                . "FROM categories c "
-                . "INNER JOIN product_category pc "
-                . "ON c.id = pc.category_id "
-                . "INNER JOIN products p "
-                . "ON pc.product_id = p.id "
-                . "WHERE p.id = '$id'";
-        return $this->GetAll($sql);
-    }
-
-    public function insertNewProduct($newProduct)
-    {
-        $sql = "INSERT INTO products (name, brand, size, description, images)"
-                . "VALUES (:name, :brand, :size, :description, :images)";
-        $params = ['name' => $newProduct['name'],
-            'brand' => $newProduct['brand'],
-            'size' => $newProduct['size'],
-            'description' => $newProduct['description'],
-            'images' => $newProduct['images']];
-        $this->Execute($sql, $params);
-        $id = $this->GetOne("SELECT MAX(id) AS id FROM products");
-        return $id;
-    }
-
-    public function insertColourQuantityOfNewProduct($productId, $colour, $quantity)
-    {
-        $sql = "INSERT INTO product_colour_quantity (product_id, colour_id, quantity)"
-                . "VALUES (:product_id, :colour_id, :quantity)";
-        $colourId = $this->getIdTableKeyParam('colours', 'colour', $colour);
-        $params = ['product_id' => $productId,
-            'colour_id' => $colourId,
-            'quantity' => $quantity];
-        return $this->Execute($sql, $params);
-    }
-
-    public function insertCategoryOfNewProduct($productId, $category)
-    {
-        $sql = "INSERT INTO product_category (product_id, category_id)"
-                . "VALUES (:product_id, :category_id)";
-        $categoryId = $this->getIdTableKeyParam('categories', 'category', $category);
-        $params = ['product_id' => $productId,
-            'category_id' => $categoryId];
-        return $this->Execute($sql, $params);
-    }
-
-    public function insertNewColour($newColour)
-    {
-        $sql = "INSERT INTO colours (colour)"
-                . "VALUES (:colour)";
-        $params = ['colour' => $newColour];
-        return $this->Execute($sql, $params);
-    }
-
     public function insertNewCategory($newCategory)
     {
-        $sql = "INSERT INTO categories (category)"
+        $sql = "INSERT INTO categories (name)"
                 . "VALUES (:category)";
         $params = ['category' => $newCategory];
         return $this->Execute($sql, $params);
     }
 
+    public function insertNewCategoryWithParent($newCategory, $parentId)
+    {
+        $sql = "INSERT INTO categories (name, parent_id)"
+                . "VALUES (:category, :parent_id)";
+        $params = ['category' => $newCategory, 'parent_id' => $parentId];
+        return $this->Execute($sql, $params);
+    }
+
     public function editCategory($oldCategoryName, $newCategoryName)
     {
-        $sql = 'UPDATE categories SET category = :newCategoryName WHERE category = :oldCategoryName';
+        $sql = 'UPDATE categories SET name = :newCategoryName WHERE name = :oldCategoryName';
         $params = ['oldCategoryName' => $oldCategoryName, 'newCategoryName' => $newCategoryName];
         return $this->Execute($sql, $params);
     }
 
     public function deleteCategory($category)
     {
-        $sql = 'DELETE FROM categories WHERE category = :category';
+        $sql = 'DELETE FROM categories WHERE name = :category';
         $params = ['category' => $category];
         return $this->Execute($sql, $params);
     }
@@ -121,7 +48,22 @@ class ProductDao extends BaseDao
     public function checkOne($table, $column, $item)
     {
         $sql = "SELECT id FROM $table WHERE $column = '$item'";
-        return $this->Execute($sql);
+        return $this->GetOne($sql);
+    }
+
+    public function ParentsIsset($childId)
+    {
+        $sql = "SELECT name FROM categories WHERE parent_id = '$childId'";
+        return $this->GetOne($sql);
+    }
+
+    public function GetParentName($childName){
+        $sql = "SELECT name FROM categories WHERE id = (SELECT parent_id FROM categories WHERE name = '$childName')";
+        $result = $this->GetOne($sql);
+        if(!$result){
+            $result = 'Нет родителя';
+        }
+        return $result;
     }
 
 }

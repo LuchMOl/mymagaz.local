@@ -55,7 +55,6 @@ class BaseDao
     {
         $result = false;
         $stmt = $this->connection()->prepare($sql);
-
         if ($this->Execute($stmt, $params)) {
             $res = $stmt->fetch();
             $result = is_array($res) ? current($res) : $res;
@@ -83,6 +82,7 @@ class BaseDao
         }
         $this->_lastStatement = $stmt;
         if ($stmt) {
+
             return $stmt->execute($params);
         }
         return false;
