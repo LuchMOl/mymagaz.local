@@ -6,7 +6,7 @@
         if (empty($category)){
             echo "<li class='menu-item'><a href='$key'>$key</a></li>";
         } else {
-            if (empty(reset($category))){
+            if (empty(array_filter($category))){
                 echo "<li class='menu-item menu-item-has-children dropdown'><a href='$key'>$key</a>";
                 echo "<ul class='sub-menu'>";
                     foreach ($category as $key => $value) {
