@@ -49,7 +49,6 @@ class CategoryController
     {
         $mesage = '';
         $categories = $this->categoryService()->GetCategories();
-        //var_dump($categories);
         if (empty($categories)) {
             $mesage = 'В базе нет ни одной категории.';
         }
