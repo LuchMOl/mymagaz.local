@@ -1,3 +1,45 @@
+<?php
+    $categoryService = new CategoryService();
+    $categories = $categoryService->GetCategories();
+    foreach ($categories as $key => $category) {
+        echo "<ul class='main-menu menu'>";
+        if (empty($category)){
+            echo "<li class='menu-item'><a href='$key'>$key</a></li>";
+        } else {
+            if (empty(reset($category))){
+                echo "<li class='menu-item menu-item-has-children dropdown'><a href='$key'>$key</a>";
+                echo "<ul class='sub-menu'>";
+                    foreach ($category as $key => $value) {
+                        echo "<li class='menu-item'><a href='$key'>$key</a></li>";
+                    }
+                echo "</ul>";
+                echo "</li>";
+            } else {
+                echo "<li class='menu-item menu-item-has-children has-mega-menu'><a href='$key'>$key</a>";
+                echo "<div class='mega-menu'>";
+                echo "<div class='mega-wrap'>";
+                foreach ($category as $key => $value) {
+                        echo "<div class='mega-column'>";
+                        echo "<h4 class='mega-heading'>$key</h4>";
+                        echo "<ul class='mega-item'>";
+                            foreach ($value as $item) {
+                                echo "<li><a href='$item'>$item</a></li>";
+                            }
+                        echo "</ul>";
+                        echo "</div>";
+                }
+                echo "</div>";
+                echo "</div>";
+                echo "</li>";
+            }
+
+        }
+        echo "</ul>";
+    }
+?>
+
+
+<!--
 <ul class="main-menu menu">
     <li class="menu-item menu-item-has-children dropdown"><a href="index.html">Home</a>
         <ul class="sub-menu">
@@ -9,7 +51,7 @@
     <li class="menu-item menu-item-has-children has-mega-menu"><a href="#">Men</a>
         <div class="mega-menu">
             <div class="mega-wrap">
-                <div class="mega-column">
+                <!--<div class="mega-column">
                     <ul class="mega-item mega-features">
                         <li><a href="product-listing.html">NEW RELEASES</a></li>
                         <li><a href="product-listing.html">FEATURES SHOES</a></li>
@@ -19,7 +61,7 @@
                         <li><a href="product-listing.html">MOTHER'S DAY COLLECTION</a></li>
                         <li><a href="product-listing.html">FAN GEAR</a></li>
                     </ul>
-                </div>
+                </div>--><!--
                 <div class="mega-column">
                     <h4 class="mega-heading">Shoes</h4>
                     <ul class="mega-item">
@@ -87,4 +129,4 @@
             <li class="menu-item"><a href="contact-us.html">Contact Us #2</a></li>
         </ul>
     </li>
-</ul>
+</ul>-->

@@ -1,19 +1,23 @@
 <?php require_once '/../../layouts/header.php'; ?>
 
-<div class='container'><br><h1><a href = '/product/'>< Работа с товарами</a> |
-        <a href = '/product/category/'>< Управление категориями</a> |
-        Создать новую категорию</h1><hr>
-
+<div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
+        <a href = '/category/'>< Управление категориями</a> |
+        Создать новую категорию</p><hr>
+    <p>Родительская категория</p>
     <form method = 'post' action = ''>
         <select name = 'parent'>
             <option value = 'none'>none</option>
             <?php
-                foreach ($categories as $category){
-                    echo "<option value = '$category'>$category</option>";
+            foreach ($categories as $parent => $category) {
+                echo "<option>$parent</option>";
+                foreach ($category as $child => $SeniorChildren) {
+                    echo "<option>$parent -> $child</option>";
                 }
+            }
             ?>
         </select><br><br>
-            <input name = 'newCategory' type = 'text'></input><br><br>
+        <p>Название новой категории</p>
+        <input name = 'newCategory' type = 'text'></input><br><br>
         <input name = 'insertNewCategory' type = 'submit' value = 'Добавить новую категорию'><br><br>
 
     </form>

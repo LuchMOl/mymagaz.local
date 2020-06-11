@@ -18,46 +18,6 @@ class ProductService
         return $this->productDao()->GetColumnTable($column, $table);
     }
 
-    public function insertNewCategory($newCategory)
-    {
-        return $this->productDao()->insertNewCategory($newCategory);
-    }
-
-    public function insertNewCategoryWithParent($newCategory, $parentId)
-    {
-        return $this->productDao()->insertNewCategoryWithParent($newCategory, $parentId);
-    }
-
-    public function GetIdIssetItem($table, $column, $item)
-    {
-        return $this->productDao()->getIdTableKeyParam($table, $column, $item);
-    }
-
-    public function ParentsIsset($childId)
-    {
-        return $this->productDao()->ParentsIsset($childId);
-    }
-
-    public function getCategoriesWithParent($categories)
-    {
-        $CategoriesWithParent = [];
-        foreach ($categories as $category) {
-            $parent = $this->productDao()->GetParentName($category);
-            $CategoriesWithParent = array_merge($CategoriesWithParent, ["$category" => "$parent"]);
-        }
-        return $CategoriesWithParent;
-    }
-
-    public function deleteCategory($category)
-    {
-        return $this->productDao()->deleteCategory($category);
-    }
-
-    public function editCategory($oldCategoryName, $newCategoryName)
-    {
-        return $this->productDao()->editCategory($oldCategoryName, $newCategoryName);
-    }
-
     static function uploadImages($data)
     {
         $images = [];

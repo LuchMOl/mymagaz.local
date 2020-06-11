@@ -55,6 +55,7 @@ class BaseDao
     {
         $result = false;
         $stmt = $this->connection()->prepare($sql);
+        //var_dump($stmt);
         if ($this->Execute($stmt, $params)) {
             $res = $stmt->fetch();
             $result = is_array($res) ? current($res) : $res;

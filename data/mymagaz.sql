@@ -27,7 +27,7 @@ CREATE TABLE `categories` (
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (22,'first',0),(23,'second',22),(24,'third',22),(25,'four',24),(26,'five',0);
+INSERT INTO `categories` VALUES (27,'Home',0),(28,'Men',0),(29,'Women',0),(30,'Kids',0),(31,'Shoes',28),(32,'Clothing',28),(33,'Accessories',28),(34,'Brand',28),(35,'All Shoes',31),(36,'Running',31),(37,'Training & Gym',31),(38,'Compression & Nike Pro',32),(39,'Tops & T-Shirts',32),(40,'Compression & Nike Pro',33),(41,'Tops & T-Shirts',33),(43,'Hoodies & Sweatshirts',33),(44,'Basketball',31),(47,'News',0),(48,'Contact',0),(49,'Contact Us #1',48),(50,'Contact Us #2',48),(51,'Blog-grid',47),(52,'Blog List',47),(55,'Homepage #1',27),(56,'Homepage #2',27),(57,'Homepage #3',27),(58,'NIKE',34),(59,'Adidas',34);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -251,4 +251,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-08 21:01:53
+-- Dump completed on 2020-06-11 20:50:19

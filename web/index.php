@@ -12,6 +12,7 @@ session_start();
 
 $routeService = new RouteService();
 $routeService->run();
+
 //var_dump($_SESSION['product']);
 //header("Location:".$_SERVER['REQUEST_URI']); // перенаправление на ту же страницу
 ?>
