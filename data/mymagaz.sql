@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.62, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 5.5.53, for Win64 (AMD64)
 --
 -- Host: localhost    Database: mymagaz
 -- ------------------------------------------------------
--- Server version	5.5.62
+-- Server version	5.5.53-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -27,7 +27,7 @@ CREATE TABLE `categories` (
   `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `parent_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=66 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3438 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -36,7 +36,7 @@ CREATE TABLE `categories` (
 
 LOCK TABLES `categories` WRITE;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
-INSERT INTO `categories` VALUES (27,'Home',0),(28,'Men',0),(29,'Women',0),(30,'Kids',0),(31,'Shoes',28),(32,'Clothing',28),(33,'Accessories',28),(34,'Brand',28),(35,'All Shoes',31),(36,'Running',31),(37,'Training & Gym',31),(38,'Compression & Nike Pro',32),(39,'Tops & T-Shirts',32),(40,'Compression & Nike Pro',33),(41,'Tops & T-Shirts',33),(43,'Hoodies & Sweatshirts',33),(44,'Basketball',31),(47,'News',0),(48,'Contact',0),(49,'Contact Us #1',48),(50,'Contact Us #2',48),(51,'Blog-grid',47),(52,'Blog List',47),(55,'Homepage #1',27),(56,'Homepage #2',27),(57,'Homepage #3',27),(58,'NIKE',34),(59,'Adidas',34);
+INSERT INTO `categories` VALUES (1,'Женское белье',0),(2,'Купальники',0),(4,'Комплекты белья',1),(5,'Бюстгальтеры',1),(6,'Балконет',5),(7,'Push up',5),(8,'Уплотнённая чашка',5),(9,'Мягкая чашка',5),(10,'Трусики',1),(11,'Беременным',10),(12,'Стринги',10),(13,'Шортики',10),(14,'Cлипы',10),(15,'Кофточки, блузки, свитера',19),(18,'Пояса, подвязки',1),(19,'Женская одежда',0),(20,'Боди, корсеты',1),(22,'Корсеты, бюстье, корсажи',1),(24,'Купальники раздельные',2),(25,'Купальники слитные',2),(27,'Home',0),(28,'Men',0),(29,'Women',0),(30,'Kids',0),(31,'Shoes',28),(32,'Clothing',28),(33,'Accessories',28),(34,'Brand',28),(35,'All Shoes',31),(36,'Running',31),(37,'Training & Gym',31),(38,'Compression & Nike Pro',32),(39,'Tops & T-Shirts',32),(40,'Compression & Nike Pro',33),(41,'Tops & T-Shirts',33),(42,'Невидимка',5),(43,'Hoodies & Sweatshirts',33),(44,'Basketball',31),(45,'Бретельки, вкладыши',1),(47,'News',0),(48,'Contact',0),(49,'Contact Us #1',48),(50,'Contact Us #2',48),(51,'Blog-grid',47),(52,'Blog List',47),(55,'Homepage #1',27),(56,'Homepage #2',27),(57,'Homepage #3',27),(58,'NIKE',34),(59,'Adidas',34),(66,'sdaf',57),(67,'34342234afdsfafads',57),(90,'Корректирующее белье',1),(95,'Соблазнительное белье',1),(130,'Пижамы, костюмы',160),(132,'Сорочки, пеньюары',160),(133,'Халаты, накидки',160),(134,'Майки, футболки, топы',19),(135,'Тапочки для дома',160),(136,'Бразилианы',10),(139,'Спортивное',1),(157,'Push up двойной',5),(158,'Платья, туники, юбки',19),(159,'Костюмы ,брюки, шорты',19),(160,'Домашняя одежда',19),(161,'Верхняя одежда',19),(163,'Для пляжа',0),(174,'Верх купальника',2),(175,'Плавки',2),(181,'(OLD)_Комбидресс',1),(3007,'Шапки, шарфы, куртки',19),(3025,'Маски защитные',19),(3026,'Юбки',19),(3041,'(OLD)_Майки, футболки, кофточки',160),(3043,'Купальники монокини',2),(3048,'(OLD)_Термобельё',19),(3052,'Термобельё',1),(3101,'Свадебные платья и аксессуары',19),(3103,'Комплекты белья',3101),(3104,'Красивые бретели',3101),(3105,'Пояса, подвязки',3101),(3106,'Чулки',3101),(3107,'Пеньюары и халатики',3101),(3112,'Спортивная одежда',19),(3119,'Тапочки',19),(3120,'Купальники танкини',2),(3181,'(OLD)_Майка и трусики',1),(3390,'Аксессуары',19),(3391,'Кошельки и клатчи',3390),(3392,'Сумки и рюкзаки',3390),(3393,'Чемоданы',3390),(3437,'Яркие принты',10);
 /*!40000 ALTER TABLE `categories` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -216,6 +216,31 @@ INSERT INTO `test` VALUES (1,'admin@mymagaz.local','admin','admin'),(2,'user@mym
 UNLOCK TABLES;
 
 --
+-- Table structure for table `user`
+--
+
+DROP TABLE IF EXISTS `user`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL,
+  `email` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `user`
+--
+
+LOCK TABLES `user` WRITE;
+/*!40000 ALTER TABLE `user` DISABLE KEYS */;
+INSERT INTO `user` VALUES (0,'admin@mymagaz.local','admin','admin'),(1,'user@mymagaz.local','user','user'),(2,'guest@mymagaz.local','guest','guest'),(3,'test@mymagaz.local','test','test'),(4,'vasa','jopa','pupkin'),(5,'vasa','jopa','pupkin');
+/*!40000 ALTER TABLE `user` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -251,4 +276,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-11 20:50:19
+-- Dump completed on 2020-06-11 21:47:56
