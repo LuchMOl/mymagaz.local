@@ -6,8 +6,8 @@
                 Управление категориями</p><hr>
             <ul>
                 <li><a href = '/category/createNewCategory/'>Создать новую категорию</a><br><br></li>
-                <li><a href = '/category/showAllCategories/'>Список всех категорий</a></li>
-
+                <li><a href = '/category/showAllCategories/'>Список всех категорий</a><br><br></li>
+                <li><a href = '/category/choiceCategoriesForTopMenu/'>Выбрать категории для меню</a></li>
             </ul><hr>
         </div>
     </div>

@@ -16,12 +16,12 @@ class BaseDao
         return $dbh;
     }
 
-    public function GetAll($sql, $params = array(), $fetchMode = null)
+    public function getAll($sql, $params = array(), $fetchMode = null)
     {
         //var_dump($sql);
         //$stmt = $this->connection()->query($sql);
         $stmt = $this->connection()->prepare($sql);
-        if ($this->Execute($stmt, $params)) {
+        if ($this->execute($stmt, $params)) {
             if ($fetchMode) {
                 $result = $stmt->fetchAll($fetchMode);
             } else {
@@ -32,38 +32,38 @@ class BaseDao
         return array();
     }
 
-    public function GetRow($sql, $params = array())
+    public function getRow($sql, $params = array())
     {
         //$stmt = $this->connection()->query($sql);
         $stmt = $this->connection()->prepare($sql);
-        if ($this->Execute($stmt, $params)) {
+        if ($this->execute($stmt, $params)) {
             return $stmt->fetch();
         }
         return array();
     }
 
-    public function GetColumn($sql, $params = array())
+    public function getColumn($sql, $params = array())
     {
         $stmt = $this->connection()->query($sql);
-        if ($this->Execute($stmt, $params)) {
+        if ($this->execute($stmt, $params)) {
             return $stmt->fetchAll(PDO::FETCH_COLUMN);
         }
         return array();
     }
 
-    public function GetOne($sql, $params = array())
+    public function getOne($sql, $params = array())
     {
         $result = false;
         $stmt = $this->connection()->prepare($sql);
         //var_dump($stmt);
-        if ($this->Execute($stmt, $params)) {
+        if ($this->execute($stmt, $params)) {
             $res = $stmt->fetch();
             $result = is_array($res) ? current($res) : $res;
         }
         return $result;
     }
 
-    public function Prepare($sql)
+    public function prepare($sql)
     {
         $stmt = $this->connection()->prepare($sql);
         return $stmt;
@@ -74,7 +74,7 @@ class BaseDao
         return $this->connection()->quote($string);
     }
 
-    public function Execute($sql, $params = array())
+    public function execute($sql, $params = array())
     {
         if ($sql instanceof PDOStatement) {
             $stmt = $sql;
@@ -89,7 +89,7 @@ class BaseDao
         return false;
     }
 
-    public function Insert_ID()
+    public function insert_ID()
     {
         return $this->connection()->lastInsertId();
     }

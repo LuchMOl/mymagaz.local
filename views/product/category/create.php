@@ -7,19 +7,16 @@
     <form method = 'post' action = ''>
         <select name = 'parent'>
             <option value = 'none'>none</option>
-            <?php
-            foreach ($categories as $parent => $category) {
-                echo "<option>$parent</option>";
-                foreach ($category as $child => $SeniorChildren) {
-                    echo "<option>$parent -> $child</option>";
-                }
-            }
-            ?>
+            <?php foreach ($categories as $parent => $category) : ?>
+                <option><?= $parent ?></option>
+                <?php foreach ($category as $child => $SeniorChildren) : ?>
+                    <option><?= $parent ?> -> <?= $child ?></option>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
         </select><br><br>
         <p>Название новой категории</p>
         <input name = 'newCategory' type = 'text'></input><br><br>
         <input name = 'insertNewCategory' type = 'submit' value = 'Добавить новую категорию'><br><br>
-
     </form>
     <?= $mesage ?>
     <hr>

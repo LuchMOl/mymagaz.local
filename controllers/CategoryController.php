@@ -8,7 +8,7 @@ class CategoryController
     public function categoryService()
     {
         if ($this->categoryService === NULL) {
-            $this->categoryService = new categoryService();
+            $this->categoryService = new CategoryService();
         }
         return $this->categoryService;
     }
@@ -21,7 +21,7 @@ class CategoryController
     public function actionCreateNewCategory()
     {
         $mesage = '';
-        $categories = $this->categoryService()->GetCategories();
+        $categories = $this->categoryService()->getCategories('');
         if (isset($_POST['insertNewCategory'])) {
             if (!empty($_POST['newCategory'])) {
                 if ($_POST['parent'] === 'none') {
@@ -31,8 +31,8 @@ class CategoryController
                         $mesage = 'Запись в базу НЕ прошла.';
                     }
                 } else {
-                    $IdParentCategory = $this->categoryService()->GetIdParentCategory($_POST['parent']);
-                    if ($this->categoryService()->insertNewCategoryWithParent($_POST['newCategory'], $IdParentCategory)) {
+                    $idParentCategory = $this->categoryService()->getIdParentCategory($_POST['parent']);
+                    if ($this->categoryService()->insertNewCategoryWithParent($_POST['newCategory'], $idParentCategory)) {
                         header('Location: /category/showAllCategories/');
                     } else {
                         $mesage = 'Запись в базу НЕ прошла.';
@@ -48,11 +48,27 @@ class CategoryController
     public function actionShowAllCategories()
     {
         $mesage = '';
-        $categories = $this->categoryService()->GetCategories();
+        $categories = $this->categoryService()->getCategories('');
         if (empty($categories)) {
             $mesage = 'В базе нет ни одной категории.';
         }
         require_once '../views/product/category/showAll.php';
+    }
+
+    public function actionChoiceCategoriesForTopMenu()
+    {
+        $mesage = '';
+        $categories = $this->categoryService()->getCategories('');
+        if (isset($_POST['applySelectedCategoriesForTopMenu'])) {
+            $idTopCategories = [];
+            for ($i = 0; $i < 5; $i++) {
+                $id = $this->categoryService()->getIdCategory($_POST[$i]);
+                $idTopCategories = array_merge($idTopCategories, [$id]);
+            }
+            $this->categoryService()->ApplyChoiceCategoriesForMenu($idTopCategories);
+            header('Location: /');
+        }
+        require_once '../views/product/category/choiceCategoriesForTopMenu.php';
     }
 
     /*
@@ -82,23 +98,22 @@ class CategoryController
       }
      */
 
-    public function actionDeleteCategory()
-    {
-        $mesage = '';
+    /* public function actionDeleteCategory()
+      {
+      $mesage = '';
 
-        $categories = $this->categoryService()->GetColumnTable('name', 'categories');
-        if (isset($_GET['categoryname'])) {
-            $item = str_replace('_', ' ', $_GET['categoryname']);
-            if ($id = $this->categoryService()->GetIdIssetItem('categories', 'name', $item)) {
-                if (!$parent = $this->categoryService()->ParentsIsset($id)) {
-                    $this->categoryService()->deleteCategory($item);
-                    header('Location: /category/showAllCategories/');
-                } else {
-                    $mesage = "Нельзя удалить $item, так как он родительский для категории $parent";
-                }
-            }
-        }
-        require_once '../views/product/category/showAll.php';
-    }
-
+      $categories = $this->categoryService()->GetColumnTable('name', 'categories');
+      if (isset($_GET['categoryname'])) {
+      $item = str_replace('_', ' ', $_GET['categoryname']);
+      if ($id = $this->categoryService()->GetIdIssetItem('categories', 'name', $item)) {
+      if (!$parent = $this->categoryService()->ParentsIsset($id)) {
+      $this->categoryService()->deleteCategory($item);
+      header('Location: /category/showAllCategories/');
+      } else {
+      $mesage = "Нельзя удалить $item, так как он родительский для категории $parent";
+      }
+      }
+      }
+      require_once '../views/product/category/showAll.php';
+      } */
 }

@@ -8,47 +8,85 @@ class CategoryService
     public function categoryDao()
     {
         if ($this->categoryDao === NULL) {
-            $this->categoryDao = new categoryDao();
+            $this->categoryDao = new CategoryDao();
         }
         return $this->categoryDao;
     }
 
-    public function GetColumnTable($column, $table)
+    public function getColumnTable($column, $table)
     {
-        return $this->categoryDao()->GetColumnTable($column, $table);
+        return $this->categoryDao()->getColumnTable($column, $table);
     }
 
-    public function GetCategories()
+    public function getCategories($parents)
     {
-        $Categories = [];
-        $parents = $this->categoryDao()->GetCategories('0');
+        $categories = [];
+        if ($parents === '') {
+            $parents = $this->categoryDao()->getCategories('0');
+        } elseif ($parents === 'top') {
+            $parents = $this->categoryDao()->getCategoriesTopMenu();
+        }
         foreach ($parents as $parent) {
-            $SeniorChildren = $this->categoryDao()->GetCategories($parent['id']);
-            $SeniorCategories = [];
-            foreach ($SeniorChildren as $SeniorChild) {
-                if ($SeniorChild['id'] !== 'none') {
-                    $Children = $this->categoryDao()->GetCategories($SeniorChild['id']);
-                    $ChildCategorie = [];
-                    foreach ($Children as $Child) {
-                        $ChildCategorie = array_merge($ChildCategorie, [$Child['name']]);
+            $seniorChildren = $this->categoryDao()->getCategories($parent['id']);
+            $seniorCategories = [];
+            foreach ($seniorChildren as $seniorChild) {
+                if ($seniorChild['id'] !== 'none') {
+                    $children = $this->categoryDao()->getCategories($seniorChild['id']);
+                    $childCategorie = [];
+                    foreach ($children as $child) {
+                        $childCategorie = array_merge($childCategorie, [$child['name']]);
                     }
                 }
-                $SeniorCategories = array_merge($SeniorCategories, [$SeniorChild['name'] => $ChildCategorie]);
+                $seniorCategories = array_merge($seniorCategories, [$seniorChild['name'] => $childCategorie]);
             }
-            $Categories = array_merge($Categories, [$parent['name'] => $SeniorCategories]);
+            $categories = array_merge($categories, [$parent['name'] => $seniorCategories]);
         }
-        return $Categories;
+        return $categories;
     }
 
-    public function GetIdParentCategory($parent)
+    public function getAllCategoriesTopMenu()
+    {
+        $issetTopCategories = [];
+        for ($i = 0; $i < 5; $i++) {
+            $id = $this->categoryDao()->getCategoryTopMenu($i + 1);
+            if (!$id) {
+                $id = null;
+            }
+            $issetTopCategories = array_merge($issetTopCategories, [$id]);
+        }
+        return $issetTopCategories;
+    }
+
+    public function applyChoiceCategoriesForMenu($idTopCategories)
+    {
+        $issetTopCategories = $this->getAllCategoriesTopMenu();
+        for ($i = 0; $i < 5; $i++) {
+            if ($issetTopCategories[$i] !== $idTopCategories[$i]) {
+                $this->categoryDao()->replaceThisCategory($i + 1, $idTopCategories[$i]);
+            }
+        }
+    }
+
+    public function getIdParentCategory($parent)
     {
         if (strpbrk($parent, '->')) {
             $parent = substr($parent, strpos($parent, '->') + 3);
-            $idParentCategory = $this->categoryDao()->GetIdParentCategory($parent);
+            $idParentCategory = $this->categoryDao()->getIdParentCategory($parent);
         } else {
-            $idParentCategory = $this->categoryDao()->GetIdParentCategory($parent);
+            $idParentCategory = $this->categoryDao()->getIdParentCategory($parent);
         }
         return $idParentCategory;
+    }
+
+    public function getIdCategory($category)
+    {
+        if (strpbrk($category, '->')) {
+            $category = substr($category, strpos($category, '->') + 3);
+            $idCategory = $this->categoryDao()->getIdCategory($category);
+        } else {
+            $idCategory = $this->categoryDao()->getIdCategory($category);
+        }
+        return $idCategory;
     }
 
     public function insertNewCategory($newCategory)
@@ -61,16 +99,16 @@ class CategoryService
         return $this->categoryDao()->insertNewCategoryWithParent($newCategory, $parentId);
     }
 
-    public function ParentsIsset($childId)
+    public function parentsIsset($childId)
     {
-        return $this->categoryDao()->ParentsIsset($childId);
+        return $this->categoryDao()->parentsIsset($childId);
     }
 
     public function getCategoriesWithParent($categories)
     {
         $CategoriesWithParent = [];
         foreach ($categories as $category) {
-            $parent = $this->categoryDao()->GetParentName($category);
+            $parent = $this->categoryDao()->getParentName($category);
             $CategoriesWithParent = array_merge($CategoriesWithParent, ["$category" => "$parent"]);
         }
         return $CategoriesWithParent;

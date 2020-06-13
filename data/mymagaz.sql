@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.5.53, for Win64 (AMD64)
+-- MySQL dump 10.13  Distrib 5.5.62, for Win64 (AMD64)
 --
 -- Host: localhost    Database: mymagaz
 -- ------------------------------------------------------
--- Server version	5.5.53-log
+-- Server version	5.5.62
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -216,6 +216,30 @@ INSERT INTO `test` VALUES (1,'admin@mymagaz.local','admin','admin'),(2,'user@mym
 UNLOCK TABLES;
 
 --
+-- Table structure for table `top_menu`
+--
+
+DROP TABLE IF EXISTS `top_menu`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `top_menu` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `category_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `top_menu`
+--
+
+LOCK TABLES `top_menu` WRITE;
+/*!40000 ALTER TABLE `top_menu` DISABLE KEYS */;
+INSERT INTO `top_menu` VALUES (1,20),(2,NULL),(3,NULL),(4,2),(5,28);
+/*!40000 ALTER TABLE `top_menu` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -276,4 +300,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-06-11 21:47:56
+-- Dump completed on 2020-06-13 18:23:27

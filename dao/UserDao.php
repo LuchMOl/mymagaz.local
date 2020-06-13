@@ -15,7 +15,7 @@ class UserDao extends BaseDao
                 . "ON t.id = s.user_id "
                 . "WHERE t.email = :email AND t.password = :password";
         $params = ['email' => $email, 'password' => $password];
-        return $this->GetRow($sql, $params);
+        return $this->getRow($sql, $params);
     }
 
     public function getSIdUser($sessionId)
@@ -25,7 +25,7 @@ class UserDao extends BaseDao
                 . "ON t.id = s.user_id "
                 . "WHERE  s.session_id = :session_id";
         $params = ['session_id' => $sessionId];
-        return $this->GetRow($sql, $params);
+        return $this->getRow($sql, $params);
     }
 
     public function checkUser($email)
@@ -33,7 +33,7 @@ class UserDao extends BaseDao
         $sql = "SELECT * FROM $this->tables "
                 . "WHERE email = :email";
         $params = ['email' => $email];
-        return $this->GetOne($sql, $params);
+        return $this->getOne($sql, $params);
     }
 
     public function setUser($email, $name, $password)
@@ -41,8 +41,8 @@ class UserDao extends BaseDao
         $sql = "INSERT INTO $this->tables (email, name, password) "
                 . "VALUES (:email, :name, :password)";
         $params = ['email' => $email, 'name' => $name, 'password' => $password];
-        $this->Execute($sql, $params);
-        $id = $this->GetOne("SELECT MAX(id) AS id FROM $this->tables");
+        $this->execute($sql, $params);
+        $id = $this->getOne("SELECT MAX(id) AS id FROM $this->tables");
         $this->setSId($id);
         return $id;
     }
@@ -53,6 +53,6 @@ class UserDao extends BaseDao
                 . "VALUES (:user_id, :session_id)";
         $sId = session_id();
         $params = ['user_id' => $id, 'session_id' => $sId];
-        $this->Execute($sql, $params);
+        $this->execute($sql, $params);
     }
 }

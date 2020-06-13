@@ -3,16 +3,16 @@
 class ProductDao extends BaseDao
 {
 
-    public function GetColumnTable($column, $table)
+    public function getColumnTable($column, $table)
     {
         $sql = "SELECT $column FROM $table ORDER BY id";
-        return $this->GetColumn($sql);
+        return $this->getColumn($sql);
     }
 
     public function checkOne($table, $column, $item)
     {
         $sql = "SELECT id FROM $table WHERE $column = '$item'";
-        return $this->GetOne($sql);
+        return $this->getOne($sql);
     }
 
 }

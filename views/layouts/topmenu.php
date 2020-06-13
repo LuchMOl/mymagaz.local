@@ -1,42 +1,45 @@
-<?php
-    $categoryService = new CategoryService();
-    $categories = $categoryService->GetCategories();
-    foreach ($categories as $key => $category) {
-        echo "<ul class='main-menu menu'>";
-        if (empty($category)){
-            echo "<li class='menu-item'><a href='$key'>$key</a></li>";
-        } else {
-            if (empty(array_filter($category))){
-                echo "<li class='menu-item menu-item-has-children dropdown'><a href='$key'>$key</a>";
-                echo "<ul class='sub-menu'>";
-                    foreach ($category as $key => $value) {
-                        echo "<li class='menu-item'><a href='$key'>$key</a></li>";
-                    }
-                echo "</ul>";
-                echo "</li>";
-            } else {
-                echo "<li class='menu-item menu-item-has-children has-mega-menu'><a href='$key'>$key</a>";
-                echo "<div class='mega-menu'>";
-                echo "<div class='mega-wrap'>";
-                foreach ($category as $key => $value) {
-                        echo "<div class='mega-column'>";
-                        echo "<h4 class='mega-heading'>$key</h4>";
-                        echo "<ul class='mega-item'>";
-                            foreach ($value as $item) {
-                                echo "<li><a href='$item'>$item</a></li>";
-                            }
-                        echo "</ul>";
-                        echo "</div>";
-                }
-                echo "</div>";
-                echo "</div>";
-                echo "</li>";
-            }
 
-        }
-        echo "</ul>";
-    }
-?>
+<?php
+$categoryService = new CategoryService();
+$categories = $categoryService->getCategories('top');
+foreach ($categories as $key => $category) :
+    ?>
+    <ul class='main-menu menu'>
+        <?php if (empty($category)) : ?>
+            <li class='menu-item'><a href='<?= $key ?>'><?= $key ?></a></li>
+        <?php else : ?>
+            <?php if (!array_filter($category)) : ?>
+                <li class='menu-item menu-item-has-children dropdown'><a href='<?= $key ?>'><?= $key ?></a>
+                    <ul class='sub-menu'>
+                        <?php foreach ($category as $key => $value) : ?>
+                            <li class='menu-item'><a href='<?= $key ?>'><?= $key ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+            <?php else : ?>
+                <li class='menu-item menu-item-has-children has-mega-menu'><a href='<?= $key ?>'><?= $key ?></a>
+                    <div class='mega-menu'>
+                        <div class='mega-wrap'>
+                            <?php foreach ($category as $key => $value) : ?>
+                                <div class='mega-column'>
+                                    <h4 class='mega-heading'><?= $key ?></h4>
+                                    <ul class='mega-item'>
+                                        <?php foreach ($value as $item) : ?>
+                                            <li><a href='<?= $item ?>'><?= $item ?></a></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                </li>
+            <?php endif; ?>
+        <?php endif; ?>
+    </ul>
+<?php endforeach; ?>
+
+
+
 
 
 <!--
