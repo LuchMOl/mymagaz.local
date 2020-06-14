@@ -1,13 +1,16 @@
-
 <?php
 $categoryService = new CategoryService();
-$categories = $categoryService->getCategories('top');
-foreach ($categories as $key => $category) :
+$category = new Category();
+$categories = $categoryService->getCategories();
+foreach ($categories as $item) :
     ?>
     <ul class='main-menu menu'>
-        <?php if (empty($category)) : ?>
-            <li class='menu-item'><a href='<?= $key ?>'><?= $key ?></a></li>
-        <?php else : ?>
+
+        <li class='menu-item'><a href=''><?= $category->getName($item) ?></a></li>
+
+            ////////////////////////*
+                <?php if(false) : ?>
+
             <?php if (!array_filter($category)) : ?>
                 <li class='menu-item menu-item-has-children dropdown'><a href='<?= $key ?>'><?= $key ?></a>
                     <ul class='sub-menu'>
@@ -34,7 +37,9 @@ foreach ($categories as $key => $category) :
                     </div>
                 </li>
             <?php endif; ?>
-        <?php endif; ?>
+
+                <?php endif; ?>*///////////////////
+                
     </ul>
 <?php endforeach; ?>
 

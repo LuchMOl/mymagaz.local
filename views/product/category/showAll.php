@@ -4,18 +4,11 @@
         <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
                 <a href = '/category/'>< Управление категориями</a> |
                 Список всех категорий</p><hr>
-            <?php if (!empty($categories)) : ?>
-                <?php foreach ($categories as $superCategory => $category) : ?>
-                    <p><h3><?= $superCategory ?></h3><br>
-                    <?php foreach ($category as $parent => $SeniorChildren) : ?>
-                        <b><?= $parent ?></b><br>
-                        <?php foreach ($SeniorChildren as $Child) : ?>
-                            <i><?= $Child ?></i><br>
-                        <?php endforeach; ?>
-                    <?php endforeach; ?>
-                    </p>
-                <?php endforeach; ?>
-            <?php endif; ?>
+
+            <?php foreach ($categories as $item) : ?>
+                <p><h3><?= $this->category()->getName($item) ?></h3><br>
+            <?php endforeach; ?>
+
             <br><ul><li><a href = '/category/createNewCategory/'>Создать новую категорию</a><br><br></li></ul>
             <?= $mesage ?>
             <hr>

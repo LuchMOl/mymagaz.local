@@ -7,11 +7,8 @@
         <?php for ($i = 0; $i < 5; $i++) : ?>
             <select name = '<?= $i ?>'>
                 <option value = 'none'>none</option>
-                <?php foreach ($categories as $parent => $category) : ?>
-                    <option><?= $parent ?></option>
-                    <?php foreach ($category as $child => $SeniorChildren) : ?>
-                        <option><?= $parent ?> -> <?= $child ?></option>
-                    <?php endforeach; ?>
+                <?php foreach ($categories as $row) : ?>
+                    <option><?= $this->category()->getName($row); ?></option>
                 <?php endforeach; ?>
             </select><br><br>
         <?php endfor; ?>

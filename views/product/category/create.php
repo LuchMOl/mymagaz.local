@@ -7,11 +7,8 @@
     <form method = 'post' action = ''>
         <select name = 'parent'>
             <option value = 'none'>none</option>
-            <?php foreach ($categories as $parent => $category) : ?>
-                <option><?= $parent ?></option>
-                <?php foreach ($category as $child => $SeniorChildren) : ?>
-                    <option><?= $parent ?> -> <?= $child ?></option>
-                <?php endforeach; ?>
+            <?php foreach ($categories as $row) : ?>
+                <option><?= $this->category()->getName($row); ?></option>
             <?php endforeach; ?>
         </select><br><br>
         <p>Название новой категории</p>

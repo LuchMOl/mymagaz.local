@@ -18,7 +18,6 @@ class BaseDao
 
     public function getAll($sql, $params = array(), $fetchMode = null)
     {
-        //var_dump($sql);
         //$stmt = $this->connection()->query($sql);
         $stmt = $this->connection()->prepare($sql);
         if ($this->execute($stmt, $params)) {
