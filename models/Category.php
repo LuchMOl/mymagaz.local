@@ -6,6 +6,8 @@ class Category
     public $id;
     public $name;
     public $parentId;
+    public $topMenu;
+    public $children = [];
 
     public function setId($id)
     {
@@ -22,6 +24,11 @@ class Category
         $this->parentId = $parentId;
     }
 
+    public function setTopMenu($topMenu)
+    {
+        $this->topMenu = $topMenu;
+    }
+
     public function getId($category)
     {
         return $category->id;
@@ -35,6 +42,17 @@ class Category
     public function getParentId($category)
     {
         return $category->parentId;
+    }
+
+    public function getTopMenu($category)
+    {
+        return $category->topMenu;
+    }
+
+    public function addChild($category, $parent)
+    {
+        $parent->children [] = $category;
+        return $parent;
     }
 
 }

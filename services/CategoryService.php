@@ -17,12 +17,23 @@ class CategoryService
     {
         $categoryMapper = new CategoryMapper();
         $allCategories = $this->categoryDao()->getCategories();
-        $categories = [];
         foreach ($allCategories as $row) {
             $category = $categoryMapper->map($row);
-            $categories = array_merge($categories, [$category]);
+            $categories[$category->getId($category)] = $category;
         }
+        $this->resolveRelations($categories);
         return $categories;
+    }
+
+    public function resolveRelations($categories)
+    {
+        foreach ($categories as $key => $category) {
+            if ($category->parentId > 0) {
+                //var_dump($category);
+                $parent = $categories[$category->getParentId($category)];
+                $categories[$category->getParentId($category)]->addChild($category, $parent);
+            }
+        }
     }
 
     public function getAllCategoriesTopMenu()

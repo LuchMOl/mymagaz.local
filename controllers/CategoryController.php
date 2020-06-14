@@ -58,7 +58,8 @@ class CategoryController
     {
         $mesage = '';
         $categories = $this->categoryService()->getCategories();
-
+        var_dump($categories);
+        exit();
         require_once '../views/product/category/showAll.php';
     }
 
