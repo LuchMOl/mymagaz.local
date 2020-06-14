@@ -36,37 +36,13 @@ class CategoryService
         }
     }
 
-    public function getAllCategoriesTopMenu()
-    {
-        $issetTopCategories = [];
-        for ($i = 0; $i < 5; $i++) {
-            $id = $this->categoryDao()->getCategoryTopMenu($i + 1);
-            if (!$id) {
-                $id = null;
-            }
-            $issetTopCategories = array_merge($issetTopCategories, [$id]);
+    public function hasChildren($category){
+        if (!empty($category->children)){
+            $result = true;
+        }else{
+            $result = false;
         }
-        return $issetTopCategories;
-    }
-
-    public function applyChoiceCategoriesForMenu($idTopCategories)
-    {
-        $issetTopCategories = $this->getAllCategoriesTopMenu();
-        for ($i = 0; $i < 5; $i++) {
-            if ($issetTopCategories[$i] !== $idTopCategories[$i]) {
-                $this->categoryDao()->replaceThisCategory($i + 1, $idTopCategories[$i]);
-            }
-        }
-    }
-
-    public function insertNewCategory($newCategory)
-    {
-        return $this->categoryDao()->insertNewCategory($newCategory);
-    }
-
-    public function insertNewCategoryWithParent($newCategory, $parentId)
-    {
-        return $this->categoryDao()->insertNewCategoryWithParent($newCategory, $parentId);
+        return $result;
     }
 
 }

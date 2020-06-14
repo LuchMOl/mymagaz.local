@@ -5,29 +5,29 @@ foreach ($categories as $category) :
     ?>
     <ul class='main-menu menu'>
         <?php if ($category->getTopMenu($category) == '1') : ?>
-            <li class='menu-item'><a href=''><?= $category->getName($category) ?></a></li>
+            <?php if (!$categoryService->hasChildren($category)) : ?>
 
-            ////////////////////////*
-            <?php if (false) : ?>
+                <li class='menu-item'><a href=''><?= $category->getName($category) ?></a></li>
+            <?php elseif (empty($category->children->children)) : ?>
+                <?= exit()?>
+                <li class='menu-item menu-item-has-children dropdown'><a href=''><?= $category->getName($category) ?></a>
+                    <ul class='sub-menu'>
+                        <?php foreach ($category->children as $children) : ?>
+                            <li class='menu-item'><a href=''><?= $category->getName($children) ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </li>
+                <?php if ($categoryService->hasChildren($category->children)) : ?>
 
-                <?php if (!array_filter($category)) : ?>
-                    <li class='menu-item menu-item-has-children dropdown'><a href='<?= $key ?>'><?= $key ?></a>
-                        <ul class='sub-menu'>
-                            <?php foreach ($category as $key => $value) : ?>
-                                <li class='menu-item'><a href='<?= $key ?>'><?= $key ?></a></li>
-                            <?php endforeach; ?>
-                        </ul>
-                    </li>
-                <?php else : ?>
-                    <li class='menu-item menu-item-has-children has-mega-menu'><a href='<?= $key ?>'><?= $key ?></a>
+                    <li class='menu-item menu-item-has-children has-mega-menu'><a href=''><?= $category->getName($category) ?></a>
                         <div class='mega-menu'>
                             <div class='mega-wrap'>
-                                <?php foreach ($category as $key => $value) : ?>
+                                <?php foreach ($category->children as $children) : ?>
                                     <div class='mega-column'>
-                                        <h4 class='mega-heading'><?= $key ?></h4>
+                                        <h4 class='mega-heading'><?= $category->getName($children) ?></h4>
                                         <ul class='mega-item'>
-                                            <?php foreach ($value as $item) : ?>
-                                                <li><a href='<?= $item ?>'><?= $item ?></a></li>
+                                            <?php foreach ($children->children as $item) : ?>
+                                                <li><a href=''><?= $category->getName($item) ?></a></li>
                                             <?php endforeach; ?>
                                         </ul>
                                     </div>
@@ -36,8 +36,7 @@ foreach ($categories as $category) :
                         </div>
                     </li>
                 <?php endif; ?>
-
-            <?php endif; ?>*///////////////////
+            <?php endif; ?>
         <?php endif; ?>
     </ul>
 <?php endforeach; ?>
