@@ -27,22 +27,91 @@ class CategoryService
 
     public function resolveRelations($categories)
     {
-        foreach ($categories as $key => $category) {
+        foreach ($categories as $category) {
             if ($category->parentId > 0) {
-                //var_dump($category);
-                $parent = $categories[$category->getParentId($category)];
-                $categories[$category->getParentId($category)]->addChild($category, $parent);
+                $parent = $categories[$category->getParentId()];
+                $parent->addChild($category);
             }
         }
     }
 
-    public function hasChildren($category){
-        if (!empty($category->children)){
-            $result = true;
-        }else{
-            $result = false;
+    static function getParent($categories, $parentId)
+    {
+        foreach ($categories as $category) {
+            if ($category->id == $parentId) {
+                return $category;
+            }
         }
-        return $result;
+    }
+
+    static function getHierarchyTree($categories, $id)
+    {
+        $tree = [];
+        one :
+        foreach ($categories as $category) {
+            if ($category->id == $id) {
+                if ($category->parentId != 0) {
+                    $parent = self::getParent($categories, $category->parentId);
+                    $id = $parent->id;
+                    $tree [] = $parent->name;
+                    goto one;
+                } else {
+                    return array_reverse($tree);
+                    break;
+                }
+            }
+        }
+    }
+
+    static function getRootParent($categories, $parentId)
+    {
+        foreach ($categories as $category) {
+            if ($category->id == $parentId) {
+                if ($category->hasParent()) {
+                    return self::getRootParent($categories, $category->parentId);
+                } else {
+                    break;
+                }
+            }
+        }
+        return $category;
+    }
+
+    public function changeCategoriesTopMenu($newTopMenu)
+    {
+        if (!is_null($newTopMenu)) {
+            $this->categoryDao()->eraseCategoriesTopMenu();
+            $this->updateCategoriesTopMenu($newTopMenu);
+        } else {
+            $this->categoryDao()->eraseCategoriesTopMenu();
+        }
+    }
+
+    public function updateCategoriesTopMenu($newTopMenu)
+    {
+        if (!empty($newTopMenu)) {
+            foreach ($newTopMenu as $categoryId) {
+                $this->categoryDao()->insertCategoryTopMenu($categoryId);
+            }
+        }
+    }
+
+    public function editCategory($id, $newCategoryName, $topMenu, $parentId)
+    {
+        return $this->categoryDao()->editCategory($id, $newCategoryName, $topMenu, $parentId);
+    }
+
+    public function insertNewCategory($name, $parentId, $topMenu)
+    {
+        return $this->categoryDao()->insertNewCategory($name, $parentId, $topMenu);
+    }
+
+    public function defineParentId($post, $get)
+    {
+        $post != 'none' ? $parentId = $post : $parentId = '';
+        ($post == 'none' AND $get != '') ? $parentId = $get : '';
+        ($post == 'none' AND $get == '') ? $parentId = 0 : '';
+        return $parentId;
     }
 
 }

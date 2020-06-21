@@ -1,33 +1,33 @@
 <?php
 $categoryService = new CategoryService();
 $categories = $categoryService->getCategories();
-foreach ($categories as $category) :
-    ?>
+$count = 1;
+$menu = 5;
+?>
+<?php foreach ($categories as $category) : ?>
     <ul class='main-menu menu'>
-        <?php if ($category->getTopMenu($category) == '1') : ?>
-            <?php if (!$categoryService->hasChildren($category)) : ?>
-
-                <li class='menu-item'><a href=''><?= $category->getName($category) ?></a></li>
-            <?php elseif (empty($category->children->children)) : ?>
-                <?= exit()?>
-                <li class='menu-item menu-item-has-children dropdown'><a href=''><?= $category->getName($category) ?></a>
-                    <ul class='sub-menu'>
-                        <?php foreach ($category->children as $children) : ?>
-                            <li class='menu-item'><a href=''><?= $category->getName($children) ?></a></li>
-                        <?php endforeach; ?>
-                    </ul>
-                </li>
-                <?php if ($categoryService->hasChildren($category->children)) : ?>
-
-                    <li class='menu-item menu-item-has-children has-mega-menu'><a href=''><?= $category->getName($category) ?></a>
+        <?php if ($category->isTopMenu() AND $count <= $menu) : ?>
+            <?php if (!$category->hasChildren()) : ?>
+                <li class='menu-item'><a href='<?= $category->name; ?>'><?= $category->name; ?></a></li>
+            <?php else : ?>
+                <?php if (!$category->childrenHasChildren()) : ?>
+                    <li class='menu-item menu-item-has-children dropdown'><a href='<?= $category->name; ?>'><?= $category->name; ?></a>
+                        <ul class='sub-menu'>
+                            <?php foreach ($category->children as $children) : ?>
+                                <li class='menu-item'><a href='<?= $children->name; ?>'><?= $children->name; ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </li>
+                <?php else : ?>
+                    <li class='menu-item menu-item-has-children has-mega-menu'><a href='<?= $category->name; ?>'><?= $category->name; ?></a>
                         <div class='mega-menu'>
                             <div class='mega-wrap'>
                                 <?php foreach ($category->children as $children) : ?>
                                     <div class='mega-column'>
-                                        <h4 class='mega-heading'><?= $category->getName($children) ?></h4>
+                                        <h4 class='mega-heading'><a href='<?= $children->name; ?>'><?= $children->name; ?></a></h4>
                                         <ul class='mega-item'>
-                                            <?php foreach ($children->children as $item) : ?>
-                                                <li><a href=''><?= $category->getName($item) ?></a></li>
+                                            <?php foreach ($children->children as $child) : ?>
+                                                <li><a href='<?= $child->name; ?>'><?= $child->name; ?></a></li>
                                             <?php endforeach; ?>
                                         </ul>
                                     </div>
@@ -36,7 +36,7 @@ foreach ($categories as $category) :
                         </div>
                     </li>
                 <?php endif; ?>
-            <?php endif; ?>
+            <?php endif; $count++; ?>
         <?php endif; ?>
     </ul>
 <?php endforeach; ?>

@@ -9,11 +9,11 @@ class CategoryDao extends BaseDao
         return $this->getAll($sql);
     }
 
-    public function insertNewCategory($newCategory)
+    public function insertNewCategory($name, $parentId, $topMenu)
     {
-        $sql = "INSERT INTO categories (name)"
-                . "VALUES (:category)";
-        $params = ['category' => $newCategory];
+        $sql = "INSERT INTO categories (name, parent_id, top_menu)"
+                . "VALUES (:category, :parent_id, :top_menu)";
+        $params = ['category' => $name, 'parent_id' => $parentId, 'top_menu' => $topMenu];
         return $this->execute($sql, $params);
     }
 
@@ -45,18 +45,30 @@ class CategoryDao extends BaseDao
         return $result;
     }
 
-    public function insertCategoriesTopMenu($id)
+    public function insertCategoryTopMenu($id)
     {
-        $sql = "INSERT INTO top_menu (category_id)"
-                . "VALUES (:category_id)";
-        $params = ['category_id' => $id];
+        $sql = "UPDATE categories SET top_menu = 1 WHERE id = :id";
+        $params = ['id' => $id];
         return $this->execute($sql, $params);
+    }
+
+    public function eraseCategoriesTopMenu()
+    {
+        $sql = "UPDATE categories SET top_menu = 0";
+        return $this->execute($sql);
     }
 
     public function replaceThisCategory($id, $category_id)
     {
         $sql = 'UPDATE top_menu SET category_id = :category_id WHERE id = :id';
         $params = ['id' => $id, 'category_id' => $category_id];
+        return $this->execute($sql, $params);
+    }
+
+    public function editCategory($id, $newCategoryName, $topMenu, $parentId)
+    {
+        $sql = 'UPDATE categories SET name = :newCategoryName, top_menu = :top_menu, parent_id = :parent_id WHERE id = :id';
+        $params = ['id' => $id, 'newCategoryName' => $newCategoryName, 'top_menu' => $topMenu, 'parent_id' => $parentId];
         return $this->execute($sql, $params);
     }
 

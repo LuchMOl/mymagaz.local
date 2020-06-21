@@ -10,9 +10,7 @@ function autoLoader($className)
         require_once '/../dao/' . $className . '.php';
     } elseif (strstr($className, 'Mapper')) {
         require_once '/../dao/mapper/' . $className . '.php';
-    } elseif ($className === 'User') {
-        require_once '/../models/' . $className . '.php';
-    } elseif ($className === 'Category') {
+    } elseif ($className === 'User' OR 'Category') {
         require_once '/../models/' . $className . '.php';
     }
 }

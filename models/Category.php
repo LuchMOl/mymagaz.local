@@ -29,32 +29,72 @@ class Category
         $this->topMenu = $topMenu;
     }
 
-    public function getId($category)
+    public function getId()
     {
-        return $category->id;
+        return $this->id;
     }
 
-    public function getName($category)
+    public function getName()
     {
-        return $category->name;
+        return $this->name;
     }
 
-    public function getParentId($category)
+    public function getParentId()
     {
-        return $category->parentId;
+        return $this->parentId;
     }
 
-    public function getTopMenu($category)
+    public function getTopMenu()
     {
-        return $category->topMenu;
+        return $this->topMenu;
     }
 
-    public function addChild($category, $parent)
+    public function addChild($category)
     {
-        $parent->children [] = $category;
-        return $parent;
+        $this->children [] = $category;
+    }
+
+    public function hasParent()
+    {
+        $this->parentId == 0 ? $res = false : $res = true;
+        return $res;
+    }
+
+    public function hasChildren()
+    {
+        empty($this->children) ? $res = false : $res = true;
+        return $res;
+    }
+
+    public function childrenHasChildren()
+    {
+        foreach ($this->children as $children) {
+            if (!empty($children->children)) {
+                return true;
+            }
+        }
+    }
+
+    public function isTopMenu()
+    {
+        if ($this->topMenu == 1) {
+            return true;
+        }
+    }
+
+    public function isRoot()
+    {
+        if ($this->parentId == 0) {
+            return true;
+        }
+    }
+
+    public function isChanged($newCategoryName, $checkbox, $parentId)
+    {
+        $parentId == 'none' OR $parentId == $this->parentId ? $parentId = false : $parentId = true ;
+        $this->name == $newCategoryName ? $name = false : $name = true;
+        $this->topMenu == $checkbox ? $topMenu = false : $topMenu = true;
+        return $name OR $topMenu OR $parentId ? true : false;
     }
 
 }
-
-?>
