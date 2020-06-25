@@ -4,29 +4,33 @@
     <div class='hm-foot-menu'>
         <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
                 <a href = '/category/'>< Управление категориями</a> |
-                Редактировать категорию</p><hr>
+                <a href = '/category/showAll/'>< Список всех категорий</a> |
+                Редактирование категории</p><hr>
 
             <?php ?>
             <?php if (isset($_GET['editId'])) : ?>
                 <?php foreach ($categories as $category) : ?>
                     <?php if ($category->id === $_GET['editId']) : ?>
                         <h3>Редактирование категории:</h3><br>
-                        <h4>
-                            <?php
-                            $tree = categoryService::getHierarchyTree($categories, $_GET['editId']);
-                            foreach ($tree as $branch) {
-                                echo $branch . ' -> ';
-                            }
-                            ?></h4>
-                        <h3><?= $category->name ?></h3><br>
+
+                        <a href ='/category/showAll/'>Root</a> ->
+                        <?php $tree = categoryService::getHierarchyTree($categories, $_GET['editId']); ?>
+                        <?php foreach ($tree as $id => $branch) : ?>
+                            <a href ='/category/showAll/?showId=<?= $id; ?>'><?= $branch; ?></a> ->
+                        <?php endforeach; ?>
+                        <a href ='/category/showAll/?showId=<?= $category->id; ?>'>
+                            <?= $category->name; ?>
+                        </a>
+                        <br><br>
+
                     <?php endif; ?>
                 <?php endforeach; ?>
             <?php endif; ?>
-
+            <p>Изменить родительскую категорию на:</p>
             <form method = 'post' action = ''>
                 <?php if (!isset($_GET['parentid'])) : ?>
                     <select name = 'parent'>
-                        <option value = 'none'>none</option>
+                        <option value = 'none'>Не менять</option>
                         <option value = '0'>Root</option>
                         <?php foreach ($categories as $category) : ?>
                             <?php if ($category->isRoot()) : ?>
@@ -35,14 +39,13 @@
                         <?php endforeach; ?>
                     </select>
                     <input name = 'submitToChildren' type = 'submit' value = 'To Children'>
-                    <!--добавить кнопку возврата/сброса в корень, при выборе в селект нового родителя-->
                 <?php else : ?>
                     <?php foreach ($categories as $category) : ?>
                         <?php if ($category->id == $_GET['parentid']) : ?>
                             <?= $category->name; ?> ->
                             <select name = 'parent'>
                                 <option value = 'none'>none</option>
-                                
+
                                 <?php if ($category->hasChildren()) : ?>
                                     <?php foreach ($category->children as $child) : ?>
                                         <option value = '<?= $child->id; ?>'><?= $child->name; ?></option>
@@ -61,13 +64,11 @@
                 <?php if (isset($_GET['editId'])) : ?>
                     <?php foreach ($categories as $category) : ?>
                         <?php if ($category->id === $_GET['editId']) : ?>
-                            <p>Название новой категории</p>
-                            <input name = 'newCategoryName' type = 'text' value = '<?= $category->name; ?>'></input><br><br>
-                            <?php if ($category->topMenu) : ?>
-                                <input name = 'checkTopMenu' type="checkbox" checked> Применить для главного меню</input><br><br>
-                            <?php else : ?>
-                                <input name = 'checkTopMenu' type="checkbox"> Применить для главного меню</input><br><br>
-                            <?php endif; ?>
+                            <p>Новое название категории</p>
+                            <input name = 'newName' type = 'text' value = '<?= $category->name; ?>'></input><br><br>
+                            <?php $category->topMenu ? $checked = 'checked' : $checked = ''; ?>
+                            <input name = 'checkTopMenu' type="checkbox" <?= $checked ?>> Применить для главного меню</input><br><br>
+
                             <input name = 'submitEdit' type = 'submit' value = 'Применить изменение в категории'><br><br>
                         <?php endif; ?>
                     <?php endforeach; ?>

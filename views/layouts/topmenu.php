@@ -1,42 +1,64 @@
 <?php
 $categoryService = new CategoryService();
-$categories = $categoryService->getCategories();
-$count = 1;
+$categories = $categoryService->getActivityCategories();
+$countMenu = 1;
 $menu = 5;
+$subMenu = 7;
+$megaColumn = 4;
+$megaItem = 5;
 ?>
+<?php $categories = CategoryService::getSortRank($categories, ''); ?>
 <?php foreach ($categories as $category) : ?>
     <ul class='main-menu menu'>
-        <?php if ($category->isTopMenu() AND $count <= $menu) : ?>
+        <?php if ($category->isTopMenu() AND $countMenu <= $menu) : ?>
             <?php if (!$category->hasChildren()) : ?>
-                <li class='menu-item'><a href='<?= $category->name; ?>'><?= $category->name; ?></a></li>
+                <li class='menu-item'><a href='<?= $category->name; ?>/'><?= $category->name; ?></a></li>
             <?php else : ?>
                 <?php if (!$category->childrenHasChildren()) : ?>
-                    <li class='menu-item menu-item-has-children dropdown'><a href='<?= $category->name; ?>'><?= $category->name; ?></a>
+                    <li class='menu-item menu-item-has-children dropdown'><a href='<?= $category->name; ?>/'><?= $category->name; ?></a>
                         <ul class='sub-menu'>
-                            <?php foreach ($category->children as $children) : ?>
-                                <li class='menu-item'><a href='<?= $children->name; ?>'><?= $children->name; ?></a></li>
+                            <?php $childrens = CategoryService::getSortRank($category->children, ''); ?>
+                            <?php $countSubMenu = 1; ?>
+                            <?php foreach ($childrens as $children) : ?>
+                                <?php if ($countSubMenu <= $subMenu) : ?>
+                                    <li class='menu-item'><a href='<?= $category->name; ?>/<?= $children->name; ?>/'><?= $children->name; ?></a></li>
+                                <?php endif; ?>
+                                <?php $countSubMenu++; ?>
                             <?php endforeach; ?>
                         </ul>
                     </li>
                 <?php else : ?>
-                    <li class='menu-item menu-item-has-children has-mega-menu'><a href='<?= $category->name; ?>'><?= $category->name; ?></a>
+                    <li class='menu-item menu-item-has-children has-mega-menu'><a href='<?= $category->name; ?>/'><?= $category->name; ?></a>
                         <div class='mega-menu'>
                             <div class='mega-wrap'>
-                                <?php foreach ($category->children as $children) : ?>
-                                    <div class='mega-column'>
-                                        <h4 class='mega-heading'><a href='<?= $children->name; ?>'><?= $children->name; ?></a></h4>
-                                        <ul class='mega-item'>
-                                            <?php foreach ($children->children as $child) : ?>
-                                                <li><a href='<?= $child->name; ?>'><?= $child->name; ?></a></li>
-                                            <?php endforeach; ?>
-                                        </ul>
-                                    </div>
+                                <?php $childrens = CategoryService::getSortRank($category->children, ''); ?>
+                                <?php $countMegaColumn = 1; ?>
+                                <?php foreach ($childrens as $children) : ?>
+                                    <?php if ($countMegaColumn <= $megaColumn) : ?>
+                                        <div class='mega-column'>
+                                            <h4 class='mega-heading'><a href='<?= $category->name; ?>/<?= $children->name; ?>/'><?= $children->name; ?></a></h4>
+                                            <ul class='mega-item'>
+                                                <?php $childr = CategoryService::getSortABC($children->children); ?>
+                                                <?php $countMegaItem = 1; ?>
+                                                <?php foreach ($childr as $child) : ?>
+                                                    <?php if ($countMegaItem <= $megaItem) : ?>
+                                                        <li><a href='<?= $category->name; ?>/<?= $children->name; ?>/<?= $child->name; ?>/'><?= $child->name; ?></a></li>
+                                                    <?php endif; ?>
+                                                    <?php $countMegaItem++; ?>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php $countMegaColumn++; ?>
                                 <?php endforeach; ?>
                             </div>
                         </div>
                     </li>
                 <?php endif; ?>
-            <?php endif; $count++; ?>
+            <?php
+            endif;
+            $countMenu++;
+            ?>
         <?php endif; ?>
     </ul>
 <?php endforeach; ?>

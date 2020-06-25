@@ -23,11 +23,16 @@ class TasksController
     public function actionView($third)
     {
         $fileName = "../views/tasks/$third";
-        if (!file_exists($fileName)) {
-            StaticService::return404();
+
+        if (!$third == '') {
+            if (!file_exists($fileName)) {
+                StaticService::return404();
+            } else {
+                $content = file($fileName);
+                require_once '/../views/tasks/view.php';
+            }
         } else {
-            $content = file($fileName);
-            require_once '/../views/tasks/view.php';
+            header("Location: /tasks/");
         }
     }
 
@@ -35,7 +40,6 @@ class TasksController
     {
         $this->newTaskNumber = max(preg_replace("/[^0-9]/", '', scandir('../views/tasks'))) + 1;
         $this->newFileName = 'task' . $this->newTaskNumber . '.txt';
-
         if (isset($_POST["submit"])) {
             if (!empty($_POST["text"])) {
                 $fp = fopen("../views/tasks/$this->newFileName", "w");
@@ -44,6 +48,7 @@ class TasksController
             }
             header("Location: http://mymagaz.local/tasks/view/$this->newFileName");
         }
+        require_once '/../views/tasks/create.php';
     }
 
     public function actionEdit($third)

@@ -2,10 +2,10 @@
 
 <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
         <a href = '/category/'>< Управление категориями</a> |
-        <a href = '/category/createNewCategory/'>Создать новую категорию</a></p><hr>
-    <p>Родительская категория</p>
+        <a href = '/category/createNew/'>Создать новую категорию</a></p><hr>
+    <p>Выбрать родительскую категорию</p>
     <form method = 'post' action = ''>
-        <?php if (!isset($_GET['id'])) : ?>
+        <?php if (!isset($_GET['parentid'])) : ?>
             <select name = 'parent'>
                 <option value = 'none'>none</option>
                 <?php foreach ($categories as $category) : ?>
@@ -14,10 +14,10 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
             </select>
-            <input name = 'toChildren' type = 'submit' value = 'To Children'>
+            <input name = 'submitToChildren' type = 'submit' value = 'To Children'>
         <?php else : ?>
             <?php foreach ($categories as $category) : ?>
-                <?php if ($category->getId() == $_GET['id']) : ?>
+                <?php if ($category->id == $_GET['parentid']) : ?>
                     <?= $category->name; ?> ->
                     <select name = 'parent'>
                         <option value = 'none'>none</option>
@@ -32,15 +32,15 @@
                 <?php endif; ?>
             <?php endforeach; ?>
 
-            <input name = 'toChildren' type = 'submit' value = 'To Children'>
+            <input name = 'submitToChildren' type = 'submit' value = 'To Children'>
             <input name = 'submitToRoot' type = 'submit' value = 'To Root'>
         <?php endif; ?>
         <br><br>
         <p>Название новой категории</p>
-        <input name = 'newCategory' type = 'text'></input><br><br>
+        <input name = 'newName' type = 'text'></input><br><br>
 
         <input name = 'checkTopMenu' type="checkbox"> Применить для главного меню</input><br><br>
-        <input name = 'insertNewCategory' type = 'submit' value = 'Добавить новую категорию'><br><br>
+        <input name = 'submitInsertNew' type = 'submit' value = 'Добавить новую категорию'><br><br>
     </form>
     <?php echo $mesage; ?>
     <hr>

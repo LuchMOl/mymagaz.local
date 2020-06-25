@@ -29,6 +29,16 @@ class Category
         $this->topMenu = $topMenu;
     }
 
+    public function setRank($rank)
+    {
+        $this->rank = $rank;
+    }
+
+    public function setActivity($activity)
+    {
+        $this->activity = $activity;
+    }
+
     public function getId()
     {
         return $this->id;
@@ -89,12 +99,26 @@ class Category
         }
     }
 
+    public function isActivity()
+    {
+        if ($this->activity == 1) {
+            return true;
+        }
+    }
+
     public function isChanged($newCategoryName, $checkbox, $parentId)
     {
-        $parentId == 'none' OR $parentId == $this->parentId ? $parentId = false : $parentId = true ;
+        $parentId == 'none' OR $parentId == $this->parentId ? $parentId = false : $parentId = true;
         $this->name == $newCategoryName ? $name = false : $name = true;
         $this->topMenu == $checkbox ? $topMenu = false : $topMenu = true;
         return $name OR $topMenu OR $parentId ? true : false;
+    }
+
+    public function isChangedRank($rank, $activity)
+    {
+        $this->rank == $rank ? $rank = false : $rank = true;
+        $this->activity == $activity ? $activity = false : $activity = true;
+        return $rank OR $activity ? true : false;
     }
 
 }
