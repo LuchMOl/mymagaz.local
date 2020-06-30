@@ -10,13 +10,13 @@ class TasksController
 
     public function actionIndex()
     {
-        $taskList = scandir('../views/tasks');
+        $taskList = scandir('../views/tasks/');
         $exclusion = ['view.php', 'index.php', 'create.php', 'edit.php'];
         $notFile = array_filter($taskList, 'file_exists');
         $taskList = array_diff($taskList, $exclusion, $notFile);
         natcasesort($taskList);
         $taskList = array_reverse($taskList);
-
+        
         require_once '../views/tasks/index.php';
     }
 
@@ -24,7 +24,7 @@ class TasksController
     {
         $fileName = "../views/tasks/$third";
 
-        if (!$third == '') {
+        if ($third !== '') {
             if (!file_exists($fileName)) {
                 StaticService::return404();
             } else {

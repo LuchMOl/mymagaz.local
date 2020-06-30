@@ -3,6 +3,18 @@
 class CategoryDao extends BaseDao
 {
 
+    public function getRoots()
+    {
+        $sql = "SELECT * FROM categories WHERE parent_id = '0' ORDER BY rank DESC, name";
+        return $this->getAll($sql);
+    }
+
+    public function getChildren($id)
+    {
+        $sql = "SELECT * FROM categories WHERE parent_id = $id ORDER BY rank DESC, name";
+        return $this->getAll($sql);
+    }
+
     public function getCategories()
     {
         $sql = "SELECT * FROM categories";
@@ -15,11 +27,11 @@ class CategoryDao extends BaseDao
         return $this->getAll($sql);
     }
 
-    public function insertNew($name, $parentId, $topMenu)
+    public function insertNew($name, $parentId, $rank, $topMenu, $activity)
     {
-        $sql = "INSERT INTO categories (name, parent_id, top_menu)"
-                . "VALUES (:category, :parent_id, :top_menu)";
-        $params = ['category' => $name, 'parent_id' => $parentId, 'top_menu' => $topMenu];
+        $sql = "INSERT INTO categories (name, parent_id, rank, top_menu, activity)"
+                . "VALUES (:category, :parent_id, :rank, :top_menu, :activity)";
+        $params = ['category' => $name, 'parent_id' => $parentId, 'rank' => $rank, 'top_menu' => $topMenu, 'activity' => $activity];
         return $this->execute($sql, $params);
     }
 
@@ -31,7 +43,7 @@ class CategoryDao extends BaseDao
 
     public function getTopMenu()
     {
-        $sql = "SELECT id, name, parent_id FROM categories WHERE id IN (SELECT category_id FROM top_menu)";
+        $sql = "SELECT * FROM categories WHERE top_menu = 1";
         $result = $this->getAll($sql);
         return $result;
     }
@@ -42,24 +54,10 @@ class CategoryDao extends BaseDao
         return $this->execute($sql);
     }
 
-    public function replaceThisCategory($id, $category_id)
+    public function edit($id, $newName, $parentId, $rank, $topMenu, $activity)
     {
-        $sql = 'UPDATE top_menu SET category_id = :category_id WHERE id = :id';
-        $params = ['id' => $id, 'category_id' => $category_id];
-        return $this->execute($sql, $params);
-    }
-
-    public function edit($id, $newName, $topMenu, $parentId)
-    {
-        $sql = 'UPDATE categories SET name = :newName, top_menu = :top_menu, parent_id = :parent_id WHERE id = :id';
-        $params = ['id' => $id, 'newName' => $newName, 'top_menu' => $topMenu, 'parent_id' => $parentId];
-        return $this->execute($sql, $params);
-    }
-
-    public function editRank($id, $newRank, $activity)
-    {
-        $sql = 'UPDATE categories SET rank = :rank, activity = :activity WHERE id = :id';
-        $params = ['id' => $id, 'rank' => $newRank, 'activity' => $activity];
+        $sql = 'UPDATE categories SET name = :newName, parent_id = :parentId, rank = :rank, top_menu = :topMenu, activity = :activity WHERE id = :id';
+        $params = ['id' => $id, 'newName' => $newName, 'parentId' => $parentId, 'rank' => $rank, 'topMenu' => $topMenu, 'activity' => $activity];
         return $this->execute($sql, $params);
     }
 

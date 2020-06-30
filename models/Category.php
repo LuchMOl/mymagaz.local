@@ -106,19 +106,16 @@ class Category
         }
     }
 
-    public function isChanged($newCategoryName, $checkbox, $parentId)
+    public function isChanged($newCategoryName, $parentId, $rank, $checkTopMenu, $checkActivity)
     {
-        $parentId == 'none' OR $parentId == $this->parentId ? $parentId = false : $parentId = true;
-        $this->name == $newCategoryName ? $name = false : $name = true;
-        $this->topMenu == $checkbox ? $topMenu = false : $topMenu = true;
-        return $name OR $topMenu OR $parentId ? true : false;
-    }
+        $name = $this->name == $newCategoryName ? false : true;
+        $parentId = $parentId == 'root' ? '0' : $parentId;
+        $parentId = $parentId == $this->parentId ? false : true;
+        $rank = $this->rank == $rank ? false : true;
+        $checkTopMenu = $this->topMenu == $checkTopMenu ? false : true;
+        $checkActivity = $this->activity == $checkActivity ? false : true;
 
-    public function isChangedRank($rank, $activity)
-    {
-        $this->rank == $rank ? $rank = false : $rank = true;
-        $this->activity == $activity ? $activity = false : $activity = true;
-        return $rank OR $activity ? true : false;
+        return $name OR $parentId OR $rank OR $checkTopMenu OR $checkActivity ? true : false;
     }
 
 }

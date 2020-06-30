@@ -31,110 +31,32 @@ class CategoryController
     {
         $mesage = '';
         $categories = $this->categoryService()->getCategories();
-        if (isset($_POST['submitToChildren'])) {
-            if ($_POST['parent'] !== 'none') {
-                header("Location: /category/createNew/?parentid=" . $_POST['parent']);
-            }
-        }
-        if (isset($_POST['submitToRoot'])) {
-            header('Location: /category/createNew/');
-        }
+        $curentCategory = $this->categoryService()->getEmptyCategory();
+        $title = 'Создать категорию';
 
-        if (isset($_POST['submitInsertNew'])) {
+        if (isset($_POST['submitForm'])) {
             if (!empty($_POST['newName'])) {
-                $get = isset($_GET['parentid']) ? $_GET['parentid'] : '';
-                $parentId = $this->categoryService()->defineParentId($_POST['parent'], $get);
+                $parentId = $_POST['parent'] != 'root' ? $_POST['parent'] : 0;
+                $rank = !empty($_POST['rank']) ? $_POST['rank'] : 0;
                 $topMenu = isset($_POST['checkTopMenu']) ? 1 : 0;
-                $write = $this->categoryService()->insertNew($_POST['newName'], $parentId, $topMenu);
-                $parentId == 0 ? $id = 'all' : $id = $parentId;
-                $write ? header("Location: /category/showAll/?showId=" . $id) : $mesage = 'Запись в базу НЕ прошла.';
+                $activity = isset($_POST['checkActivity']) ? 1 : 0;
+                $write = $this->categoryService()->insertNew($_POST['newName'], $parentId, $rank, $topMenu, $activity);
+                $write ? header("Location: /category/showAll/") : $mesage = 'Запись в базу НЕ прошла.';
             } else {
-                $mesage = 'Не указана новая категория.';
+                $mesage = 'Не заполнено обязательное поле.';
             }
         }
-        require_once '../views/product/category/create.php';
-    }
-
-    public function actionRanging()
-    {
-        $mesage = '';
-        $categories = $this->categoryService()->getCategories();
-        $action = 'Ranging';
-
-        if (isset($_POST['submitToShow'])) {
-            if (isset($_GET['showId'])) {
-                $third = '?showId=' . $_GET['showId'];
-            } else {
-                $third = '';
-            }
-            header("Location: /category/showAll/$third");
-        }
-
-        if (isset($_POST['submitApply'])) {
-            if (isset($_GET['showId']) AND $_GET['showId'] != 'topMenu') {
-                foreach ($categories as $category) {
-                    if ($category->id == $_GET['showId']) {
-                        foreach ($category->children as $children) {
-                            isset($_POST["checkActivity$children->id"]) ? $checkActivity = '1' : $checkActivity = '0';
-                            if ($children->isChangedRank($_POST[$children->id], $checkActivity)) {
-                                $edit = $this->categoryService()->editRank($children->id, $_POST[$children->id], $checkActivity);
-                                $category->parentId == '0' ? $show = "?showId=$category->id" : $show = "?showId=$category->id";
-                                $edit ? header("Location: /category/showAll/$show") : $mesage = 'Не записало в базу';
-                            } else {
-                                $mesage = 'Нечего менять.';
-                            }
-                        }
-                    }
-                }
-            } elseif (isset($_GET['showId']) AND $_GET['showId'] == 'topMenu') {
-                foreach ($categories as $category) {
-                    if ($category->isTopMenu()) {
-
-                        isset($_POST["checkActivity$category->id"]) ? $checkActivity = '1' : $checkActivity = '0';
-                        if ($category->isChangedRank($_POST[$category->id], $checkActivity)) {
-                            $edit = $this->categoryService()->editRank($category->id, $_POST[$category->id], $checkActivity);
-                            $edit ? header("Location: /category/showAll/?showId=topMenu") : $mesage = 'Не записало в базу';
-                        } else {
-                            $mesage = 'Нечего менять.';
-                        }
-                    }
-                }
-            } else {
-                foreach ($categories as $category) {
-                    if ($category->isRoot()) {
-                        isset($_POST["checkActivity$category->id"]) ? $checkActivity = '1' : $checkActivity = '0';
-                        if ($category->isChangedRank($_POST[$category->id], $checkActivity)) {
-                            $edit = $this->categoryService()->editRank($category->id, $_POST[$category->id], $checkActivity);
-                            $edit ? header("Location: /category/showAll/") : $mesage = 'Не записало в базу';
-                        } else {
-                            $mesage = 'Нечего менять.';
-                        }
-                    }
-                }
-            }
-        }
-
-        require_once '../views/product/category/showAll.php';
+        require_once '../views/product/category/edit-create.php';
     }
 
     public function actionShowAll()
     {
         $mesage = '';
         $action = 'ShowAll';
-        $categories = $this->categoryService()->getCategories();
-        if (isset($_POST['submitAreYouSure'])) {
-            $this->categoryService()->eraseTopMenu() ? header("Location: /category/showAll/") : $mesage = 'Не очистило.';
+        $categories = $this->categoryService()->getRoots();
+        if (isset($_POST['aply'])) {
+            $this->categoryService()->eraseTopMenu();
         }
-
-        if (isset($_POST['submitToRanging'])) {
-            if (isset($_GET['showId'])) {
-                $third = '?showId=' . $_GET['showId'];
-            } else {
-                $third = '';
-            }
-            header("Location: /category/ranging/$third");
-        }
-
         require_once '../views/product/category/showAll.php';
     }
 
@@ -142,40 +64,26 @@ class CategoryController
     {
         $mesage = '';
         $categories = $this->categoryService()->getCategories();
-        if (isset($_POST['submitToChildren'])) {
-            if ($_POST['parent'] !== 'none' AND $_POST['parent'] !== '0') {
-                header('Location: /category/edit/?editId=' . $_GET['editId'] . '&parentid=' . $_POST['parent']);
-            }
-        }
-        if (isset($_POST['submitToRoot'])) {
-            header('Location: /category/edit/?editId=' . $_GET['editId']);
-        }
+        $curentCategory = $this->categoryService()->getCategoryById($categories, $_GET['editId']);
+        $title = "Редактировать категорию -$curentCategory->name-";
 
-        if (isset($_POST['submitEdit'])) {
-            foreach ($categories as $category) {
-                if ($category->id == $_GET['editId']) {
-                    break;
+        if (isset($_POST['submitForm'])) {
+            if (!empty($_POST['newName'])) {
+                $parentId = $this->categoryService()->defineParentId($_POST['parent'], $curentCategory->parentId);
+                $rank = !empty($_POST['rank']) ? $_POST['rank'] : 0;
+                $checkTopMenu = isset($_POST['checkTopMenu']) ? 1 : 0;
+                $checkActivity = isset($_POST['checkActivity']) ? 1 : 0;
+                if ($curentCategory->isChanged($_POST['newName'], $parentId, $rank, $checkTopMenu, $checkActivity)) {
+                    $edit = $this->categoryService()->edit($curentCategory->id, $_POST['newName'], $parentId, $rank, $checkTopMenu, $checkActivity);
+                    $edit ? header("Location: /category/showAll/") : $mesage = 'Не записало в базу';
+                } else {
+                    $mesage = 'Нечего менять.';
                 }
-            }
-            isset($_POST['checkTopMenu']) ? $checkTopMenu = '1' : $checkTopMenu = '0';
-
-            if (isset($_GET['parentid']) AND $_POST['parent'] == 'none') {
-                $parentId = $_GET['parentid'];
-            } elseif ($_POST['parent'] != 'none') {
-                $parentId = $_POST['parent'];
             } else {
-                $parentId = $category->parentId;
-            }
-
-            if ($category->isChanged($_POST['newName'], $checkTopMenu, $parentId)) {
-                $edit = $this->categoryService()->edit($category->id, $_POST['newName'], $checkTopMenu, $parentId);
-                $category->parentId == '0' ? $show = '' : $show = "?showId=$category->parentId";
-                $edit ? header("Location: /category/showAll/$show") : $mesage = 'Не записало в базу';
-            } else {
-                $mesage = 'Нечего менять.';
+                $mesage = 'Не заполнено обязательное поле.';
             }
         }
-        require_once '../views/product/category/edit.php';
+        require_once '../views/product/category/edit-create.php';
     }
 
     /* public function actionDeleteCategory()
