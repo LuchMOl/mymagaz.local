@@ -4,6 +4,8 @@
         <div class='container'><br>
             <p><a href = '/product/'>< Работа с товарами</a> |
                 Управление категориями</p><hr>
+
+            <h2>Категории</h2><br>
             <ul>
                 <li><a href = '/category/createNew/'>Создать новую категорию</a><br><br></li>
                 <li><a href = '/category/showAll/'>Список всех категорий</a><br><br></li>

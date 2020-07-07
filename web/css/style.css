@@ -816,6 +816,13 @@ iframe {
   .ps-post--detail .ps-post__content p strong em {
     color: #767779; }
 
+  .codetext{
+     border: 1px inset;
+    font-family: monospace;
+    padding: 5px !important;
+    background:#E2F4FF;
+} 
+
 /*2. ELEMENTS*/
 @media (min-width: 320px) {
   .ps-container {

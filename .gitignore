@@ -34,5 +34,6 @@ $RECYCLE.BIN/
 #игнорировать все файлы в каталоге /web/nbproject/private/
 /web/nbproject/private/
 /web/images/products/
+/web/images/tasks
 /skytheme-ecommerce-html5-template.zip
 /skytheme-ecommerce-html5-template

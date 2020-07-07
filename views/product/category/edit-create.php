@@ -7,32 +7,29 @@
 
     <h2><?= $title; ?></h2><br>
     <?php if (isset($_GET['editId'])) : ?>
-        Root ->
         <?php $tree = $categoryService->getHierarchyTree($categories, $_GET['editId'], ''); ?>
+        <?php //var_dump($tree); exit();?>
         <?php foreach ($tree as $branch) : ?>
-            <?= $branch; ?> ->
+            <a href ='/category/edit/?editId=<?= $branch->id ?>' target="_blank"><?= $branch->name; ?></a> ->
         <?php endforeach; ?>
         <?= $curentCategory->name ?><br><br>
+    <?php else : ?>
+        <?php $curentCategory->activity = '1'; ?>
     <?php endif; ?>
     <form method = 'post' action = ''>
         <p>Выбрать родительскую категорию</p>
 
         <select name = 'parent'>
-            <?= isset($_GET['editId']) ? "<option value = 'doNotChange'>- не менять -</option>" : ''; ?>
-            <option value = 'root'>- root -</option>
-            <?= $categoryService->selectAll($categories); ?>
+            <option value = '0'>- нет -</option>
+            <?= $categoryService->selectAll(); ?>
         </select>
         <br><br>
 
-        <p></p>
         <input name = 'newName' type = 'text' value = "<?= $curentCategory->name ?>"> Название категории</input><br><br>
 
-        <p></p>
-        <input name = 'rank' type = 'text' value = "<?= $curentCategory->rank ?>"> Ранг</input><br><br>
-        <?php $checked = $curentCategory->topMenu ? 'checked' : ''; ?>
-        <input name = 'checkTopMenu' type="checkbox" <?= $checked ?>> Применить для главного меню</input><br><br>
-        <?php $checked = $curentCategory->activity ? 'checked' : ''; ?>
-        <input name = 'checkActivity' type="checkbox" <?= $checked ?>> Активность</input><br><br>
+        <input name = 'rank' type = 'number' value = "<?= $curentCategory->rank ?>" min="0" max="250"> Ранг</input><br><br>
+        <label><input name = 'checkTopMenu' type="checkbox" <?= $curentCategory->topMenu ? 'checked' : ''; ?>> Применить для главного меню</label><br><br>
+        <label><input name = 'checkActivity' type="checkbox" <?= $curentCategory->activity ? 'checked' : ''; ?>> Активность</label><br><br>
         <input name = 'submitForm' type = 'submit' value = 'Подтвердить'><br><br>
 
     </form>

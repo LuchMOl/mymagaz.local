@@ -82,7 +82,6 @@ class BaseDao
         }
         $this->_lastStatement = $stmt;
         if ($stmt) {
-
             return $stmt->execute($params);
         }
         return false;
@@ -94,5 +93,3 @@ class BaseDao
     }
 
 }
-
-?>

@@ -9,6 +9,12 @@ class CategoryDao extends BaseDao
         return $this->getAll($sql);
     }
 
+    public function getParentId($childrenId)
+    {
+        $sql = "SELECT parent_id FROM categories WHERE id = $childrenId";
+        return $this->getOne($sql);
+    }
+
     public function getChildren($id)
     {
         $sql = "SELECT * FROM categories WHERE parent_id = $id ORDER BY rank DESC, name";

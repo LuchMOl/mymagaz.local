@@ -108,14 +108,15 @@ class Category
 
     public function isChanged($newCategoryName, $parentId, $rank, $checkTopMenu, $checkActivity)
     {
+        //var_dump($newCategoryName, $parentId, $rank, $checkTopMenu, $checkActivity);
         $name = $this->name == $newCategoryName ? false : true;
-        $parentId = $parentId == 'root' ? '0' : $parentId;
         $parentId = $parentId == $this->parentId ? false : true;
         $rank = $this->rank == $rank ? false : true;
         $checkTopMenu = $this->topMenu == $checkTopMenu ? false : true;
         $checkActivity = $this->activity == $checkActivity ? false : true;
 
-        return $name OR $parentId OR $rank OR $checkTopMenu OR $checkActivity ? true : false;
+        return ($name OR $parentId OR $rank OR $checkTopMenu OR $checkActivity) ? true : false;
+        //var_dump($res); exit();
     }
 
 }

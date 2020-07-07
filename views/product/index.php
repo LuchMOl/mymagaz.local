@@ -3,10 +3,9 @@
     <div class='hm-foot-menu'>
         <div class='container'><h1>Товары</h1><hr>
             <ul>
-                <li><a href = '/category/'>Категория</a><br><br></li>
-                <li><a href = '/product/addProduct/'>Добавить новый товар</a><br><br></li>
-                <li><a href = '/product/showAllProducts/'>Список всех товаров</a></li>
-
+                <li><a href = '/product/createNew/'>Добавить новый товар</a><br><br></li>
+                <li><a href = '/product/catalog/'>Список всех товаров</a><br><br></li>
+                <li><a href = '/category/'>Категории</a><br><br></li>
             </ul><hr>
         </div>
     </div>

@@ -41,9 +41,9 @@ class CategoryController
                 $topMenu = isset($_POST['checkTopMenu']) ? 1 : 0;
                 $activity = isset($_POST['checkActivity']) ? 1 : 0;
                 $write = $this->categoryService()->insertNew($_POST['newName'], $parentId, $rank, $topMenu, $activity);
-                $write ? header("Location: /category/showAll/") : $mesage = 'Запись в базу НЕ прошла.';
+                $write ? header("Location: /category/showAll/") : $mesage = 'Запись в базу НЕ прошла';
             } else {
-                $mesage = 'Не заполнено обязательное поле.';
+                $mesage = 'Не заполнено обязательное поле';
             }
         }
         require_once '../views/product/category/edit-create.php';
@@ -69,18 +69,17 @@ class CategoryController
 
         if (isset($_POST['submitForm'])) {
             if (!empty($_POST['newName'])) {
-                $parentId = $this->categoryService()->defineParentId($_POST['parent'], $curentCategory->parentId);
                 $rank = !empty($_POST['rank']) ? $_POST['rank'] : 0;
                 $checkTopMenu = isset($_POST['checkTopMenu']) ? 1 : 0;
                 $checkActivity = isset($_POST['checkActivity']) ? 1 : 0;
-                if ($curentCategory->isChanged($_POST['newName'], $parentId, $rank, $checkTopMenu, $checkActivity)) {
-                    $edit = $this->categoryService()->edit($curentCategory->id, $_POST['newName'], $parentId, $rank, $checkTopMenu, $checkActivity);
+                if ($curentCategory->isChanged($_POST['newName'], $_POST['parent'], $rank, $checkTopMenu, $checkActivity)) {
+                    $edit = $this->categoryService()->edit($curentCategory->id, $_POST['newName'], $_POST['parent'], $rank, $checkTopMenu, $checkActivity);
                     $edit ? header("Location: /category/showAll/") : $mesage = 'Не записало в базу';
                 } else {
-                    $mesage = 'Нечего менять.';
+                    $mesage = 'Нечего менять';
                 }
             } else {
-                $mesage = 'Не заполнено обязательное поле.';
+                $mesage = 'Не заполнено обязательное поле';
             }
         }
         require_once '../views/product/category/edit-create.php';

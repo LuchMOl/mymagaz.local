@@ -91,7 +91,7 @@ class CategoryService
     {
         foreach ($categories as $category) {
             if ($category->id == $id) {
-                $tree["$category->id"] = $category->name;
+                $tree["$category->id"] = $category;
                 if ($category->hasParent()) {
                     return self::getHierarchyTree($categories, $category->parentId, $tree);
                 } else {
@@ -131,18 +131,6 @@ class CategoryService
     public function eraseTopMenu()
     {
         return $this->categoryDao()->eraseTopMenu();
-    }
-
-    public function defineParentId($post, $parentId)
-    {
-        if ($post == 'doNotChange') {
-            $parentId = $parentId;
-        } elseif ($post == 'root') {
-            $parentId = '0';
-        } else {
-            $parentId = $post;
-        }
-        return $parentId;
     }
 
     static function getSortRank($categories, $is)
@@ -189,6 +177,11 @@ class CategoryService
         return $categories;
     }
 
+    public function getParentId($childrenId)
+    {
+        return $this->categoryDao()->getParentId($childrenId);
+    }
+
     public function getChildren($id)
     {
         $categoryMapper = new CategoryMapper();
@@ -233,25 +226,35 @@ class CategoryService
         }
     }
 
-    public function selectAll($categories)
+    public function selectAll()
     {
         $space = '';
+        $categories = $this->getRoots();
+
         foreach ($categories as $category) {
-            if ($category->isRoot()) {
-                echo "<option value = '$category->id'>$space$category->name</option>";
-                $this->selectCildren($category->id, $space);
+            if (isset($_GET['editId']) AND $_GET['editId'] != $category->id) {
+                $parentId = $this->getParentId($_GET['editId']);
+                $selected = $category->id == $parentId ? 'selected' : '' ;
+                    echo "<optgroup label='$category->name'><option value = '$category->id' $selected>$space$category->name</option></optgroup>";
+            } elseif ($_GET['editId'] != $category->id) {
+                echo "<optgroup label='$category->name'><option value = '$category->id'>$space$category->name</option></optgroup>";
             }
+            $this->selectCildren($category->id, $parentId, $space);
         }
     }
 
-    public function selectCildren($id, $space)
+    public function selectCildren($id, $parentId, $space)
     {
         $space = $space . '-&nbsp&nbsp&nbsp&nbsp';
         $children = $this->getChildren($id);
         if (!empty($children)) {
             foreach ($children as $category) {
-                echo "<option value = '$category->id'>$space$category->name</option>";
-                $this->selectCildren($category->id, $space);
+                if (isset($_GET['editId']) AND $_GET['editId'] != $category->id AND $category->id == $parentId) {
+                    echo "<option value = '$category->id' selected>$space$category->name</option>";
+                } elseif ($_GET['editId'] != $category->id) {
+                    echo "<option value = '$category->id'>$space$category->name</option>";
+                }
+                $this->selectCildren($category->id, $parentId, $space);
             }
         }
     }

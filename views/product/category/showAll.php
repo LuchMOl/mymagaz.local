@@ -6,7 +6,7 @@
         <a href = '/category/showAll/'>Список всех категорий</a></p><hr>
 
     <?php if (isset($_GET['show']) == 'topMenu') : ?>
-        <h4>Категории топ меню.</h4><br>
+        <h2>Категории топ меню</h2><br>
         <?php $topMenu = $categoryService->getTopMenu(); ?>
         <?php if (!empty($topMenu)) : ?>
             <?php foreach ($topMenu as $cat) : ?>
@@ -26,7 +26,7 @@
         <?php endif; ?>
 
     <?php else : ?>
-        <h4>Все категории.</h4><br>
+        <h2>Все категории</h2><br>
         <?php $categoryService->renderShowAll($categories); ?>
     <?php endif; ?>
 
