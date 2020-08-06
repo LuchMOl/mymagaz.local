@@ -36,9 +36,12 @@ class RouteService
             $className = ucfirst($first) . 'Controller';
             if ($first != NULL && !file_exists('../controllers/' . $className . '.php')) {
                 StaticService::return404();
-            } elseif (file_exists('../controllers/' . $className . '.php') && $this->getSecondPart() == NULL) {
+            } elseif (file_exists('../controllers/' . $className . '.php') AND $this->getSecondPart() == NULL) {
                 ${$first . 'Controller'} = new $className();
                 ${$first . 'Controller'}->actionIndex();
+            } elseif (is_numeric($this->getSecondPart())) {
+                ${$first . 'Controller'} = new $className();
+                ${$first . 'Controller'}->actionViewProducts($this->getSecondPart());
             } else {
                 ${$first . 'Controller'} = new $className();
                 $second = $this->getSecondPart();

@@ -3,10 +3,8 @@
 class UserDao extends BaseDao
 {
 
-    private $tables = 'test';
-    //private $tables = 'users';
-    private $sid_tables = 'session_user_test';
-    //private $sid_tables = 'session_user';
+    private $tables = 'users';
+    private $sid_tables = 'session_user';
 
     public function getUser($email, $password)
     {
@@ -55,4 +53,5 @@ class UserDao extends BaseDao
         $params = ['user_id' => $id, 'session_id' => $sId];
         $this->execute($sql, $params);
     }
+
 }

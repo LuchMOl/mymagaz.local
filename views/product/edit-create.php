@@ -1,5 +1,7 @@
-<?php require_once '/../layouts/header.php'; ?>
-<?php $productService = new ProductService(); ?>
+<?php
+require_once '/../views/layouts/admin/header.php';
+$imageDir = '/images/products/';
+?>
 
 <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
     <hr>
@@ -10,29 +12,29 @@
 
         <p>Название товара</p>
 
-        <?php if (isset($_GET['editId'])) : ?>
-            <?php foreach ($products as $product) : ?>
-                <?php if ($product->id == $_GET['editId']) : ?>
-                    <input name = 'newName' type = 'text' value = "<?= htmlspecialchars($product->name); ?>"></input>
-                    <?php break; ?>
-                <?php endif; ?>
-            <?php endforeach; ?>
-        <?php else : ?>
-            <input name = 'newName' type = 'text' value = ""></input>
-        <?php endif; ?>
-
+        <input name = 'productName' type = 'text' value = "<?= isset($_GET['editId']) ? htmlspecialchars($currentProduct->name) : ''; ?>">
         <br><br>
+
         <p>Выбрать категорию</p>
-        <select name = 'categories[]' size ='10' multiple>
-            <option value = '0'>- нет -</option>
-            <?= $productService->selectCategory($categories, $product->category); ?>
+        <select name = 'categories[]' size ='15' multiple>
+            <option value = '0' <?= $title == 'Добавить товар' ? 'selected' : '';?>>- нет -</option>
+            <?= $this->productService()->selectCategory($currentProduct->category); ?>
         </select>
         <br><br>
+        
+        <?php if ($title == 'Редактировать товар') : ?>
+            <img style = "width: 200px" src = "<?= !empty($currentProduct->imageName[0]) ? $imageDir . $currentProduct->imageName[0] : $imageDir . 'no_photo.jpg'; ?>">
+            <br><br>
+        <?php endif; ?>
+        <input type="file" name="productImage">
+        <br><br>
 
-        <input name = 'submitForm' type = submit value = 'Подтвердить'>
+        <input name = 'submitProductForm' type = submit value = 'Подтвердить'>
+
     </form><br>
+
     <?php echo $mesage; ?>
     <hr>
 </div>
 
-<?php require_once '/../layouts/footer.php'; ?>
+<?php require_once '/../views/layouts/admin/footer.php'; ?>

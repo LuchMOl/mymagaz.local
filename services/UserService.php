@@ -31,6 +31,7 @@ class UserService
     {
         $userExist = self::userDao()->getSIdUser($sessionId);
         if (is_array($userExist)) {
+            $userMapper = new UserMapper();
             $userExist = $userMapper->map($userExist);
             self::saveUserInSession($userExist);
         } else {

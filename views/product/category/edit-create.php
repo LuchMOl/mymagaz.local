@@ -1,4 +1,4 @@
-<?php require_once '/../../layouts/header.php'; ?>
+<?php require_once '/../views/layouts/admin/header.php'; ?>
 <?php $categoryService = new CategoryService(); ?>
 
 <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
@@ -25,9 +25,9 @@
         </select>
         <br><br>
 
-        <input name = 'newName' type = 'text' value = "<?= $curentCategory->name ?>"> Название категории</input><br><br>
+        <input name = 'newName' type = 'text' value = "<?= $curentCategory->name ?>"> Название категории<br><br>
 
-        <input name = 'rank' type = 'number' value = "<?= $curentCategory->rank ?>" min="0" max="250"> Ранг</input><br><br>
+        <input name = 'rank' type = 'number' value = "<?= $curentCategory->rank ?>" min="0" max="250"> Ранг<br><br>
         <label><input name = 'checkTopMenu' type="checkbox" <?= $curentCategory->topMenu ? 'checked' : ''; ?>> Применить для главного меню</label><br><br>
         <label><input name = 'checkActivity' type="checkbox" <?= $curentCategory->activity ? 'checked' : ''; ?>> Активность</label><br><br>
         <input name = 'submitForm' type = 'submit' value = 'Подтвердить'><br><br>
@@ -37,4 +37,4 @@
     <hr>
 </div>
 
-<?php require_once '/../../layouts/footer.php'; ?>
+<?php require_once '/../views/layouts/admin/footer.php'; ?>

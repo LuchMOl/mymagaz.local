@@ -25,6 +25,16 @@ class CategoryService
         return $categories;
     }
 
+    public function resolveRelations($categories)
+    {
+        foreach ($categories as $category) {
+            if ($category->parentId > 0) {
+                $parent = $categories[$category->parentId];
+                $parent->addChild($category);
+            }
+        }
+    }
+
     public function getActivityCategories()
     {
         $categoryMapper = new CategoryMapper();
@@ -35,16 +45,6 @@ class CategoryService
         }
         $this->resolveActivityRelations($categories);
         return $categories;
-    }
-
-    public function resolveRelations($categories)
-    {
-        foreach ($categories as $category) {
-            if ($category->parentId > 0) {
-                $parent = $categories[$category->parentId];
-                $parent->addChild($category);
-            }
-        }
     }
 
     public function resolveActivityRelations($categories)
@@ -234,8 +234,8 @@ class CategoryService
         foreach ($categories as $category) {
             if (isset($_GET['editId']) AND $_GET['editId'] != $category->id) {
                 $parentId = $this->getParentId($_GET['editId']);
-                $selected = $category->id == $parentId ? 'selected' : '' ;
-                    echo "<optgroup label='$category->name'><option value = '$category->id' $selected>$space$category->name</option></optgroup>";
+                $selected = $category->id == $parentId ? 'selected' : '';
+                echo "<optgroup label='$category->name'><option value = '$category->id' $selected>$space$category->name</option></optgroup>";
             } elseif ($_GET['editId'] != $category->id) {
                 echo "<optgroup label='$category->name'><option value = '$category->id'>$space$category->name</option></optgroup>";
             }

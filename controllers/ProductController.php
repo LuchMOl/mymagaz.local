@@ -30,9 +30,10 @@ class ProductController
     public function actionCatalog()
     {
         $mesage = '';
+        $catalog = 'back';
         $categoryId = explode('/', $_SERVER['REQUEST_URI'])[3];
         if ($categoryId != '') {
-            $category = $this->productService()->getThisCategory($categoryId);
+            $category = $this->productService()->getCategoryById($categoryId);
             $title = is_object($category) ? $category->name : 'Такой категории не существует';
             $products = $this->productService()->getProductsThisCategory($categoryId);
         } else {
@@ -46,18 +47,26 @@ class ProductController
     {
         $mesage = '';
         $title = 'Добавить товар';
-        $categories = $this->categoryService()->getCategories();
 
-        if (isset($_POST['submitForm'])) {
-            if (!empty($_POST['newName'])) {
-                $write = $this->productService()->insertNew($_POST['newName'], $_POST['categories']);
-                $write ? header('Location: /product/') : $mesage = 'Не записало в базу.';
+        if (isset($_POST['submitProductForm'])) {
+            if (!empty($_POST['productName'])) {
+
+                if (file_exists($_FILES['productImage']['tmp_name'])) {
+                    $productImageName = $this->productService()->generateImageName($_FILES['productImage']);
+                    $isUpload = $this->productService()->uploadProductImage($_FILES['productImage'], $productImageName);
+                    $mesage = $isUpload ? '' : 'Файл не перемещен.';
+                } else {
+                    $productImageName = 'no_photo.jpg';
+                }
+
+                $category = !isset($_POST['categories']) ? ['0'] : $_POST['categories'];
+                $writeProduct = $this->productService()->writeProduct($_POST['productName'], $category, $productImageName);
+
+                $writeProduct ? header('Location: /product/catalog/') : $mesage = 'Не записало в базу.';
             } else {
                 $mesage = 'Не введено название товара.';
             }
         }
-
-
         require_once '../views/product/edit-create.php';
     }
 
@@ -65,23 +74,50 @@ class ProductController
     {
         $mesage = '';
         $title = 'Редактировать товар';
-        $products = $this->productService()->getProducts();
-        $currentProduct = $this->productService()->getCurrentProduct($products, $_GET['editId']);
-        $categories = $this->categoryService()->getCategories();
 
-        if (isset($_POST['submitForm'])) {
-            if (!empty($_POST['newName'])) {
-                if ($currentProduct->isChanged($_POST['newName'], $_POST['categories'])) {
-                    $edit = $this->productService()->edit($currentProduct->id, $_POST['newName'], $_POST['categories']);
-                    $edit ? header("Location: /product/catalog/") : $mesage = 'Не записало в базу';
+        if (isset($_GET['editId'])) {
+
+            $currentProduct = $this->productService()->getProductById($_GET['editId']);
+
+            if (isset($_POST['submitProductForm'])) {
+                if (!empty($_POST['productName'])) {
+                    $isChangedImage = $currentProduct->isChangedImage($_FILES['productImage']);
+                    if ($isChangedImage) {
+                        if ($currentProduct->imageName[0] == 'no_photo.jpg') {
+                            $productImageName = $this->productService()->generateImageName($_FILES['productImage']);
+                        } else {
+                            $productImageName = $currentProduct->imageName[0];
+                        }
+                        $this->productService()->uploadProductImage($_FILES['productImage'], $productImageName);
+                    } else {
+                        $productImageName = $currentProduct->imageName[0];
+                    }
+
+                    $categories = !isset($_POST['categories']) ? ['0'] : $_POST['categories'];
+
+                    $editedProduct = ['id' => $_GET['editId'],
+                        'name' => $_POST['productName'],
+                        'categories' => $categories,
+                        'imageName' => $productImageName];
+
+                    $editedProduct = $this->productService()->mapEditedProduct($editedProduct);
+
+                    if ($currentProduct->isChanged($editedProduct)) {
+                        $editProduct = $this->productService()->editProduct($currentProduct, $editedProduct);
+                        $editProduct ? header('Location: /product/catalog/') : $mesage = 'Не записало в базу.';
+                    } elseif ($isChangedImage) {
+                        header('Location: /product/catalog/');
+                    } else {
+                        $mesage = 'Нечего менять';
+                    }
                 } else {
-                    $mesage = 'Нечего менять';
+                    $mesage = 'Не заполнено обязательное поле';
                 }
-            } else {
-                $mesage = 'Не заполнено обязательное поле';
             }
+            require_once '../views/product/edit-create.php';
+        } else {
+            header("Location: /product/catalog/");
         }
-        require_once '../views/product/edit-create.php';
     }
 
 }
