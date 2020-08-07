@@ -1,4 +1,4 @@
-<?php require_once '/../views/layouts/admin/header.php'; ?>
+<?php require_once '../views/layouts/admin/header.php'; ?>
 
 <section id='newsletter'  class='newsletter'>
     <div class='hm-foot-menu'>
@@ -15,4 +15,4 @@
     </div>
 </section>
 
-<?php require_once '/../views/layouts/admin/footer.php'; ?>
+<?php require_once '../views/layouts/admin/footer.php'; ?>

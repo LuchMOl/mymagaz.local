@@ -1,4 +1,4 @@
-<?php require_once '/../views/layouts/header.php'; ?>
+<?php require_once '../views/layouts/header.php'; ?>
 
 <!--welcome-hero start -->
 <header id="home" class="welcome-hero">
@@ -623,4 +623,4 @@
     </section><!--/.clients-->
     <!-- clients end -->
 
-    <?php require_once '/../views/layouts/footer.php'; ?>
+    <?php require_once '../views/layouts/footer.php'; ?>

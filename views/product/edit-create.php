@@ -1,5 +1,5 @@
 <?php
-require_once '/../views/layouts/admin/header.php';
+require_once '../views/layouts/admin/header.php';
 $imageDir = '/images/products/';
 ?>
 
@@ -21,7 +21,7 @@ $imageDir = '/images/products/';
             <?= $this->productService()->selectCategory($currentProduct->category); ?>
         </select>
         <br><br>
-        
+
         <?php if ($title == 'Редактировать товар') : ?>
             <img style = "width: 200px" src = "<?= !empty($currentProduct->imageName[0]) ? $imageDir . $currentProduct->imageName[0] : $imageDir . 'no_photo.jpg'; ?>">
             <br><br>
@@ -37,4 +37,4 @@ $imageDir = '/images/products/';
     <hr>
 </div>
 
-<?php require_once '/../views/layouts/admin/footer.php'; ?>
+<?php require_once '../views/layouts/admin/footer.php'; ?>

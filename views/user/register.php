@@ -1,4 +1,4 @@
-<?php require_once '/../views/layouts/header.php'; ?>
+<?php require_once '../views/layouts/header.php'; ?>
 
 <section id='newsletter'  class='newsletter'>
 
@@ -14,4 +14,4 @@
     </div>
 </section>
 
-<?php require_once '/../views/layouts/footer.php'; ?>
+<?php require_once '../views/layouts/footer.php'; ?>

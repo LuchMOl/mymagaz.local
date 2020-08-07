@@ -1,5 +1,5 @@
 <?php
-require_once ($catalog == 'front' ? '/../views/layouts/header.php' : '/../views/layouts/admin/header.php');
+require_once ($catalog == 'front' ? '../views/layouts/header.php' : '../views/layouts/admin/header.php');
 $imageDir = '/images/products/';
 ?>
 
@@ -76,4 +76,4 @@ $imageDir = '/images/products/';
     </div>
 </div>
 
-<?php require_once ($catalog == 'front' ? '/../views/layouts/footer.php' : '/../views/layouts/admin/footer.php'); ?>
+<?php require_once ($catalog == 'front' ? '../views/layouts/footer.php' : '../views/layouts/admin/footer.php'); ?>

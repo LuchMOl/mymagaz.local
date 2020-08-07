@@ -1,4 +1,4 @@
-<?php require_once '/../views/layouts/admin/header.php'; ?>
+<?php require_once '../views/layouts/admin/header.php'; ?>
 <?php $categoryService = new CategoryService(); ?>
 
 <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
@@ -35,4 +35,4 @@
     <hr>
 </div>
 
-<?php require_once '/../views/layouts/admin/footer.php'; ?>
+<?php require_once '../views/layouts/admin/footer.php'; ?>

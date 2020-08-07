@@ -83,7 +83,7 @@ class UserController
                 $message = 'Не введен email.';
             }
         }
-        require_once '/../views/user/register.php';
+        require_once '../views/user/register.php';
     }
 
     public function actionExit()

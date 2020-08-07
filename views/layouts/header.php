@@ -37,7 +37,7 @@
             <div class="navigation__column center">
                 <?php
                 if ($_SERVER['REQUEST_URI'] === '/') {
-                    include_once '/topmenu.php';
+                    include_once 'topmenu.php';
                 }
                 ?>
             </div>

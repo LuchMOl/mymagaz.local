@@ -16,7 +16,7 @@ class TasksController
         $taskList = array_diff($taskList, $exclusion, $notFile);
         natcasesort($taskList);
         $taskList = array_reverse($taskList);
-        
+
         require_once '../views/tasks/index.php';
     }
 
@@ -29,7 +29,7 @@ class TasksController
                 StaticService::return404();
             } else {
                 $content = file($fileName);
-                require_once '/../views/tasks/view.php';
+                require_once '../views/tasks/view.php';
             }
         } else {
             header("Location: /tasks/");
@@ -48,7 +48,7 @@ class TasksController
             }
             header("Location: http://mymagaz.local/tasks/view/$this->newFileName");
         }
-        require_once '/../views/tasks/create.php';
+        require_once '../views/tasks/create.php';
     }
 
     public function actionEdit($third)
@@ -61,7 +61,7 @@ class TasksController
             }
             header("Location: http://mymagaz.local/tasks/view/$third");
         }
-        require_once '/../views/tasks/edit.php';
+        require_once '../views/tasks/edit.php';
     }
 
 }
