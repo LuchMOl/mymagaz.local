@@ -1,0 +1,13 @@
+{
+    "name": "mymagaz.local",
+    "description": "included libraries",
+    "homepage": "http://mymagaz.local",
+    "type": "project",
+    "license": "BSD-3-Clause",
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "app\\": ""
+        }
+    }
+}
