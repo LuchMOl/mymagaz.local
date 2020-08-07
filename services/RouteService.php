@@ -16,17 +16,23 @@ class RouteService
 
     public function getFirstPart()
     {
-        return $this->getRoute()[1];
+        if (isset($this->getRoute()[1])) {
+            return $this->getRoute()[1];
+        }
     }
 
     public function getSecondPart()
     {
-        return $this->getRoute()[2];
+        if (isset($this->getRoute()[2])) {
+            return $this->getRoute()[2];
+        }
     }
 
     public function getThirdPart()
     {
-        return $this->getRoute()[3];
+        if (isset($this->getRoute()[3])) {
+            return $this->getRoute()[3];
+        }
     }
 
     public function run()
@@ -36,7 +42,7 @@ class RouteService
             $className = ucfirst($first) . 'Controller';
             if ($first != NULL && !file_exists('../controllers/' . $className . '.php')) {
                 StaticService::return404();
-            } elseif (file_exists('../controllers/' . $className . '.php') AND $this->getSecondPart() == NULL) {
+            } elseif (file_exists('../controllers/' . $className . '.php') && $this->getSecondPart() == NULL) {
                 ${$first . 'Controller'} = new $className();
                 ${$first . 'Controller'}->actionIndex();
             } elseif (is_numeric($this->getSecondPart())) {
