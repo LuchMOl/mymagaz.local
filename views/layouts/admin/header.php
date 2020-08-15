@@ -1,4 +1,11 @@
-<?php $greeting = UserService::getGreetingUser(); ?>
+<?php
+
+namespace app\views\layouts\admin;
+
+use app\services\UserService;
+
+$greeting = UserService::getGreetingUser();
+?>
 <html lang="en-US">
     <head>
         <meta charset="UTF-8">

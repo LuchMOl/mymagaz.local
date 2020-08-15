@@ -1,4 +1,7 @@
 <?php
+
+namespace app\views\product\category;
+
 require_once ($catalog == 'front' ? '../views/layouts/header.php' : '../views/layouts/admin/header.php');
 $imageDir = '/images/products/';
 ?>
@@ -72,8 +75,8 @@ $imageDir = '/images/products/';
 
         <br><br>
         <?= $mesage ?>
-        <hr>
-    </div>
+
+    </div><hr>
 </div>
 
 <?php require_once ($catalog == 'front' ? '../views/layouts/footer.php' : '../views/layouts/admin/footer.php'); ?>

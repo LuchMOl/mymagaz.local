@@ -1,4 +1,9 @@
-<?php require_once '../views/layouts/header.php'; ?>
+<?php
+
+namespace app\views\user;
+
+require_once '../views/layouts/header.php';
+?>
 
 <section id='newsletter'  class='newsletter'>
 
@@ -10,7 +15,7 @@
             <input name = 'submit' type = submit value = 'Sign In'>
         </form>
 
-        <?php echo $message; ?>
+<?php echo $message; ?>
     </div>
 </section>
 

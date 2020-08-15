@@ -1,5 +1,10 @@
 <?php
 
+namespace app\services;
+
+use app\dao\CategoryDao;
+use app\dao\mapper\CategoryMapper;
+
 class CategoryService
 {
 

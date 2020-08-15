@@ -1,4 +1,9 @@
-<?php require_once '../views/layouts/admin/header.php'; ?>
+<?php
+
+namespace app\views\tasks;
+
+require_once '../views/layouts/admin/header.php';
+?>
 
 <section id='newsletter'  class='newsletter'>
     <div class='hm-foot-menu'>

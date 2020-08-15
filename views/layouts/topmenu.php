@@ -1,4 +1,9 @@
 <?php
+
+namespace app\views\layouts;
+
+use app\services\CategoryService;
+
 $categoryService = new CategoryService();
 $categories = $categoryService->getActivityCategories();
 $countMenu = 1;
@@ -7,14 +12,14 @@ $subMenu = 7;
 $megaColumn = 4;
 $megaItem = 5;
 ?>
-<?php $categories = CategoryService::getSortRank($categories, ''); ?>
-<?php foreach ($categories as $category) : ?>
+    <?php $categories = CategoryService::getSortRank($categories, ''); ?>
+    <?php foreach ($categories as $category) : ?>
     <ul class='main-menu menu'>
         <?php if ($category->isTopMenu() AND $countMenu <= $menu) : ?>
             <?php if (!$category->hasChildren()) : ?>
                 <li class='menu-item'><a href='/catalog/<?= $category->id; ?>/'><?= $category->name; ?></a></li>
-            <?php else : ?>
-                <?php if (!$category->childrenHasChildren()) : ?>
+        <?php else : ?>
+                        <?php if (!$category->childrenHasChildren()) : ?>
                     <li class='menu-item menu-item-has-children dropdown'><a href='/catalog/<?= $category->id; ?>/'><?= $category->name; ?></a>
                         <ul class='sub-menu'>
                             <?php $childrens = CategoryService::getSortRank($category->children, ''); ?>
@@ -23,18 +28,18 @@ $megaItem = 5;
                                 <?php if ($countSubMenu <= $subMenu) : ?>
                                     <li class='menu-item'><a href='/catalog/<?= $children->id; ?>/'><?= $children->name; ?></a></li>
                                 <?php endif; ?>
-                                <?php $countSubMenu++; ?>
-                            <?php endforeach; ?>
+                    <?php $countSubMenu++; ?>
+                    <?php endforeach; ?>
                         </ul>
                     </li>
-                <?php else : ?>
+            <?php else : ?>
                     <li class='menu-item menu-item-has-children has-mega-menu'><a href='/catalog/<?= $category->id; ?>'><?= $category->name; ?></a>
                         <div class='mega-menu'>
                             <div class='mega-wrap'>
                                 <?php $childrens = CategoryService::getSortRank($category->children, ''); ?>
                                 <?php $countMegaColumn = 1; ?>
-                                <?php foreach ($childrens as $children) : ?>
-                                    <?php if ($countMegaColumn <= $megaColumn) : ?>
+                <?php foreach ($childrens as $children) : ?>
+                    <?php if ($countMegaColumn <= $megaColumn) : ?>
                                         <div class='mega-column'>
                                             <h4 class='mega-heading'><a href='/catalog/<?= $children->id; ?>/'><?= $children->name; ?></a></h4>
                                             <ul class='mega-item'>
@@ -44,13 +49,13 @@ $megaItem = 5;
                                                     <?php if ($countMegaItem <= $megaItem) : ?>
                                                         <li><a href='/catalog/<?= $child->id; ?>/'><?= $child->name; ?></a></li>
                                                     <?php endif; ?>
-                                                    <?php $countMegaItem++; ?>
-                                                <?php endforeach; ?>
+                            <?php $countMegaItem++; ?>
+                                        <?php endforeach; ?>
                                             </ul>
                                         </div>
                                     <?php endif; ?>
-                                    <?php $countMegaColumn++; ?>
-                                <?php endforeach; ?>
+                    <?php $countMegaColumn++; ?>
+                <?php endforeach; ?>
                             </div>
                         </div>
                     </li>
@@ -59,7 +64,7 @@ $megaItem = 5;
             endif;
             $countMenu++;
             ?>
-        <?php endif; ?>
+    <?php endif; ?>
     </ul>
 <?php endforeach; ?>
 

@@ -1,5 +1,10 @@
 <?php
 
+namespace app\services;
+
+use app\controllers\AdminController;
+use app\controllers\ProductController;
+
 class RouteService
 {
 
@@ -40,16 +45,17 @@ class RouteService
         $first = $this->getFirstPart();
         if ($first != NULL) {
             $className = ucfirst($first) . 'Controller';
+            $useClassName = 'app\controllers\\' . ucfirst($first) . 'Controller';
             if ($first != NULL && !file_exists('../controllers/' . $className . '.php')) {
                 StaticService::return404();
             } elseif (file_exists('../controllers/' . $className . '.php') && $this->getSecondPart() == NULL) {
-                ${$first . 'Controller'} = new $className();
+                ${$first . 'Controller'} = new $useClassName();
                 ${$first . 'Controller'}->actionIndex();
             } elseif (is_numeric($this->getSecondPart())) {
-                ${$first . 'Controller'} = new $className();
+                ${$first . 'Controller'} = new $useClassName();
                 ${$first . 'Controller'}->actionViewProducts($this->getSecondPart());
             } else {
-                ${$first . 'Controller'} = new $className();
+                ${$first . 'Controller'} = new $useClassName();
                 $second = $this->getSecondPart();
                 $methodName = "action" . ucfirst($second);
                 if (!method_exists(${$first . 'Controller'}, $methodName)) {

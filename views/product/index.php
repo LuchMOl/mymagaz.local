@@ -1,4 +1,9 @@
-<?php require_once '../views/layouts/admin/header.php'; ?>
+<?php
+
+namespace app\views\product\category;
+
+require_once '../views/layouts/admin/header.php';
+?>
 <section id='newsletter'  class='newsletter'>
     <div class='hm-foot-menu'>
         <div class='container'><h1>Товары</h1><hr>

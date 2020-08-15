@@ -1,5 +1,7 @@
 <?php
 
+namespace app\dao;
+
 class ProductDao extends BaseDao
 {
 
@@ -7,7 +9,9 @@ class ProductDao extends BaseDao
     {
         $sql = 'INSERT INTO PRODUCTS (name) VALUES (:name)';
         $params = ['name' => $productName];
-        return $this->execute($sql, $params);
+        $write = $this->execute($sql, $params);
+        $lastInsertId = $write ? $this->insert_ID() : false ;
+        return $lastInsertId;
     }
 
     public function insertProductCategories($id, $categories)
@@ -44,23 +48,6 @@ class ProductDao extends BaseDao
     {
         $sql = "SELECT image_name FROM product_images WHERE product_id = $id";
         return $this->getOne($sql);
-    }
-
-    public function insertNew($name, $categories, $imageName)
-    {
-        $sql = "INSERT INTO products (name) VALUES (:name)";
-        $params = ['name' => $name];
-        $insertProduct = $this->execute($sql, $params);
-        if ($insertProduct) {
-            $id = $this->getOne("SELECT MAX(id) AS id FROM products");
-            $insertCategories = $this->insertCategories($id, $categories);
-            if ($insertCategories AND $imageName != 'none') {
-                $write = $this->insertImage($id, $imageName);
-            }
-        } else {
-            $write = false;
-        }
-        return $write;
     }
 
     public function insertCategories($id, $categories)
@@ -107,20 +94,6 @@ class ProductDao extends BaseDao
         return $this->execute($sql, $params);
     }
 
-    public function edit($id, $newName, $categories)
-    {
-        $sql = "UPDATE products SET name = :name WHERE id = :id";
-        $params = ['name' => $newName, 'id' => $id];
-        $updateProduct = $this->execute($sql, $params);
-        if ($updateProduct) {
-            $sql = "DELETE FROM product_category WHERE product_id = '$id'";
-            $write = $this->insertCategories($id, $categories);
-        } else {
-            $write = false;
-        }
-        return $write;
-    }
-
     public function getCategoryById($categoryId)
     {
         $sql = "SELECT * FROM categories WHERE id = $categoryId";
@@ -143,12 +116,6 @@ class ProductDao extends BaseDao
     {
         $sql = "SELECT product_id, category_id as id, name, parent_id, top_menu, rank, activity FROM product_category p_c INNER JOIN categories c WHERE p_c.category_id = c.id";
         return $this->getAll($sql);
-    }
-
-    public function getMaxId()
-    {
-        $sql = "SELECT MAX(id) FROM products";
-        return $this->getOne($sql);
     }
 
 }

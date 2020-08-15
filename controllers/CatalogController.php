@@ -1,5 +1,9 @@
 <?php
 
+namespace app\controllers;
+
+use app\services\CategoryService;
+
 class CatalogController extends ProductController
 {
 

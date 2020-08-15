@@ -1,4 +1,11 @@
-<?php $greeting = UserService::getGreetingUser(); ?>
+<?php
+
+namespace app\views\layouts;
+
+use app\services\UserService;
+
+$greeting = UserService::getGreetingUser();
+?>
 <!DOCTYPE html>
 <!--[if IE 7]><html class="ie ie7"><![endif]-->
 <!--[if IE 8]><html class="ie ie8"><![endif]-->

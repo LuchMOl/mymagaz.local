@@ -1,4 +1,9 @@
-<?php require_once 'head.php'; ?>
+<?php
+
+namespace app\views\layouts;
+
+require_once 'head.php';
+?>
 
 <div class="header--sidebar"></div>
 <header class="header">

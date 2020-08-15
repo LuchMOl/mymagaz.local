@@ -1,19 +1,24 @@
 <?php
 
+namespace app\dao;
+
+use \PDO;
+use \PDOStatement;
+
 class BaseDao
 {
 
-    private $dbh = NULL;
+    private $dbh;
 
     public function connection()
     {
-        if ($this->dbh == NULL) {
-            $dbh = new PDO('mysql:host=mymagaz.local;dbname=mymagaz', 'root', '', [
-                \PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-                , \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+        if ($this->dbh === NULL) {
+            $this->dbh = new PDO('mysql:host=mymagaz.local;dbname=mymagaz', 'root', '', [
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                , PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
             ]);
         }
-        return $dbh;
+        return $this->dbh;
     }
 
     public function getAll($sql, $params = array(), $fetchMode = null)

@@ -1,5 +1,7 @@
 <?php
 
+namespace app\models;
+
 class User
 {
 
@@ -34,10 +36,10 @@ class User
         $this->session_id = $session_id;
     }
 
-     public function getId()
-      {
-      return userService::getCurrentUser()->id;
-      }
+    public function getId()
+    {
+        return userService::getCurrentUser()->id;
+    }
 
     public function getName()
     {
@@ -45,5 +47,3 @@ class User
     }
 
 }
-
-?>

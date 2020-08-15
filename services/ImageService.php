@@ -1,5 +1,7 @@
 <?php
 
+namespace app\services;
+
 class ImageService
 {
 
@@ -22,7 +24,7 @@ class ImageService
             $extension = '.png';
         }
         $imgFileName = "$imgName$extension";
-        
+
         if (file_exists("../web/img/$imgFileName")) {
             $thrueName = $imgName;
         } else {

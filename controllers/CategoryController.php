@@ -1,5 +1,10 @@
 <?php
 
+namespace app\controllers;
+
+use app\services\CategoryService;
+use app\models\Category;
+
 class CategoryController
 {
 

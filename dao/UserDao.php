@@ -1,5 +1,7 @@
 <?php
 
+namespace app\dao;
+
 class UserDao extends BaseDao
 {
 

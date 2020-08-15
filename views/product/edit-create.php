@@ -1,4 +1,7 @@
 <?php
+
+namespace app\views\product\category;
+
 require_once '../views/layouts/admin/header.php';
 $imageDir = '/images/products/';
 ?>
@@ -17,15 +20,15 @@ $imageDir = '/images/products/';
 
         <p>Выбрать категорию</p>
         <select name = 'categories[]' size ='15' multiple>
-            <option value = '0' <?= $title == 'Добавить товар' ? 'selected' : '';?>>- нет -</option>
-            <?= $this->productService()->selectCategory($currentProduct->category); ?>
+            <option value = '0' <?= $title == 'Добавить товар' ? 'selected' : ''; ?>>- нет -</option>
+<?= $this->productService()->selectCategory($currentProduct->category); ?>
         </select>
         <br><br>
 
         <?php if ($title == 'Редактировать товар') : ?>
             <img style = "width: 200px" src = "<?= !empty($currentProduct->imageName[0]) ? $imageDir . $currentProduct->imageName[0] : $imageDir . 'no_photo.jpg'; ?>">
             <br><br>
-        <?php endif; ?>
+<?php endif; ?>
         <input type="file" name="productImage">
         <br><br>
 
@@ -33,7 +36,7 @@ $imageDir = '/images/products/';
 
     </form><br>
 
-    <?php echo $mesage; ?>
+<?php echo $mesage; ?>
     <hr>
 </div>
 

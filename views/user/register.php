@@ -1,4 +1,9 @@
-<?php require_once '../views/layouts/header.php'; ?>
+<?php
+
+namespace app\views\user;
+
+require_once '../views/layouts/header.php';
+?>
 
 <section id='newsletter'  class='newsletter'>
 
@@ -10,7 +15,7 @@
             <input name = 'password' type = 'password' maxlength = '20' size = '30' placeholder = 'password' /><br><hr>
             <input name = 'submit' type = submit value = 'Register'>
         </form>
-        <?php echo $message; ?>
+<?php echo $message; ?>
     </div>
 </section>
 

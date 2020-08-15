@@ -1,5 +1,10 @@
 <?php
 
+namespace app\controllers;
+
+use app\services\UserService;
+use app\dao\mapper\UserMapper;
+
 class UserController
 {
 

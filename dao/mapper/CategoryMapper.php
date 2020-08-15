@@ -1,5 +1,9 @@
 <?php
 
+namespace app\dao\mapper;
+
+use app\models\Category;
+
 class CategoryMapper
 {
 

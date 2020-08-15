@@ -1,5 +1,9 @@
 <?php
 
+namespace app\dao\mapper;
+
+use app\models\Product;
+
 class ProductMapper
 {
 
@@ -9,7 +13,7 @@ class ProductMapper
 
         $product->setId($data['id']);
         $product->setName($data['name']);
-        
+
         return $product;
     }
 

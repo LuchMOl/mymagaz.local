@@ -1,4 +1,8 @@
-<?php require_once("../views/layouts/header.php");
+<?php
+
+namespace app\views\product\category;
+
+require_once("../views/layouts/header.php");
 $imageDir = '/images/products/';
 ?>
 <!--
@@ -36,7 +40,7 @@ $imageDir = '/images/products/';
                 <div class="clearfix"></div>
             </div>
             <div class="col-md-6">
-                <h1 class="product-title"><?=$product->name?></h1>
+                <h1 class="product-title"><?= $product->name ?></h1>
                 <div class="ratings">
                     <i class="fa fa-star"></i>
                     <i class="fa fa-star"></i>

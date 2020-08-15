@@ -1,5 +1,10 @@
 <?php
 
+namespace app\services;
+
+use app\dao\mapper\UserMapper;
+use app\dao\UserDao;
+
 class UserService
 {
 
@@ -59,6 +64,7 @@ class UserService
     static function getGreetingUser()
     {
         $user = self::getCurrentUser();
+        //var_dump($user);
         if (is_numeric($user->id)) {
             $greeting = 'Ну здравствуй, ' . $user->name . '. ';
         } else {

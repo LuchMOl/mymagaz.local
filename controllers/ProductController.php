@@ -1,5 +1,10 @@
 <?php
 
+namespace app\controllers;
+
+use app\services\productService;
+use app\services\CategoryService;
+
 class ProductController
 {
 

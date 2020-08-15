@@ -1,4 +1,11 @@
-<?php require_once '../views/layouts/admin/header.php'; ?>
+<?php
+
+namespace app\views\product\category;
+
+use app\services\CategoryService;
+
+require_once '../views/layouts/admin/header.php';
+?>
 <?php $categoryService = new CategoryService(); ?>
 
 <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
@@ -13,15 +20,15 @@
             <a href ='/category/edit/?editId=<?= $branch->id ?>' target="_blank"><?= $branch->name; ?></a> ->
         <?php endforeach; ?>
         <?= $curentCategory->name ?><br><br>
-    <?php else : ?>
-        <?php $curentCategory->activity = '1'; ?>
-    <?php endif; ?>
+<?php else : ?>
+    <?php $curentCategory->activity = '1'; ?>
+<?php endif; ?>
     <form method = 'post' action = ''>
         <p>Выбрать родительскую категорию</p>
 
         <select name = 'parent'>
             <option value = '0'>- нет -</option>
-            <?= $categoryService->selectAll(); ?>
+<?= $categoryService->selectAll(); ?>
         </select>
         <br><br>
 
@@ -33,7 +40,7 @@
         <input name = 'submitForm' type = 'submit' value = 'Подтвердить'><br><br>
 
     </form>
-    <?php echo $mesage; ?>
+<?php echo $mesage; ?>
     <hr>
 </div>
 

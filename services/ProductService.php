@@ -1,5 +1,12 @@
 <?php
 
+namespace app\services;
+
+use app\dao\ProductDao;
+use app\dao\mapper\CategoryMapper;
+use app\dao\mapper\ProductMapper;
+use app\services\CategoryService;
+
 class ProductService
 {
 
@@ -44,12 +51,11 @@ class ProductService
 
     public function writeProduct($productName, $categories, $productImageName)
     {
-        $writeProduct = $this->productDao()->insertProduct($productName);
-        $productId = $writeProduct ? $this->productDao()->getMaxId() : '';
-        if (is_numeric($productId)) {
-            $writeCategories = $this->productDao()->insertProductCategories($productId, $categories);
+        $writedProductId = $this->productDao()->insertProduct($productName);
+        if (is_numeric($writedProductId)) {
+            $writeCategories = $this->productDao()->insertProductCategories($writedProductId, $categories);
             if ($writeCategories) {
-                $writeImage = $this->productDao()->insertProductImage($productId, $productImageName);
+                $writeImage = $this->productDao()->insertProductImage($writedProductId, $productImageName);
                 $progress = $writeImage ? true : false;
             } else {
                 $progress = false;
@@ -165,11 +171,6 @@ class ProductService
             $imageName = $this->getProductImageByProductId($product->id);
             $product->imageName [] = $imageName;
         }
-    }
-
-    public function getMaxId()
-    {
-        return $this->productDao()->getMaxId();
     }
 
     public function selectCategory($categories)

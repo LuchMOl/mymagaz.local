@@ -1,5 +1,7 @@
 <?php
 
+namespace app\dao;
+
 class CategoryDao extends BaseDao
 {
 
@@ -39,12 +41,6 @@ class CategoryDao extends BaseDao
                 . "VALUES (:category, :parent_id, :rank, :top_menu, :activity)";
         $params = ['category' => $name, 'parent_id' => $parentId, 'rank' => $rank, 'top_menu' => $topMenu, 'activity' => $activity];
         return $this->execute($sql, $params);
-    }
-
-    public function checkOne($table, $column, $item)
-    {
-        $sql = "SELECT id FROM $table WHERE $column = '$item'";
-        return $this->getOne($sql);
     }
 
     public function getTopMenu()
