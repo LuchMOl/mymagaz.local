@@ -23,7 +23,7 @@ class CategoryDao extends BaseDao
         return $this->getAll($sql);
     }
 
-    public function getCategories()
+    public function getAllCategories()
     {
         $sql = "SELECT * FROM categories";
         return $this->getAll($sql);
@@ -61,6 +61,16 @@ class CategoryDao extends BaseDao
         $sql = 'UPDATE categories SET name = :newName, parent_id = :parentId, rank = :rank, top_menu = :topMenu, activity = :activity WHERE id = :id';
         $params = ['id' => $id, 'newName' => $newName, 'parentId' => $parentId, 'rank' => $rank, 'topMenu' => $topMenu, 'activity' => $activity];
         return $this->execute($sql, $params);
+    }
+
+    public function getCategoriesOfExistingProducts()
+    {
+        $sql = "SELECT distinct p_c.category_id as id, c.name "
+                . "FROM product_category p_c "
+                . "INNER JOIN categories c "
+                . "ON p_c.category_id = c.id";
+        $result = $this->getAll($sql);
+        return $result;
     }
 
 }

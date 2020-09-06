@@ -35,7 +35,7 @@ class CategoryController
     public function actionCreateNew()
     {
         $mesage = '';
-        $categories = $this->categoryService()->getCategories();
+        $categories = $this->categoryService()->getAllCategories();
         $curentCategory = $this->categoryService()->getEmptyCategory();
         $title = 'Создать категорию';
 
@@ -68,7 +68,7 @@ class CategoryController
     public function actionEdit()
     {
         $mesage = '';
-        $categories = $this->categoryService()->getCategories();
+        $categories = $this->categoryService()->getAllCategories();
         $curentCategory = $this->categoryService()->getCategoryById($categories, $_GET['editId']);
         $title = "Редактировать категорию -$curentCategory->name-";
 

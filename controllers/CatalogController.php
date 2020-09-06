@@ -13,7 +13,7 @@ class CatalogController extends ProductController
         $catalog = 'front';
         $title = 'Все категории';
         $categoryService = new CategoryService();
-        $categories = $categoryService->getRoots();
+        $categories = $categoryService->getCategoriesOfExistingProducts();
         require_once '../views/product/catalog.php';
     }
 

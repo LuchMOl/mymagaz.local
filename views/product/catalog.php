@@ -23,7 +23,7 @@ $imageDir = '/images/products/';
                                 <div class="single-product">
                                     <div class="product-block">
 
-                                        <img style="height: 200px; width: 240px" src="<?= !empty($product->imageName[0]) ? $imageDir . $product->imageName[0] : $imageDir . 'no_photo.jpg'; ?>" alt="" class="thumbnail">
+                                        <img style="height: 200px; width: 240px" src="<?= $product->getImgPath(); ?>" alt="" class="thumbnail">
                                         <div class="product-description text-center">
                                             <p class="title"><?= $product->name; ?></p>
                                         </div>
@@ -36,7 +36,7 @@ $imageDir = '/images/products/';
                         <div class="col-md-3 col-sm-4">
                             <div class="single-new-arrival">
                                 <div class="single-new-arrival-bg">
-                                    <img src="<?= $imageDir . $product->imageName[0]; ?>" alt="new-arrivals /images">
+                                    <img src="<?= $product->getImgPath(); ?>" alt="new-arrivals /images">
                                     <div class="single-new-arrival-bg-overlay"></div>
                                     <div class="sale bg-2">
                                         <p>sale</p>
@@ -53,7 +53,7 @@ $imageDir = '/images/products/';
                                     </div>
                                 </div>
                                 <h4><a href="/catalog/<?= $categoryId; ?>/?id=<?= $product->id; ?>"><?= $product->name; ?></a></h4>
-                                <p class="arrival-product-price"></p>
+                                <p class="arrival-product-price"><?= $product->price; ?> грн.</p>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -64,9 +64,9 @@ $imageDir = '/images/products/';
         <?php elseif (!empty($categories)) : ?>
             <?php foreach ($categories as $category): ?>
                 <ul>
-                    <?php if ($category->activity) : ?>
-                        <li><a href='/catalog/<?= $category->id; ?>/'><?= $category->name; ?></a></li>
-                    <?php endif; ?>
+
+                        <li><a href='/catalog/<?= $category['id']; ?>/'><?= $category['name']; ?></a></li>
+
                 </ul>
             <?php endforeach; ?>
         <?php else : ?>

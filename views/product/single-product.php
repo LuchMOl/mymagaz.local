@@ -34,7 +34,7 @@ $imageDir = '/images/products/';
                     </div>
                     -->
                     <div class="col-md-10 col-sm-10 col-xs-10">
-                        <div class="thumb-main-image"><a href=""><img src="<?= $imageDir . $product->imageName[0]; ?>" alt=""></a></div>
+                        <div class="thumb-main-image"><a href=""><img src="<?= $product->getImgPath(); ?>" alt=""></a></div>
                     </div>
                 </div>
                 <div class="clearfix"></div>
@@ -56,7 +56,7 @@ $imageDir = '/images/products/';
                 </div>
                 <p class="short-info">Lorem ipsum dolor sit amet, feugiat delicata liberavisse id cum, no quo maiorum intellegebat, liber regione eu sit. Mea cu case ludus integre, vide viderer eleifend ex mea. His at soluta regione diceret, cum et atqui placerat petentium. Lorem ipsum dolor sit amet, feugiat delicata liberavisse id cum, no quo maiorum intellegebat, lie diceret, cum et atqui placerat petentium.</p>
                 <div class="price">
-                    <span>$522.00</span>
+                    <span><?= $product->price; ?> грн.</span>
                 </div>
                 <form action="" class="purchase-form">
                     <div class="qt-area">

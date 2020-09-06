@@ -14,8 +14,8 @@ class BaseDao
     {
         if ($this->dbh === NULL) {
             $this->dbh = new PDO('mysql:host=mymagaz.local;dbname=mymagaz', 'root', '', [
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-                , PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
+                \PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
+                , \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
             ]);
         }
         return $this->dbh;

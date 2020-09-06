@@ -3,6 +3,9 @@
 namespace app\services;
 
 use app\dao\ProductDao;
+use app\dao\CategoryDao;
+use app\dao\ColourDao;
+use app\dao\SizeDao;
 use app\dao\mapper\CategoryMapper;
 use app\dao\mapper\ProductMapper;
 use app\services\CategoryService;
@@ -11,6 +14,9 @@ class ProductService
 {
 
     private $productDao;
+    private $categoryDao;
+    private $colourDao;
+    private $sizeDao;
     private $productMapper;
 
     public function productDao()
@@ -21,6 +27,30 @@ class ProductService
         return $this->productDao;
     }
 
+    public function categoryDao()
+    {
+        if ($this->categoryDao === NULL) {
+            $this->categoryDao = new CategoryDao();
+        }
+        return $this->categoryDao;
+    }
+
+    public function colourDao()
+    {
+        if ($this->colourDao === NULL) {
+            $this->colourDao = new ColourDao();
+        }
+        return $this->colourDao;
+    }
+
+    public function sizeDao()
+    {
+        if ($this->sizeDao === NULL) {
+            $this->sizeDao = new SizeDao();
+        }
+        return $this->sizeDao;
+    }
+
     public function ProductMapper()
     {
         if ($this->productMapper === NULL) {
@@ -29,81 +59,74 @@ class ProductService
         return $this->productMapper;
     }
 
-    public function mapEditedProduct($editedProduct)
+    public function mapProduct($productArray)
     {
-        $product = $this->productMapper()->map($editedProduct);
-        $product->category = ($editedProduct['categories']);
-        $product->imageName [] = $editedProduct['imageName'];
+        $product = $this->productMapper()->map($productArray);
+        $product->addCategories($productArray['categories']);
+        $product->addImageName($productArray['imageName']);
+        $product->addColours($productArray['colours']);
+        $product->addSizes($productArray['sizes']);
+        $product->setPrice($productArray['price']);
+
         return $product;
     }
 
-    public function generateImageName($uploadedFile)
+    public function writeFile($file)
     {
-        $extention = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-        return uniqid() . "." . $extention;
+        $fileName = $this->generateImageName($file);
+        $upload = $this->uploadProductImage($file, $fileName);
+        $result = $upload ? $fileName : '';
+        return $result;
     }
 
-    public function uploadProductImage($uploadedFile, $imageName)
+    public function generateImageName($file)
     {
-        $uploadFileDestination = '../web/images/products/' . $imageName;
-        return move_uploaded_file($uploadedFile['tmp_name'], $uploadFileDestination);
+        $extention = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $fileName = uniqid() . "." . $extention;
+        return $fileName;
     }
 
-    public function writeProduct($productName, $categories, $productImageName)
+    public function uploadProductImage($file, $fileName)
     {
-        $writedProductId = $this->productDao()->insertProduct($productName);
+        $fileDestination = '../web/images/products/' . $fileName;
+        $upload = move_uploaded_file($file['tmp_name'], $fileDestination);
+        return $upload;
+    }
+
+    public function writeProduct($product)
+    {
+        $writedProductId = $this->productDao()->insertProduct($product);
         if (is_numeric($writedProductId)) {
-            $writeCategories = $this->productDao()->insertProductCategories($writedProductId, $categories);
-            if ($writeCategories) {
-                $writeImage = $this->productDao()->insertProductImage($writedProductId, $productImageName);
-                $progress = $writeImage ? true : false;
-            } else {
-                $progress = false;
-            }
+
+            $product->setId($writedProductId);
+
+            $writeCategories = $this->productDao()->insertProductCategories($product);
+            $writeImage = $this->productDao()->insertProductImageName($product);
+            $writeColours = $this->productDao()->insertProductColours($product);
+            $writeSizes = $this->productDao()->insertProductSizes($product);
+            $progress = ($writeCategories && $writeImage && $writeColours && $writeSizes) ? true : false;
         } else {
             $progress = false;
         }
         return $progress;
     }
 
-    public function editProduct($currentProduct, $editedProduct)
+    public function editProduct($product)
     {
-        if ($currentProduct->isChangedContentProductsTable($editedProduct)) {
-            $productsTable = $this->productDao()->editProduct($currentProduct->id, $editedProduct);
-        } else {
-            $productsTable = true;
-        }
+        $productsTable = $this->productDao()->editProduct($product);
+        $productCategoriesTable = $this->productDao()->editProductCategories($product);
+        $productImageTable = $this->productDao()->editProductImageName($product);
+        $productColoursTable = $this->productDao()->editProductColours($product);
+        $productSizesTable = $this->productDao()->editProductSizes($product);
 
-        if ($currentProduct->isChangedCategories($editedProduct->category)) {
-            $productCategoriesTable = $this->productDao()->editProductCategories($currentProduct->id, $editedProduct->category);
-        } else {
-            $productCategoriesTable = true;
-        }
-
-        if ($currentProduct->isChangedImageName($editedProduct->imageName)) {
-            $productImageTable = $this->productDao()->editProductImageName($currentProduct->id, $editedProduct->imageName);
-        } else {
-            $productImageTable = true;
-        }
-
-        $editProduct = ($productsTable AND $productCategoriesTable AND $productImageTable) ? true : false;
-        return $editProduct;
+        $changedProduct = ($productsTable && $productCategoriesTable && $productImageTable && $productColoursTable && $productSizesTable) ? true : false;
+        return $changedProduct;
     }
 
     public function getProductById($id)
     {
-        $row = $this->productDao()->getProductById($id);
-        $product = $this->productMapper()->map($row);
-        $this->relationsWithCategories([$product]);
-        $imageName = $this->getProductImageByProductId($product->id);
-        $product->imageName [] = $imageName;
-        return $product;
-    }
-
-    public function getProductImageByProductId($id)
-    {
-        $imageName = $this->productDao()->getProductImageByProductId($id);
-        return $imageName == false ? '' : $imageName;
+        $products = $this->getProducts([$id]);
+        return isset($products[$id]) ? $products[$id] : false;
     }
 
     public function getCategoryById($categoryId)
@@ -138,28 +161,36 @@ class ProductService
         return $product;
     }
 
-    public function getProducts()
+    public function getProducts($ids = [])
     {
-        $allProducts = $this->productDao()->getProducts();
+        $allProducts = $this->productDao()->getAllProducts($ids);
         foreach ($allProducts as $row) {
             $product = $this->productMapper()->map($row);
             $products[$product->id] = $product;
         }
         $this->relationsWithCategories($products);
         $this->relationsWithImageName($products);
+        $this->relationsWithColours($products);
+        $this->relationsWithSizes($products);
+
         return $products;
+    }
+
+    public function getAllProducts()
+    {
+        return $this->getProducts();
     }
 
     public function relationsWithCategories($products)
     {
         $categoryMapper = new CategoryMapper();
-        $allCategories = $this->productDao()->getProductsCategories();
+        $allCategories = $this->productDao()->getProductCategories();
 
         foreach ($allCategories as $row) {
             $category = $categoryMapper->map($row);
             foreach ($products as $product) {
                 if ($product->id == $row['product_id']) {
-                    $product->category [] = $category;
+                    $product->categories [] = $category;
                 }
             }
         }
@@ -167,13 +198,34 @@ class ProductService
 
     public function relationsWithImageName($products)
     {
+        $allProductImages = $this->productDao()->getAllProductImages();
+
         foreach ($products as $product) {
-            $imageName = $this->getProductImageByProductId($product->id);
-            $product->imageName [] = $imageName;
+            foreach ($allProductImages as $productImage) {
+                if ($product->id == $productImage['product_id']) {
+                    $product->addImageName($productImage['image_name']);
+                }
+            }
         }
     }
 
-    public function selectCategory($categories)
+    public function relationsWithColours($products)
+    {
+        foreach ($products as $product) {
+            $productColours = $this->productDao()->getProductColoursByProductId($product->id);
+            $product->addColours($productColours);
+        }
+    }
+
+    public function relationsWithSizes($products)
+    {
+        foreach ($products as $product) {
+            $productSizes = $this->productDao()->getProductSizesByProductId($product->id);
+            $product->addSizes($productSizes);
+        }
+    }
+
+    public function selectCategories($categories)
     {
         $categoryService = new CategoryService();
         $allCategories = $categoryService->getCategories();

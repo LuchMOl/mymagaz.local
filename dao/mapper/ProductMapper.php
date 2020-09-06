@@ -13,6 +13,7 @@ class ProductMapper
 
         $product->setId($data['id']);
         $product->setName($data['name']);
+        $product->setPrice($data['price']);
 
         return $product;
     }

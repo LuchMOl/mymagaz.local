@@ -7,8 +7,11 @@ class Product
 
     public $id;
     public $name;
-    public $category = [];
-    public $imageName = [];
+    public $categories = [];
+    public $imageName;
+    public $colours = [];
+    public $sizes = [];
+    public $price;
 
     public function setId($id)
     {
@@ -20,23 +23,66 @@ class Product
         $this->name = $name;
     }
 
-    public function addCategory($category)
+    public function setPrice($price)
     {
-        $this->category [$category->id] = $category->name;
+        $this->price = $price;
+    }
+
+    public function addCategories($categories)
+    {
+        if (!is_string($categories[0])) {
+            $this->categories [$categories->id] = $categories->name;
+        } else {
+            $this->categories = $categories;
+        }
+    }
+
+    public function addImageName($imageName)
+    {
+        $this->imageName = $imageName;
+    }
+
+    public function addColours($colours)
+    {
+        $this->colours = $colours;
+    }
+
+    public function addSizes($sizes)
+    {
+        $this->sizes = $sizes;
+    }
+
+    public function addColoursAndSizes($coloursAndSizes)
+    {
+        $colour = ['colourId' => $coloursAndSizes['colour_id'], 'colourName' => $coloursAndSizes['colour']];
+        $size = ['sizeId' => $coloursAndSizes['size_id'], 'sizeName' => $coloursAndSizes['size']];
+        $this->colours = [$colour];
+        $this->sizes = [$size];
     }
 
     public function isChanged($editedProduct)
     {
-        $name = $this->name == $editedProduct->name ? false : true;
-        $categories = $this->isChangedCategories($editedProduct->category);
-        $image = $this->isChangedImageName($editedProduct->imageName);
-        return ($name OR $categories OR $image) ? true : false;
+        $nameWasChanged = $this->name != $editedProduct->name ? true : false;
+        $categoriesWereChanged = $this->isChangedCategories($editedProduct->categories);
+        $imageNameWasChanged = $this->isChangedImageName($editedProduct->imageName);
+        $coloursWereChanged = $this->isChangedColours($editedProduct->colours);
+        $sizesWereChanged = $this->isChangedSizes($editedProduct->sizes);
+        $priceWasChanged = $this->isChangedPrice($editedProduct->price);
+        $isChange = ($nameWasChanged || $categoriesWereChanged || $imageNameWasChanged || $coloursWereChanged || $sizesWereChanged || $priceWasChanged) ? true : false;
+        return $isChange;
     }
 
     public function isChangedCategories($categories)
     {
-        $categoryId = $this->extractCategoryId();
-        return (empty(array_diff($categoryId, $categories)) AND empty(array_diff($categories, $categoryId))) ? false : true;
+        if (!empty($this->categories)) {
+            foreach ($this->categories as $category) {
+                $curentProductCategoriesId [] = $category->id;
+            }
+        } else {
+            $curentProductCategoriesId [] = '0';
+        }
+        $isChangedCategories = (!empty(array_diff($curentProductCategoriesId, $categories)) || !empty(array_diff($categories, $curentProductCategoriesId))) ? true : false;
+        return $isChangedCategories;
     }
 
     public function isChangedImage($uploadedFile)
@@ -59,27 +105,54 @@ class Product
 
     public function isChangedImageName($imageName)
     {
-        $isChanged = $this->imageName[0] == $imageName[0] ? false : true;
+        $isChanged = $this->imageName[0] != $imageName[0] ? true : false;
         return $isChanged;
     }
 
-    public function extractCategoryId()
+    public function isChangedColours($colours)
     {
-        if (!empty($this->category)) {
-            foreach ($this->category as $category) {
-                $id [] = $category->id;
-            }
-            $categoryId = $id;
+        if (!empty($this->colours[0])) {
+            $isChanged = $this->colours[0]['colourId'] != $colours[0] ? true : false;
+        } elseif (!empty($colours[0])) {
+            $isChanged = true;
         } else {
-            $categoryId = [0, 0, 0];
+            $isChanged = false;
         }
-        return $categoryId;
+        return $isChanged;
+    }
+
+    public function isChangedSizes($sizes)
+    {
+        if (!empty($this->sizes[0])) {
+            $isChanged = $this->sizes[0]['sizeId'] != $sizes[0] ? true : false;
+        } elseif (!empty($sizes[0])) {
+            $isChanged = true;
+        } else {
+            $isChanged = true;
+        }
+        return $isChanged;
+    }
+
+    public function isChangedPrice($price)
+    {
+        $isChanged = $this->price != $price ? true : false;
+        return $isChanged;
     }
 
     public function isChangedContentProductsTable($editedProduct)
     {
-        $isChanged = $this->name == $editedProduct->name ? false : true;
-        return $isChanged;
+        $isChangedProductName = $this->name != $editedProduct->name ? true : false;
+        $isChangedProductPrice = $this->price != $editedProduct->price ? true : false;
+
+        $isChange = ($isChangedProductName || $isChangedProductPrice) ? true : false;
+        return $isChange;
     }
+
+    public function getImgPath()
+    {
+        $imageDir = '/images/products/';
+        return $imageDir . (empty($this->imageName) ? 'no_photo.jpg' : $this->imageName);
+    }
+
 
 }

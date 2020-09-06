@@ -11,6 +11,28 @@ a:hover {
 img {
     width: 100%;
 }
+.colour{
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    text-transform: capitalize;
+}
+
+.square{
+    height: 50px;
+    width: 50px;
+    margin: 10px 15px 10px 10px;
+    border: 1px double black;
+    border-radius: 10px;
+}
+
+.size{
+    margin: 20px 15px 10px 10px;
+    text-align: center;
+    display: inline-block;
+    text-transform: uppercase;
+}
+
 .raleway {
     font-family: 'raleway', sans-serif;
 }
@@ -51,13 +73,13 @@ img {
 .action ul li a {
     color: #fff;
     transition: .2s all ease-in-out;
-    
+
 }
 
 .social ul li a:hover,
 .action ul li a:hover {
     color: #666;
-    
+
 }
 
 .header {
@@ -267,7 +289,7 @@ ol.carousel-indicators li.active {
 .nav.nav-tabs {
     background: #40bea7;
     border: none;
-    text-transform: uppercase;  
+    text-transform: uppercase;
     margin: 0px 15px 30px;
     overflow: hidden;
     font-family: 'raleway', sans-serif;
@@ -297,6 +319,7 @@ ol.carousel-indicators li.active {
 }
 .single-product {
     border:3px solid #40bea7;
+    border-radius: 30px;
     margin-bottom: 30px;
     position: relative;
     transition: .2s all ease-in-out;
@@ -332,7 +355,7 @@ ol.carousel-indicators li.active {
 }
 .single-product:hover .product-hover {
     opacity:1;
-    height:50%       
+    height:50%
 }
 .product-hover ul {
     margin: 0px;
@@ -358,7 +381,7 @@ ol.carousel-indicators li.active {
     background: #fff;
 }
 .blog {
-    
+
 }
 .blog-title {
     background: #40bea7;
@@ -380,13 +403,13 @@ ol.carousel-indicators li.active {
 }
 .blog-title a {
     padding: 10px 0px;
-    font-size: 10pt;    
+    font-size: 10pt;
 }
 .blog-title a:hover {
     color: #666;
 }
 .single-post {
-    
+
 }
 .post-thumbnail {
     position: relative;
@@ -429,7 +452,7 @@ ol.carousel-indicators li.active {
 .single-widget {
     position: relative;
     padding-right: 20px;
-} 
+}
 .single-widget:after {
     position: absolute;
     right: 0;
@@ -558,7 +581,7 @@ p.short-info {
     border-bottom: 2px solid #bebebe;
 }
 .purchase-form input.qt {
-    
+
 }
 .qt-area {
     display: inline-block;

@@ -21,7 +21,7 @@ class CategoryService
     public function getCategories()
     {
         $categoryMapper = new CategoryMapper();
-        $allCategories = $this->categoryDao()->getCategories();
+        $allCategories = $this->categoryDao()->getAllCategories();
         foreach ($allCategories as $row) {
             $category = $categoryMapper->map($row);
             $categories[$category->getId($category)] = $category;
@@ -262,6 +262,11 @@ class CategoryService
                 $this->selectCildren($category->id, $parentId, $space);
             }
         }
+    }
+
+    public function getCategoriesOfExistingProducts()
+    {
+        return $this->categoryDao()->getCategoriesOfExistingProducts();
     }
 
 }

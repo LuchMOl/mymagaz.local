@@ -2,14 +2,22 @@
 
 namespace app\controllers;
 
-use app\services\productService;
+use app\services\ProductService;
 use app\services\CategoryService;
+use app\services\ColourService;
+use app\services\SizeService;
+use app\models\Product;
+use app\models\ProductForm;
+use app\dao\mapper\ProductFormMapper;
 
 class ProductController
 {
 
     private $productService;
     private $categoryService;
+    private $colourService;
+    private $sizeService;
+    private $productFormMapper;
 
     public function productService()
     {
@@ -25,6 +33,30 @@ class ProductController
             $this->categoryService = new CategoryService();
         }
         return $this->categoryService;
+    }
+
+    public function colourService()
+    {
+        if ($this->colourService === NULL) {
+            $this->colourService = new ColourService();
+        }
+        return $this->colourService;
+    }
+
+    public function sizeService()
+    {
+        if ($this->sizeService === NULL) {
+            $this->sizeService = new SizeService();
+        }
+        return $this->sizeService;
+    }
+
+    public function ProductFormMapper()
+    {
+        if ($this->productFormMapper === NULL) {
+            $this->productFormMapper = new ProductFormMapper();
+        }
+        return $this->productFormMapper;
     }
 
     public function actionIndex()
@@ -43,7 +75,7 @@ class ProductController
             $products = $this->productService()->getProductsThisCategory($categoryId);
         } else {
             $title = 'Все товары';
-            $products = $this->productService()->getProducts();
+            $products = $this->productService()->getAllProducts();
         }
         require_once '../views/product/catalog.php';
     }
@@ -51,21 +83,20 @@ class ProductController
     public function actionCreateNew()
     {
         $mesage = '';
-        $title = 'Добавить товар';
+        $mode = 'create';
+
+        $allColours = $this->colourService()->getAllColours();
+        $allSizes = $this->sizeService()->getAllSizes();
 
         if (isset($_POST['submitProductForm'])) {
             if (!empty($_POST['productName'])) {
 
-                if (file_exists($_FILES['productImage']['tmp_name'])) {
-                    $productImageName = $this->productService()->generateImageName($_FILES['productImage']);
-                    $isUpload = $this->productService()->uploadProductImage($_FILES['productImage'], $productImageName);
-                    $mesage = $isUpload ? '' : 'Файл не перемещен.';
-                } else {
-                    $productImageName = 'no_photo.jpg';
-                }
+                $productImageName = !empty($_FILES) ? $this->productService()->writeFile($_FILES['productImage']) : '';
 
-                $category = !isset($_POST['categories']) ? ['0'] : $_POST['categories'];
-                $writeProduct = $this->productService()->writeProduct($_POST['productName'], $category, $productImageName);
+                $_POST ['imageName'] = $productImageName;
+                $product = $this->ProductFormMapper()->map($_POST);
+
+                $writeProduct = $this->productService()->writeProduct($product);
 
                 $writeProduct ? header('Location: /product/catalog/') : $mesage = 'Не записало в базу.';
             } else {
@@ -78,43 +109,30 @@ class ProductController
     public function actionEdit()
     {
         $mesage = '';
-        $title = 'Редактировать товар';
+        $mode = 'edit';
 
         if (isset($_GET['editId'])) {
 
-            $currentProduct = $this->productService()->getProductById($_GET['editId']);
+            $product = $this->productService()->getProductById($_GET['editId']);
+            $allColours = $this->colourService()->getAllColours();
+            $allSizes = $this->sizeService()->getAllSizes();
 
             if (isset($_POST['submitProductForm'])) {
                 if (!empty($_POST['productName'])) {
-                    $isChangedImage = $currentProduct->isChangedImage($_FILES['productImage']);
-                    if ($isChangedImage) {
-                        if ($currentProduct->imageName[0] == 'no_photo.jpg') {
-                            $productImageName = $this->productService()->generateImageName($_FILES['productImage']);
-                        } else {
-                            $productImageName = $currentProduct->imageName[0];
-                        }
-                        $this->productService()->uploadProductImage($_FILES['productImage'], $productImageName);
+
+                    if (empty($product->imageName)) {
+                         $_POST ['imageName'] = !empty($_FILES) ? $this->productService()->writeFile($_FILES['productImage']) : '';
                     } else {
-                        $productImageName = $currentProduct->imageName[0];
+                        !empty($_FILES) ? $this->productService()->uploadProductImage($_FILES['productImage'], $product->imageName) : '';
+                        $_POST ['imageName'] = $product->imageName;
                     }
 
-                    $categories = !isset($_POST['categories']) ? ['0'] : $_POST['categories'];
+                    $editedProduct = $this->ProductFormMapper()->map($_POST);
+                    $editedProduct->setId($product->id);
 
-                    $editedProduct = ['id' => $_GET['editId'],
-                        'name' => $_POST['productName'],
-                        'categories' => $categories,
-                        'imageName' => $productImageName];
+                    $editProduct = $this->productService()->editProduct($editedProduct);
 
-                    $editedProduct = $this->productService()->mapEditedProduct($editedProduct);
-
-                    if ($currentProduct->isChanged($editedProduct)) {
-                        $editProduct = $this->productService()->editProduct($currentProduct, $editedProduct);
-                        $editProduct ? header('Location: /product/catalog/') : $mesage = 'Не записало в базу.';
-                    } elseif ($isChangedImage) {
-                        header('Location: /product/catalog/');
-                    } else {
-                        $mesage = 'Нечего менять';
-                    }
+                    $editProduct ? header('Location: /product/catalog/') : $mesage = 'Не записало в базу.';
                 } else {
                     $mesage = 'Не заполнено обязательное поле';
                 }
