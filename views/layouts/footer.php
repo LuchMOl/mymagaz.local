@@ -24,5 +24,6 @@
 <script type="text/javascript" src="/plugins/revolution/js/extensions/revolution.extension.actions.min.js"></script>
 <!-- Custom scripts-->
 <script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/js/site.js"></script>
 </body>
 </html>

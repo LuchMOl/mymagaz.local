@@ -821,7 +821,7 @@ iframe {
     font-family: monospace;
     padding: 5px !important;
     background:#E2F4FF;
-} 
+}
 
 /*2. ELEMENTS*/
 @media (min-width: 320px) {
@@ -5563,7 +5563,9 @@ textarea.form-control {
     border: 3px solid #e5e5e5; }
     .ps-product--detail .ps-product__style ul li a:hover {
       border-color: #2AC37D; }
-
+.ps-product--detail .ps-product__style ul li .colorElement.selected {
+      border-color: #2AC37D;
+}
 .ps-product--detail .ps-product__size > h4 a {
   float: right;
   display: inline-block;

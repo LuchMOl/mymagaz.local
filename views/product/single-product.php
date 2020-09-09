@@ -42,24 +42,29 @@ $imageDir = '/images/products/';
                             <h4>CHOOSE YOUR STYLE</h4>
                             <ul>
                                 <?php foreach ($product->colours as $colour) : ?>
-                                    <li><a href="/catalog/<?= $colour['id']; ?>"><img src="/images/products/colours/<?= $colour['colour'] ?>.jpg" alt=""></a></li>
+                                    <li><a class="colorElement" href="#" data-color-id="<?= $colour['id']; ?>"><img src="/images/products/colours/<?= $colour['colour'] ?>.jpg" alt=""></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
                         <div class="ps-product__block ps-product__size">
                             <h4>CHOOSE SIZE</h4>
-                            <select class="ps-select selectpicker">
-                                <option value="1">Select Size</option>
+                            <select id="sizeSelect" class="ps-select selectpicker">
+                                <option value="0">Select Size</option>
                                 <?php foreach ($product->sizes as $size) : ?>
                                     <option value="<?= $size['id'] ?>"><?= $size['size'] ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <div class="form-group">
-                                <input class="form-control" type="number" value="1">
+                                <input id="quantityInput" class="form-control" type="number" value="1">
                             </div>
                         </div>
-                        <div class="ps-product__shopping"><a class="ps-btn mb-10" href="cart.html">Add to cart<i class="ps-icon-next"></i></a>
-
+                        <div class="ps-product__shopping"><a class="ps-btn mb-10 addToCartBtn" href="">Add to cart<i class="ps-icon-next"></i></a>
+                            <form id="productCartForm" method="POST" action="/cart/add/">
+                                <input type="hidden" name="productId" value="<?=$product->id?>">
+                                <input type="hidden" name="colorId" value="">
+                                <input type="hidden" name="sizeId" value="">
+                                <input type="hidden" name="quantity" value="">
+                            </form>
                         </div>
                     </div>
                     <div class="clearfix"></div>
