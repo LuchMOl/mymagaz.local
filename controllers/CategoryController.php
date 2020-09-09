@@ -68,7 +68,7 @@ class CategoryController
     public function actionEdit()
     {
         $mesage = '';
-        $categories = $this->categoryService()->getAllCategories();
+        $categories = $this->categoryService()->getCategories();
         $curentCategory = $this->categoryService()->getCategoryById($categories, $_GET['editId']);
         $title = "Редактировать категорию -$curentCategory->name-";
 

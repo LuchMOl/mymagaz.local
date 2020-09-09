@@ -5,109 +5,70 @@ namespace app\views\product\category;
 require_once("../views/layouts/header.php");
 $imageDir = '/images/products/';
 ?>
-<!--
-<div class="breadcumbs">
-    <div class="container">
-        <div class="row">
-            <span>Home > </span>
-            <span>Men > </span>
-            <span>Eyewear > </span>
-            <span>Blue Jacket</span>
-        </div>
-    </div>
-</div>
--->
-<div class="short-description">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="product-thumbnail">
-                    <!--
-                    <div class="col-md-2 col-sm-2 col-xs-2">
-                        <ul class="thumb-image">
-                            <li class="active"><a href="/images/products/single-product-1.jpg"><img src="/images/products/single-product-1.jpg" alt=""></a></li>
-                            <li><a href="/images/products/single-product-2.jpg"><img src="/images/products/single-product-2.jpg" alt=""></a></li>
-                            <li><a href="/images/products/single-product-3.jpg"><img src="/images/products/single-product-3.jpg" alt=""></a></li>
-                            <li><a href=""><img src="/images/products/single-product-4.jpg" alt=""></a></li>
-                            <li><a href=""><img src="/images/products/single-product-5.jpg" alt=""></a></li>
-                        </ul>
-                    </div>
-                    -->
-                    <div class="col-md-10 col-sm-10 col-xs-10">
-                        <div class="thumb-main-image"><a href=""><img src="<?= $product->getImgPath(); ?>" alt=""></a></div>
-                    </div>
-                </div>
-                <div class="clearfix"></div>
-            </div>
-            <div class="col-md-6">
-                <h1 class="product-title"><?= $product->name ?></h1>
-                <div class="ratings">
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <i class="fa fa-star"></i>
-                    <span class="vote-count">35 vote</span>
-                </div>
-                <div class="product-info">
-                    <span class="product-id"><span class="strong-text">Product ID:</span> RST 4562</span>
 
-                    <span class="product-avilability"><span class="strong-text">Availability:</span> In Stock</span>
-                </div>
-                <p class="short-info">Lorem ipsum dolor sit amet, feugiat delicata liberavisse id cum, no quo maiorum intellegebat, liber regione eu sit. Mea cu case ludus integre, vide viderer eleifend ex mea. His at soluta regione diceret, cum et atqui placerat petentium. Lorem ipsum dolor sit amet, feugiat delicata liberavisse id cum, no quo maiorum intellegebat, lie diceret, cum et atqui placerat petentium.</p>
-                <div class="price">
-                    <span><?= $product->price; ?> грн.</span>
-                </div>
-                <form action="" class="purchase-form">
-                    <div class="qt-area">
-                        <i class="fa fa-minus"></i>
-                        <input name="quantity" class="qt" value="1">
-                        <i class="fa fa-plus"></i>
-                    </div>
-
-                    <button class="btn btn-theme" type="submit">Add to cart</button>
-                    <div class="social-share">
-                        <ul>
-                            <li><a href=""><i class="fa fa-facebook"></i></a></li>
-                            <li><a href=""><i class="fa fa-twitter"></i></a></li>
-                            <li><a href=""><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href=""><i class="fa fa-linkedin"></i></a></li>
-                        </ul>
-                    </div>
-                </form>
-                <p><span class="strong-text">Categories:</span> Pants, T-Shirt, Jama</p>
-                <p><span class="strong-text">Tags:</span> GonShop, theme-sky, woocommerce, wordpress</p>
-
-                <ul class="product-info-btn">
-                    <li><a href=""><i class="fa fa-heart-o"></i> Wishlist</a></li>
-                    <li><a href=""><i class="fa fa-arrows-h"></i> Compare</a></li>
-                    <li><a href=""><i class="fa fa-envelope-o"></i> Email</a></li>
-                    <li><a href=""><i class="fa fa-print"></i> Print</a></li>
-                </ul>
-                <p><i class="fa fa-check"></i> Let’s start with the most essential part of any written content. At the early </p>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="single-product-tabs">
-            <ul class="nav nav-tabs nav-single-product-tabs">
-                <li class="active"><a href="#description" data-toggle="tab">Description</a></li>
-                <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
-            </ul>
-            <div class="tab-content">
-                <div class="tab-pane active" id="description">
-                    <div class="product-desc">
-                        <h2>Product Description</h2>
-                        <p>Ultricies et consectetur rhoncus lorem mattis, ligula interdum nibh dolor ipsum, venenatis ultrices sem nisl senectus phasellus lectus facilisis gravida curabitur interdum pretium et pellentesque nullam auctor vestibulum aenean ipsum placerat erat volutpat lectus mi est lacinia sociosqu, pretium habitasse aenean eros tristique augue a vivamus ac, sapien blandit nullam et neque curabitur varius nostra dui dictum cras orci congue.  Ultricies et consectetur rhoncus lorem mattis, ligula interdum nibh dolor ipsum, venenatis ultrices sem nisl senectus phasellus lectus facilisis gravida curabitur interdum pretium et pellentesque nullam auctor vestibulum aenean ipsum placerat</p>
-                    </div>
-                </div>
-                <div class="tab-pane" id="reviews">
+<main class="ps-main">
+    <div class="test">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 ">
                 </div>
             </div>
         </div>
     </div>
-</div>
+    <div class="ps-product--detail pt-60">
+        <div class="ps-container">
+            <div class="row">
+                <div class="col-lg-10 col-md-12 col-lg-offset-1">
+                    <div class="ps-product__thumbnail">
 
-<?php require_once '../views/layouts/footer.php'; ?>
+                        <div class="ps-product__image">
+                            <div class="item"><img class="zoom" src="<?= $product->getImgPath(); ?>" alt="" data-zoom-image="images/shoe-detail/1.jpg"></div>
+                        </div>
+                    </div>
+                    <div class="ps-product__thumbnail--mobile">
+                        <div class="ps-product__main-img"><img src="" alt=""></div>
+                        <div class="ps-product__preview owl-slider" data-owl-auto="true" data-owl-loop="true" data-owl-speed="5000" data-owl-gap="20" data-owl-nav="true" data-owl-dots="false" data-owl-item="3" data-owl-item-xs="3" data-owl-item-sm="3" data-owl-item-md="3" data-owl-item-lg="3" data-owl-duration="1000" data-owl-mousedrag="on"><img src="images/shoe-detail/1.jpg" alt=""><img src="images/shoe-detail/2.jpg" alt=""><img src="images/shoe-detail/3.jpg" alt=""></div>
+                    </div>
+                    <div class="ps-product__info">
+
+                        <h1><?= $product->name; ?></h1>
+                        <p class="ps-product__category">
+                            <?php foreach ($product->categories as $category) : ?>
+                                <a href="/catalog/<?= $category->id; ?>"><?= $category->name; ?></a> |
+                            <?php endforeach; ?>
+                        <h3 class="ps-product__price"><?= $product->price; ?> uah</h3>
+
+                        <div class="ps-product__block ps-product__style">
+                            <h4>CHOOSE YOUR STYLE</h4>
+                            <ul>
+                                <?php foreach ($product->colours as $colour) : ?>
+                                    <li><a href="/catalog/<?= $colour['id']; ?>"><img src="/images/products/colours/<?= $colour['colour'] ?>.jpg" alt=""></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                        <div class="ps-product__block ps-product__size">
+                            <h4>CHOOSE SIZE</h4>
+                            <select class="ps-select selectpicker">
+                                <option value="1">Select Size</option>
+                                <?php foreach ($product->sizes as $size) : ?>
+                                    <option value="<?= $size['id'] ?>"><?= $size['size'] ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                            <div class="form-group">
+                                <input class="form-control" type="number" value="1">
+                            </div>
+                        </div>
+                        <div class="ps-product__shopping"><a class="ps-btn mb-10" href="cart.html">Add to cart<i class="ps-icon-next"></i></a>
+
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <?php require_once '../views/layouts/footer.php'; ?>

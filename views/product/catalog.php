@@ -1,9 +1,11 @@
 <?php
 
-namespace app\views\product\category;
+namespace app\views\product;
 
 require_once ($catalog == 'front' ? '../views/layouts/header.php' : '../views/layouts/admin/header.php');
 $imageDir = '/images/products/';
+//var_dump($products);
+//var_dump($categories);
 ?>
 
 <div class='container'>
@@ -62,7 +64,8 @@ $imageDir = '/images/products/';
 
             </ul>
         <?php elseif (!empty($categories)) : ?>
-            <?php foreach ($categories as $category): ?>
+            <?php foreach ($categoriesOfExistingProducts as $category): ?>
+        <?php //var_dump($category);?>
                 <ul>
 
                         <li><a href='/catalog/<?= $category['id']; ?>/'><?= $category['name']; ?></a></li>

@@ -13,7 +13,8 @@ class CatalogController extends ProductController
         $catalog = 'front';
         $title = 'Все категории';
         $categoryService = new CategoryService();
-        $categories = $categoryService->getCategoriesOfExistingProducts();
+        $categoriesOfExistingProducts = $categoryService->getCategoriesOfExistingProducts();
+        //var_dump($categories);
         require_once '../views/product/catalog.php';
     }
 
@@ -28,6 +29,7 @@ class CatalogController extends ProductController
             require_once '../views/product/catalog.php';
         } else {
             $product = $this->productService()->getProductById($_GET['id']);
+            //var_dump($product);
             require_once '../views/product/single-product.php';
         }
     }
