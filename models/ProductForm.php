@@ -9,7 +9,7 @@ class ProductForm
     public $name;
     public $categories = [];
     public $imageName;
-    public $colours = [];
+    public $colors = [];
     public $sizes = [];
     public $price;
 
@@ -41,12 +41,12 @@ class ProductForm
         }
     }
 
-    public function setColours($data)
+    public function setcolors($data)
     {
-        if (isset($data['colourIds'])) {
-            $this->colours = $data['colourIds'];
+        if (isset($data['colorIds'])) {
+            $this->colors = $data['colorIds'];
         } else {
-            $this->colours = [];
+            $this->colors = [];
         }
     }
 

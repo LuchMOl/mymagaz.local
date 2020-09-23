@@ -4,25 +4,27 @@ namespace app\controllers;
 
 use app\services\ProductService;
 use app\services\CategoryService;
-use app\services\ColourService;
+use app\services\colorService;
 use app\services\SizeService;
 use app\models\Product;
 use app\models\ProductForm;
 use app\dao\mapper\ProductFormMapper;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ProductController
 {
 
     private $productService;
     private $categoryService;
-    private $colourService;
+    private $colorService;
     private $sizeService;
     private $productFormMapper;
 
     public function productService()
     {
         if ($this->productService === NULL) {
-            $this->productService = new productService();
+            $this->productService = new ProductService();
         }
         return $this->productService;
     }
@@ -35,12 +37,12 @@ class ProductController
         return $this->categoryService;
     }
 
-    public function colourService()
+    public function colorService()
     {
-        if ($this->colourService === NULL) {
-            $this->colourService = new ColourService();
+        if ($this->colorService === NULL) {
+            $this->colorService = new colorService();
         }
-        return $this->colourService;
+        return $this->colorService;
     }
 
     public function sizeService()
@@ -85,7 +87,7 @@ class ProductController
         $mesage = '';
         $mode = 'create';
 
-        $allColours = $this->colourService()->getAllColours();
+        $allcolors = $this->colorService()->getAllcolors();
         $allSizes = $this->sizeService()->getAllSizes();
 
         if (isset($_POST['submitProductForm'])) {
@@ -114,14 +116,14 @@ class ProductController
         if (isset($_GET['editId'])) {
 
             $product = $this->productService()->getProductById($_GET['editId']);
-            $allColours = $this->colourService()->getAllColours();
+            $allcolors = $this->colorService()->getAllcolors();
             $allSizes = $this->sizeService()->getAllSizes();
 
             if (isset($_POST['submitProductForm'])) {
                 if (!empty($_POST['productName'])) {
 
                     if (empty($product->imageName)) {
-                         $_POST ['imageName'] = !empty($_FILES) ? $this->productService()->writeFile($_FILES['productImage']) : '';
+                        $_POST ['imageName'] = !empty($_FILES) ? $this->productService()->writeFile($_FILES['productImage']) : '';
                     } else {
                         !empty($_FILES) ? $this->productService()->uploadProductImage($_FILES['productImage'], $product->imageName) : '';
                         $_POST ['imageName'] = $product->imageName;
@@ -141,6 +143,17 @@ class ProductController
         } else {
             header("Location: /product/catalog/");
         }
+    }
+
+    public function actionTestxls()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setCellValue('A1', 'Hello World !');
+
+        $writer = new Xlsx($spreadsheet);
+        $writer->save(dirname(__DIR__) . '/hello world.xlsx');
+        die('done');
     }
 
 }

@@ -4,7 +4,8 @@ namespace app\views\layouts\admin;
 
 use app\services\UserService;
 
-$greeting = UserService::getGreetingUser();
+$userService = new UserService();
+$curentUser = $userService->getCurrentUser();
 ?>
 <html lang="en-US">
     <head>
@@ -26,7 +27,7 @@ $greeting = UserService::getGreetingUser();
             <div class="container">
                 <div class="row">
                     <div class="col-md-6">
-                        <br><span style="color: white"><?= $greeting; ?></span>
+                        <br><span style="color: white"><?= $curentUser->getGreeting(); ?></span>
                     </div>
                     <div class="col-md-6">
                         <div class="action pull-right">
@@ -72,33 +73,33 @@ $greeting = UserService::getGreetingUser();
                             </ul>
                         </div>
                     </div>
-<!--
-                    <div class="shop-category nav navbar-nav navbar-left">
-                        <!-- Single button ->
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-shop-category dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Colours <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="/colour/showAll/">Show All</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="/colour/createNew/">Create</a></li>
-                            </ul>
-                        </div>
+                    <!--
+                                        <div class="shop-category nav navbar-nav navbar-left">
+                    <!-- Single button ->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-shop-category dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            colors <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="/color/showAll/">Show All</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/color/createNew/">Create</a></li>
+                        </ul>
                     </div>
-                    <div class="shop-category nav navbar-nav navbar-left">
-                        <!-- Single button ->
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-shop-category dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Sizes <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a href="/size/showAll/">Show All</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li><a href="/size/createNew/">Create</a></li>
-                            </ul>
-                        </div>
-                    </div>-->
+                </div>
+                <div class="shop-category nav navbar-nav navbar-left">
+                    <!-- Single button ->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-shop-category dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Sizes <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="/size/showAll/">Show All</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/size/createNew/">Create</a></li>
+                        </ul>
+                    </div>
+                </div>-->
                     <!-- Collect the nav links, forms, and other content for toggling -->
                     <div class="collapse navbar-collapse" id="navbar">
                         <ul class="nav navbar-nav navbar-right">

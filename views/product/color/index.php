@@ -1,6 +1,6 @@
 <?php
 
-namespace app\views\product\colour;
+namespace app\views\product\color;
 
 require_once dirname(__DIR__) . '../../layouts/admin/header.php';
 ?>
@@ -8,8 +8,8 @@ require_once dirname(__DIR__) . '../../layouts/admin/header.php';
     <div class='hm-foot-menu'>
         <div class='container'><h1>Цвета</h1><hr>
             <ul>
-                <li><a href = '/colour/createNew/'>Добавить новый цвет</a><br><br></li>
-                <li><a href = '/colour/showAll/'>Список всех цветов</a><br><br></li>
+                <li><a href = '/color/createNew/'>Добавить новый цвет</a><br><br></li>
+                <li><a href = '/color/showAll/'>Список всех цветов</a><br><br></li>
             </ul><hr>
         </div>
     </div>

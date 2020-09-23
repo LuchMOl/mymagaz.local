@@ -2,7 +2,7 @@
 
 namespace app\views\product;
 
-use app\services\ColourService;
+use app\services\colorService;
 use app\services\SizeService;
 use app\models\Product;
 
@@ -11,10 +11,10 @@ require_once '../views/layouts/admin/header.php';
 $modeEdit = $mode == 'edit';
 $modeCreate = $mode == 'create';
 $product = isset($product) ? $product : new Product();
-$colourDir = '/images/products/colours/';
+$colorDir = '/images/products/colors/';
 $price = $modeEdit ? $product->price : '';
 
-$maxQuantityColourItemInRow = 6;
+$maxQuantitycolorItemInRow = 6;
 $count = 0;
 $title = $modeCreate ? 'Добавить товар' : 'Редактировать товар';
 ?>
@@ -44,32 +44,32 @@ $title = $modeCreate ? 'Добавить товар' : 'Редактироват
         <hr>
 
         <h4>Выбрать цвет</h4>
-        <?php foreach ($allColours as $colour): ?>
+        <?php foreach ($allcolors as $color): ?>
         <?php $checked = ''; ?>
-            <?php foreach ($product->colours as $productColour): ?>
-                <?php if ($colour['id'] == $productColour['id']): ?>
+            <?php foreach ($product->colors as $key => $productcolor): ?>
+                <?php if ($color['id'] == $key): ?>
                     <?php $checked = 'checked'; ?>
                     <?php break; ?>
                 <?php endif; ?>
             <?php endforeach; ?>
-            <div class="colour">
+            <div class="color">
                 <label>
-                    <input name = 'colourIds[]' type="checkbox" value="<?= $colour['id']; ?>" <?= $checked; ?>>
-                    <?= $colour['colour']; ?>
-                    <div class="square" style="background: url(<?= $colourDir . $colour['colour']; ?>.jpg)">
+                    <input name = 'colorIds[]' type="checkbox" value="<?= $color['id']; ?>" <?= $checked; ?>>
+                    <?= $color['color']; ?>
+                    <div class="square" style="background: url(<?= $colorDir . $color['color']; ?>.jpg)">
                     </div>
                 </label>
             </div>
             <?php $count++; ?>
-            <?= is_integer($count / $maxQuantityColourItemInRow) ? '<br>' : ''; ?>
+            <?= is_integer($count / $maxQuantitycolorItemInRow) ? '<br>' : ''; ?>
         <?php endforeach; ?>
         <hr>
 
         <h4>Выбрать размер</h4>
         <?php foreach ($allSizes as $size): ?>
         <?php $checked = ''; ?>
-            <?php foreach ($product->sizes as $productSize): ?>
-                <?php if ($size['id'] == $productSize['id']): ?>
+            <?php foreach ($product->sizes as $key => $productSize): ?>
+                <?php if ($size['id'] == $key): ?>
                     <?php $checked = 'checked'; ?>
                     <?php break; ?>
                 <?php endif; ?>

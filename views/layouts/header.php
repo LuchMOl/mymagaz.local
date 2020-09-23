@@ -4,14 +4,13 @@ namespace app\views\layouts;
 
 require_once 'head.php';
 ?>
-
 <div class="header--sidebar"></div>
 <header class="header">
     <div class="header__top">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12 ">
-                    <p><?= $greeting; ?></p>
+                    <p><?= $curentUser->getGreeting(); ?></p>
                 </div>
                 <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
                     <div class="header__actions"><a href="/user/">Login & Regiser</a>
@@ -42,9 +41,6 @@ require_once 'head.php';
             <div class="navigation__column center">
                 <?php
                 include_once 'topmenu.php';
-                /*if ($_SERVER['REQUEST_URI'] === '/') {
-
-                }*/
                 ?>
             </div>
             <div class="navigation__column right">
@@ -52,33 +48,34 @@ require_once 'head.php';
                     <input class="form-control" type="text" placeholder="Search Product…">
                     <button><i class="ps-icon-search"></i></button>
                 </form>
-                <div class="ps-cart"><a class="ps-cart__toggle" href="#"><span><i>20</i></span><i class="ps-icon-shopping-cart"></i></a>
+                <div class="ps-cart">
+                    <a class="ps-cart__toggle" href="/cart/">
+                        <?php if (!empty($countOrder)) : ?>
+                            <span><i><?= $countOrder; ?></i></span>
+                        <?php endif; ?>
+                        <i class="ps-icon-shopping-cart"></i>
+                    </a>
                     <div class="ps-cart__listing">
                         <div class="ps-cart__content">
-                            <div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>
-                                <div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="/images/cart-preview/1.jpg" alt=""></div>
-                                <div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html">Amazin’ Glazin’</a>
-                                    <p><span>Quantity:<i>12</i></span><span>Total:<i>£176</i></span></p>
-                                </div>
-                            </div>
-                            <div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>
-                                <div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="/images/cart-preview/2.jpg" alt=""></div>
-                                <div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html">The Crusty Croissant</a>
-                                    <p><span>Quantity:<i>12</i></span><span>Total:<i>£176</i></span></p>
-                                </div>
-                            </div>
-                            <div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>
-                                <div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="/images/cart-preview/3.jpg" alt=""></div>
-                                <div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html">The Rolling Pin</a>
-                                    <p><span>Quantity:<i>12</i></span><span>Total:<i>£176</i></span></p>
-                                </div>
-                            </div>
+                            <?php if (!empty($curentUser->order)) : ?>
+                                <?php foreach ($curentUser->order as $orderItem) : ?>
+                                    <div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>
+                                        <div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="<?= $orderItem->getImgPath(); ?>" alt=""></div>
+                                        <div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html"><?= $orderItem->name; ?></a>
+                                            <p><span>Quantity:<i><?= $orderItem->orderCart['quantity'] ?></i></span><span>Total:<i><?= $orderItem->price * $orderItem->orderCart['quantity']; ?> UAH</i></span></p>
+                                        </div>
+                                    </div>
+                                    <?php $totalPrice = $totalPrice + $orderItem->price * $orderItem->orderCart['quantity']; ?>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <p>Корзина пуста</p>
+                            <?php endif; ?>
                         </div>
                         <div class="ps-cart__total">
-                            <p>Number of items:<span>36</span></p>
-                            <p>Item Total:<span>£528.00</span></p>
+                            <p>Number of items:<span><?= $countOrder; ?></span></p>
+                            <p>Item Total:<span><?= $totalPrice; ?> UAH</span></p>
                         </div>
-                        <div class="ps-cart__footer"><a class="ps-btn" href="cart.html">Check out<i class="ps-icon-arrow-left"></i></a></div>
+                        <div class="ps-cart__footer"><a class="ps-btn" href="/cart">Check out<i class="ps-icon-arrow-left"></i></a></div>
                     </div>
                 </div>
                 <div class="menu-toggle"><span></span></div>

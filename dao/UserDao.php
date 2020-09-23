@@ -5,55 +5,65 @@ namespace app\dao;
 class UserDao extends BaseDao
 {
 
-    private $tables = 'users';
-    private $sid_tables = 'session_user';
-
     public function getUser($email, $password)
     {
-        $sql = "SELECT t.id, t.email, t.password, t.name, s.session_id "
-                . "FROM $this->tables t INNER JOIN $this->sid_tables s "
-                . "ON t.id = s.user_id "
-                . "WHERE t.email = :email AND t.password = :password";
+        $sql = "SELECT u.id, u.email, u.password, u.name, s.session_id as sessionId "
+                . "FROM users u "
+                . "INNER JOIN session_user s "
+                . "ON u.id = s.user_id "
+                . "WHERE u.email = :email AND u.password = :password";
         $params = ['email' => $email, 'password' => $password];
-        return $this->getRow($sql, $params);
+        $user = $this->getRow($sql, $params);
+        return $user;
     }
 
-    public function getSIdUser($sessionId)
+    public function getUserByEmail($email)
     {
-        $sql = "SELECT t.id, t.email, t.password, t.name, s.session_id "
-                . "FROM $this->tables t INNER JOIN $this->sid_tables s "
-                . "ON t.id = s.user_id "
-                . "WHERE  s.session_id = :session_id";
-        $params = ['session_id' => $sessionId];
-        return $this->getRow($sql, $params);
-    }
-
-    public function checkUser($email)
-    {
-        $sql = "SELECT * FROM $this->tables "
+        $sql = "SELECT * "
+                . "FROM users "
                 . "WHERE email = :email";
         $params = ['email' => $email];
-        return $this->getOne($sql, $params);
+        return $this->getRow($sql, $params);
     }
 
-    public function setUser($email, $name, $password)
+    public function insertUser($user)
     {
-        $sql = "INSERT INTO $this->tables (email, name, password) "
+        $sql = "INSERT INTO users (email, name, password) "
                 . "VALUES (:email, :name, :password)";
-        $params = ['email' => $email, 'name' => $name, 'password' => $password];
-        $this->execute($sql, $params);
-        $id = $this->getOne("SELECT MAX(id) AS id FROM $this->tables");
-        $this->setSId($id);
-        return $id;
+        $params = ['email' => $user->email, 'name' => $user->name, 'password' => $user->password];
+        $write = $this->execute($sql, $params);
+        $lastInsertId = $write ? $this->insert_ID() : false;
+        $user->id = $lastInsertId;
+        return $this->setSesId($user);
     }
 
-    public function setSId($id)
+    public function getOrder($user)
     {
-        $sql = "INSERT INTO $this->sid_tables (user_id, session_id)"
+        $sql = "SELECT product_id as productId, color_id as colorId, size_id as sizeId, quantity "
+                . "FROM cart "
+                . "WHERE user_id = $user->id";
+        $order = $this->getAll($sql);
+        return $order;
+    }
+
+    public function setSesId($user)
+    {
+        $sql = "INSERT INTO session_user (user_id, session_id)"
                 . "VALUES (:user_id, :session_id)";
-        $sId = session_id();
-        $params = ['user_id' => $id, 'session_id' => $sId];
-        $this->execute($sql, $params);
+        $params = ['user_id' => $user->id, 'session_id' => $user->sessionId];
+        return $this->execute($sql, $params);
+    }
+
+    public function getUserBySesId($sessionId)
+    {
+        $sql = "SELECT u.id, u.email, u.password, u.name, s.session_id as sessionId "
+                . "FROM users u "
+                . "INNER JOIN session_user s "
+                . "ON u.id = s.user_id "
+                . "WHERE s.session_id = :session_id";
+        $params = ['session_id' => $sessionId];
+        $user = $this->getRow($sql, $params);
+        return $user;
     }
 
 }

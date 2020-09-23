@@ -11,11 +11,12 @@ class UserMapper
     {
         $user = new User();
 
-        $user->setId($data['id']);
-        $user->setEmail($data['email']);
-        $user->setPassword($data['password']);
-        $user->setName($data['name']);
-        $user->setSessionId($data['session_id']);
+        $user->setId($data);
+        $user->setEmail($data);
+        $user->setName($data);
+        $user->setPassword($data);
+        $user->setSessionId($data);
+        $user->setOrder($data);
 
         return $user;
     }

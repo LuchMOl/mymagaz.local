@@ -37,7 +37,6 @@ if (isset($_GET['testNamespace'])) {
 
 session_start();
 
-
 $routeService = new RouteService();
 $routeService->run();
 

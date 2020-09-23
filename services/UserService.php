@@ -4,99 +4,129 @@ namespace app\services;
 
 use app\dao\mapper\UserMapper;
 use app\dao\UserDao;
+use app\dao\CartDao;
+use app\services\ProductService;
 
 class UserService
 {
 
-    private static $userDao = [];
+    private $userDao;
+    private $cartDao;
+    private $userMapper;
+    private $productService;
 
-    private static function userDao()
+    public function userDao()
     {
-        if (self::$userDao == NULL) {
-            $userDao = new UserDao();
-        } else {
-            $userDao = self::$userDao;
+        if ($this->userDao === NULL) {
+            $this->userDao = new UserDao();
         }
-        return $userDao;
+        return $this->userDao;
+    }
+
+    public function cartDao()
+    {
+        if ($this->cartDao === NULL) {
+            $this->cartDao = new CartDao();
+        }
+        return $this->cartDao;
+    }
+
+    public function userMapper()
+    {
+        if ($this->userMapper === NULL) {
+            $this->userMapper = new UserMapper();
+        }
+        return $this->userMapper;
+    }
+
+    public function productService()
+    {
+        if ($this->productService === NULL) {
+            $this->productService = new ProductService();
+        }
+        return $this->productService;
     }
 
     public function getUser($email, $password)
     {
-        $user = self::userDao()->getUser($email, $password);
-        if (is_array($user)) {
-            $userMapper = new UserMapper();
-            $userExist = $userMapper->map($user);
+        $userIsset = $this->userDao()->getUser($email, $password);
+        if (is_array($userIsset)) {
+            $user = $this->userMapper()->map($userIsset);
+            $this->relationWithOrder($user);
+            $this->relationWithOrderGuest($user);
         } else {
-            $userExist = false;
+            $user = false;
         }
-        return $userExist;
+        return $user;
     }
 
-    static function getSIdUser($sessionId)
+    public function relationWithOrderGuest($user)
     {
-        $userExist = self::userDao()->getSIdUser($sessionId);
-        if (is_array($userExist)) {
-            $userMapper = new UserMapper();
-            $userExist = $userMapper->map($userExist);
-            self::saveUserInSession($userExist);
-        } else {
-            $userExist = self::GetUserGuest();
+        $curentUser = $this->getCurrentUser();
+        if ($curentUser->isGuest() && !empty($curentUser->order)) {
+            foreach ($curentUser->order as $product) {
+                $user->addOrder($product);
+                $this->cartDao()->addOrder($user->id, $product->orderCart);
+            }
         }
-        return $userExist;
     }
 
-    public function checkUser($email)
+    public function relationWithOrder($user)
     {
-        $data = $this->userDao()->checkUser($email);
-        if (is_numeric($data)) {
-            $result = true;
+        $products = '';
+        $order = $this->cartDao()->getOrder($user);
+        if (!empty($order)) {
+            foreach ($order as $orderCart) {
+                $product = $this->productService()->getProductById($orderCart['productId']);
+                $product->addOrderCart($orderCart);
+                $user->addOrder($product);
+            }
+        }
+    }
+
+    public function getUserBySesId($sessionId)
+    {
+        $user = $this->userDao()->getUserBySesId($sessionId);
+        $user = $this->userMapper()->map($user);
+        //$this->relationWithOrder($user);
+        $this->saveUserInSession($user);
+        return $user;
+    }
+
+    public function getUserByEmail($email)
+    {
+        $data = $this->userDao()->getUserByEmail($email);
+        if (!empty($data)) {
+            $result = $data;
         } else {
             $result = false;
         }
         return $result;
     }
 
-    public function setUser($email, $name, $password)
+    public function registerUser($user)
     {
-        return $this->userDao()->setUser($email, $name, $password);
+        return $this->userDao()->insertUser($user);
     }
 
-    static function getGreetingUser()
+    public function saveUserInSession($user)
     {
-        $user = self::getCurrentUser();
-        //var_dump($user);
-        if (is_numeric($user->id)) {
-            $greeting = 'Ну здравствуй, ' . $user->name . '. ';
-        } else {
-            $greeting = "<a href = '/user/register/'>Зарегистрируйтесь</a> или <a href = '/user/signin/'>Авторизуйтесь</a>";
-        }
-        return $greeting;
-    }
-
-    static function saveUserInSession($user)
-    {
-        setcookie('sid', $user->session_id, 0x7FFFFFFF, '/');
+        setcookie('sessId', $user->sessionId, 0x7FFFFFFF, '/');
         $user = base64_encode(serialize($user));
         $_SESSION['user'] = $user;
     }
 
-    static function getCurrentUser()
+    public function getCurrentUser()
     {
         if (isset($_SESSION['user'])) {
             $currentUser = unserialize(base64_decode($_SESSION['user']));
-        } elseif (isset($_COOKIE['sid'])) {
-            $currentUser = self::getSIdUser($_COOKIE['sid']);
+        } elseif (isset($_COOKIE['sessId'])) {
+            $currentUser = $this->getUserBySesId($_COOKIE['sessId']);
         } else {
-            $currentUser = self::GetUserGuest();
+            $currentUser = $this->userMapper()->map('');
+            $this->saveUserInSession($currentUser);
         }
         return $currentUser;
-    }
-
-    static function GetUserGuest()
-    {
-        $userMapper = new UserMapper();
-        $guest = ['id' => 'id', 'email' => '', 'password' => '', 'name' => 'Гость', 'session_id' => ''];
-        return $userMapper->map($guest);
     }
 
 }

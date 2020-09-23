@@ -36,13 +36,13 @@ class ProductDao extends BaseDao
         return isset($progress) ? $progress : true;
     }
 
-    public function insertProductColours($product)
+    public function insertProductcolors($product)
     {
         $progress = [];
-        foreach ($product->colours as $colourId) {
-            $sql = "INSERT INTO product_colours (product_id, colour_id)"
-                    . "VALUES (:product_id, :colour_id)";
-            $params = ['product_id' => $product->id, 'colour_id' => $colourId];
+        foreach ($product->colors as $colorId) {
+            $sql = "INSERT INTO product_colors (product_id, color_id)"
+                    . "VALUES (:product_id, :color_id)";
+            $params = ['product_id' => $product->id, 'color_id' => $colorId];
             $progress [] = $this->execute($sql, $params);
         }
         $progress = in_array(false, $progress) ? false : true;
@@ -76,15 +76,15 @@ class ProductDao extends BaseDao
         return $allProductImage;
     }
 
-    public function getProductColoursByProductId($id)
+    public function getProductcolorsByProductId($id)
     {
-        $sql = "SELECT p_c.colour_id as id, c.colour "
-                . "FROM product_colours p_c "
-                . "INNER JOIN colours c "
-                . "ON c.id = p_c.colour_id "
+        $sql = "SELECT p_c.color_id as id, c.color "
+                . "FROM product_colors p_c "
+                . "INNER JOIN colors c "
+                . "ON c.id = p_c.color_id "
                 . "WHERE p_c.product_id = $id";
-        $productColours = $this->getAll($sql);
-        return $productColours;
+        $productcolors = $this->getAll($sql);
+        return $productcolors;
     }
 
     public function getProductSizesByProductId($id)
@@ -126,16 +126,16 @@ class ProductDao extends BaseDao
         return $this->execute($sql, $params);
     }
 
-    public function editProductColours($product)
+    public function editProductcolors($product)
     {
-        $this->eraseProductColoursByProductId($product->id);
-        $edit = $this->insertProductColours($product);
+        $this->eraseProductcolorsByProductId($product->id);
+        $edit = $this->insertProductcolors($product);
         return $edit;
     }
 
-    public function eraseProductColoursByProductId($id)
+    public function eraseProductcolorsByProductId($id)
     {
-        $sql = "DELETE FROM product_colours WHERE product_id = $id";
+        $sql = "DELETE FROM product_colors WHERE product_id = $id";
         $this->execute($sql);
     }
 

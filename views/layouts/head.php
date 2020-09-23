@@ -4,7 +4,11 @@ namespace app\views\layouts;
 
 use app\services\UserService;
 
-$greeting = UserService::getGreetingUser();
+$userService = new UserService();
+$curentUser = $userService->getCurrentUser();
+$totalPrice = 0;
+$countOrder = !empty($curentUser->order) ? count($curentUser->order) : '0';
+//var_dump($curentUser);
 ?>
 <!DOCTYPE html>
 <!--[if IE 7]><html class="ie ie7"><![endif]-->

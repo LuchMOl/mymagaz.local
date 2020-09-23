@@ -3,7 +3,6 @@
 namespace app\views\product\category;
 
 require_once("../views/layouts/header.php");
-$imageDir = '/images/products/';
 ?>
 
 <main class="ps-main">
@@ -41,8 +40,8 @@ $imageDir = '/images/products/';
                         <div class="ps-product__block ps-product__style">
                             <h4>CHOOSE YOUR STYLE</h4>
                             <ul>
-                                <?php foreach ($product->colours as $colour) : ?>
-                                    <li><a class="colorElement" href="#" data-color-id="<?= $colour['id']; ?>"><img src="/images/products/colours/<?= $colour['colour'] ?>.jpg" alt=""></a></li>
+                                <?php foreach ($product->colors as $key => $color) : ?>
+                                    <li><a class="colorElement" href="#" data-color-id="<?= $key; ?>"><img src="/images/products/colors/<?= $color; ?>.jpg" alt=""></a></li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
@@ -50,17 +49,17 @@ $imageDir = '/images/products/';
                             <h4>CHOOSE SIZE</h4>
                             <select id="sizeSelect" class="ps-select selectpicker">
                                 <option value="0">Select Size</option>
-                                <?php foreach ($product->sizes as $size) : ?>
-                                    <option value="<?= $size['id'] ?>"><?= $size['size'] ?></option>
+                                <?php foreach ($product->sizes as $key => $size) : ?>
+                                    <option value="<?= $key; ?>"><?= $size; ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <div class="form-group">
-                                <input id="quantityInput" class="form-control" type="number" value="1">
+                                <input id="quantityInput" class="form-control" type="number" min="1" value="1">
                             </div>
                         </div>
                         <div class="ps-product__shopping"><a class="ps-btn mb-10 addToCartBtn" href="">Add to cart<i class="ps-icon-next"></i></a>
                             <form id="productCartForm" method="POST" action="/cart/add/">
-                                <input type="hidden" name="productId" value="<?=$product->id?>">
+                                <input type="hidden" name="productId" value="<?= $product->id ?>">
                                 <input type="hidden" name="colorId" value="">
                                 <input type="hidden" name="sizeId" value="">
                                 <input type="hidden" name="quantity" value="">

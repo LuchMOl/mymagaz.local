@@ -14,7 +14,7 @@ class ProductFormMapper
         $productForm->setName($data);
         $productForm->setCategories($data);
         $productForm->setImageName($data);
-        $productForm->setColours($data);
+        $productForm->setcolors($data);
         $productForm->setSizes($data);
         $productForm->setPrice($data);
 

@@ -9,5 +9,8 @@
         "psr-4": {
             "app\\": ""
         }
+    },
+    "require": {
+        "phpoffice/phpspreadsheet": "^1.14"
     }
 }
