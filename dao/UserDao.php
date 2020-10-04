@@ -34,7 +34,7 @@ class UserDao extends BaseDao
         $write = $this->execute($sql, $params);
         $lastInsertId = $write ? $this->insert_ID() : false;
         $user->id = $lastInsertId;
-        return $this->setSesId($user);
+        return $this->insertSesId($user);
     }
 
     public function getOrder($user)
@@ -46,7 +46,7 @@ class UserDao extends BaseDao
         return $order;
     }
 
-    public function setSesId($user)
+    public function insertSesId($user)
     {
         $sql = "INSERT INTO session_user (user_id, session_id)"
                 . "VALUES (:user_id, :session_id)";

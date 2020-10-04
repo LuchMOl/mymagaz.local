@@ -16,8 +16,7 @@ class UserMapper
         $user->setName($data);
         $user->setPassword($data);
         $user->setSessionId($data);
-        $user->setOrder($data);
-
+        
         return $user;
     }
 

@@ -2,23 +2,41 @@
 
 namespace app\models;
 
+use app\services\CartService;
+
 class User
 {
 
     public $id;
+    private $guestSessId;
     public $email;
     public $password;
     public $name;
     public $sessionId;
     public $orderCart;
-    public $order;
+    public $cart;
+
+    public function getGuestSessId()
+    {
+        return $this->sessionId;
+    }
+
+    public function setGuestSessId($guestSessId)
+    {
+        $this->guestSessId = $guestSessId;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
 
     public function setId($user)
     {
         if (isset($user['id'])) {
             $this->id = $user['id'];
         } else {
-            $this->id = '0';
+            $this->id = '';
         }
     }
 
@@ -60,42 +78,12 @@ class User
         }
     }
 
-    public function setOrder($user)
+    public function getCart()
     {
-        if (isset($user['order'])) {
-            $this->order [] = $user['order'];
-        } else {
-            $this->order = [];
+        if (!$this->cart) {
+            $this->cart = (new CartService())->getCart($this);
         }
-    }
-
-    public function addEmail($email)
-    {
-        $this->email = $email;
-    }
-
-    public function addName($name)
-    {
-        $this->name = $name;
-    }
-
-    public function addPassword($password)
-    {
-        $this->password = $password;
-    }
-
-    public function addOrder($product)
-    {
-        $this->order [] = $product;
-    }
-
-    public function addOrders($products)
-    {
-        if (!empty($products)) {
-            foreach ($products as $product) {
-                $this->order [] = $product;
-            }
-        }
+        return $this->cart;
     }
 
     public function getGreeting()
@@ -110,13 +98,7 @@ class User
 
     public function isGuest()
     {
-        return ($this->id == '0' && $this->name == 'Guest') ? true : false;
-    }
-
-    public function deleteOrderItem($orderItemId)
-    {
-        unset($this->order[$orderItemId]);
-        array_values($this->order);
+        return ($this->id == '' && $this->name == 'Guest') ? true : false;
     }
 
     public function RegPrepare($post)
@@ -124,7 +106,7 @@ class User
         $this->email = $post["email"];
         $this->name = $post["name"];
         $this->password = $post["password"];
-        session_regenerate_id();
+        $this->isGuest() ? '' : session_regenerate_id();
         $this->sessionId = session_id();
     }
 

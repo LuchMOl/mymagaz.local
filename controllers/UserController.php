@@ -4,12 +4,14 @@ namespace app\controllers;
 
 use app\services\UserService;
 use app\dao\mapper\UserMapper;
+use app\services\CartService;
 
 class UserController
 {
 
     private $userExist;
     private $userService;
+    private $cartService;
     private $userMapper;
 
     public function userService()
@@ -18,6 +20,14 @@ class UserController
             $this->userService = new UserService();
         }
         return $this->userService;
+    }
+
+    public function cartService()
+    {
+        if ($this->cartService === NULL) {
+            $this->cartService = new CartService();
+        }
+        return $this->cartService;
     }
 
     public function userMapper()
@@ -40,12 +50,13 @@ class UserController
             if (!empty($_POST["email"])) {
                 if (preg_match("/^[a-zA-Zа-яА-Я0-9_\-\'.]+@[a-zA-Zа-яА-Я0-9\-]+\.[a-zA-Zа-яА-Я0-9\-.]+$/", $_POST["email"])) {
                     if (!empty($_POST["password"])) {
-                        $userExist = $this->userService()->getUser($_POST["email"], $_POST["password"]);
-                        if (!$userExist) {
-                            $message = 'Нет такого!';
-                        } else {
-                            $this->userService()->saveUserInSession($userExist);
+                        $user = $this->userService()->getUser($_POST["email"], $_POST["password"]);
+                        if ($user) {
+                            $this->cartService()->combineCarts($user);
+                            $this->userService()->saveUserInSession($user);
                             header('Location: http://mymagaz.local/');
+                        } else {
+                            $message = 'Нет такого!';
                         }
                     } else {
                         $message = 'Не введен пароль.';
@@ -75,6 +86,7 @@ class UserController
                                     if (!$userExist) {
                                         $user->RegPrepare($_POST);
                                         $write = $this->userService()->registerUser($user);
+                                        $this->cartService()->combineCarts($user);
                                         if ($write) {
                                             $this->userService()->saveUserInSession($user);
                                             header('Location: http://mymagaz.local/');

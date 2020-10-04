@@ -50,30 +50,29 @@ require_once 'head.php';
                 </form>
                 <div class="ps-cart">
                     <a class="ps-cart__toggle" href="/cart/">
-                        <?php if (!empty($countOrder)) : ?>
-                            <span><i><?= $countOrder; ?></i></span>
+                        <?php if (!$cart->isEmpty()) : ?>
+                            <span><i><?= count($cart->getProducts()); ?></i></span>
                         <?php endif; ?>
                         <i class="ps-icon-shopping-cart"></i>
                     </a>
                     <div class="ps-cart__listing">
                         <div class="ps-cart__content">
-                            <?php if (!empty($curentUser->order)) : ?>
-                                <?php foreach ($curentUser->order as $orderItem) : ?>
-                                    <div class="ps-cart-item"><a class="ps-cart-item__close" href="#"></a>
-                                        <div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="<?= $orderItem->getImgPath(); ?>" alt=""></div>
-                                        <div class="ps-cart-item__content"><a class="ps-cart-item__title" href="product-detail.html"><?= $orderItem->name; ?></a>
-                                            <p><span>Quantity:<i><?= $orderItem->orderCart['quantity'] ?></i></span><span>Total:<i><?= $orderItem->price * $orderItem->orderCart['quantity']; ?> UAH</i></span></p>
+                            <?php if (!$cart->isEmpty()) : ?>
+                                <?php foreach ($cart->getProducts() as $product) : ?>
+                                    <div class="ps-cart-item"><a class="ps-cart-item__close" href="/cart/delete/?cartRowId=<?= $product->getCartRowId(); ?>"></a>
+                                        <div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="<?= $product->getImgPath(); ?>" alt=""></div>
+                                        <div class="ps-cart-item__content" data-cart-row-id="<?= $product->getCartRowId(); ?>" ><a class="ps-cart-item__title" href="product-detail.html"><?= $product->name; ?></a>
+                                            <p><span>Quantity:<i><?= $product->getQuantity(); ?></i></span><span>Total:<i><?= $product->getCartPrice(); ?> UAH</i></span></p>
                                         </div>
                                     </div>
-                                    <?php $totalPrice = $totalPrice + $orderItem->price * $orderItem->orderCart['quantity']; ?>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <p>Корзина пуста</p>
                             <?php endif; ?>
                         </div>
                         <div class="ps-cart__total">
-                            <p>Number of items:<span><?= $countOrder; ?></span></p>
-                            <p>Item Total:<span><?= $totalPrice; ?> UAH</span></p>
+                            <p>Number of items:<span><?= count($cart->getProducts()); ?></span></p>
+                            <p>Item Total:<span><?= $cart->getProductsPrice(); ?> UAH</span></p>
                         </div>
                         <div class="ps-cart__footer"><a class="ps-btn" href="/cart">Check out<i class="ps-icon-arrow-left"></i></a></div>
                     </div>

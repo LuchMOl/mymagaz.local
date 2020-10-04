@@ -28,7 +28,7 @@ class CatalogController extends ProductController
             $products = !empty($category) ? $this->productService()->getProductsThisCategory($categoryId) : '';
             require_once '../views/product/catalog.php';
         } else {
-            $product = $this->productService()->getProductById($_GET['id']);
+            $singleProduct = $this->productService()->getProductById($_GET['id']);
             //var_dump($product);
             require_once '../views/product/single-product.php';
         }

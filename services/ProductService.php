@@ -4,7 +4,7 @@ namespace app\services;
 
 use app\dao\ProductDao;
 use app\dao\CategoryDao;
-use app\dao\colorDao;
+use app\dao\ColorDao;
 use app\dao\SizeDao;
 use app\dao\mapper\CategoryMapper;
 use app\dao\mapper\ProductMapper;
@@ -64,7 +64,7 @@ class ProductService
         $product = $this->productMapper()->map($productArray);
         $product->addCategories($productArray['categories']);
         $product->addImageName($productArray['imageName']);
-        $product->addcolors($productArray['colors']);
+        $product->addColors($productArray['colors']);
         $product->addSizes($productArray['sizes']);
         $product->setPrice($productArray['price']);
 
@@ -102,9 +102,9 @@ class ProductService
 
             $writeCategories = $this->productDao()->insertProductCategories($product);
             $writeImage = $this->productDao()->insertProductImageName($product);
-            $writecolors = $this->productDao()->insertProductcolors($product);
+            $writeColors = $this->productDao()->insertProductColors($product);
             $writeSizes = $this->productDao()->insertProductSizes($product);
-            $progress = ($writeCategories && $writeImage && $writecolors && $writeSizes) ? true : false;
+            $progress = ($writeCategories && $writeImage && $writeColors && $writeSizes) ? true : false;
         } else {
             $progress = false;
         }
@@ -116,10 +116,10 @@ class ProductService
         $productsTable = $this->productDao()->editProduct($product);
         $productCategoriesTable = $this->productDao()->editProductCategories($product);
         $productImageTable = $this->productDao()->editProductImageName($product);
-        $productcolorsTable = $this->productDao()->editProductcolors($product);
+        $productColorsTable = $this->productDao()->editProductColors($product);
         $productSizesTable = $this->productDao()->editProductSizes($product);
 
-        $changedProduct = ($productsTable && $productCategoriesTable && $productImageTable && $productcolorsTable && $productSizesTable) ? true : false;
+        $changedProduct = ($productsTable && $productCategoriesTable && $productImageTable && $productColorsTable && $productSizesTable) ? true : false;
         return $changedProduct;
     }
 
@@ -170,7 +170,7 @@ class ProductService
         }
         $this->relationsWithCategories($products);
         $this->relationsWithImageName($products);
-        $this->relationsWithcolors($products);
+        $this->relationsWithColors($products);
         $this->relationsWithSizes($products);
 
         return $products;
@@ -209,11 +209,11 @@ class ProductService
         }
     }
 
-    public function relationsWithcolors($products)
+    public function relationsWithColors($products)
     {
         foreach ($products as $product) {
-            $productcolors = $this->productDao()->getProductcolorsByProductId($product->id);
-            $product->addcolors($productcolors);
+            $productColors = $this->productDao()->getProductColorsByProductId($product->id);
+            $product->addColors($productColors);
         }
     }
 

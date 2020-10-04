@@ -52,43 +52,16 @@ class UserService
         $userIsset = $this->userDao()->getUser($email, $password);
         if (is_array($userIsset)) {
             $user = $this->userMapper()->map($userIsset);
-            $this->relationWithOrder($user);
-            $this->relationWithOrderGuest($user);
         } else {
             $user = false;
         }
         return $user;
     }
 
-    public function relationWithOrderGuest($user)
-    {
-        $curentUser = $this->getCurrentUser();
-        if ($curentUser->isGuest() && !empty($curentUser->order)) {
-            foreach ($curentUser->order as $product) {
-                $user->addOrder($product);
-                $this->cartDao()->addOrder($user->id, $product->orderCart);
-            }
-        }
-    }
-
-    public function relationWithOrder($user)
-    {
-        $products = '';
-        $order = $this->cartDao()->getOrder($user);
-        if (!empty($order)) {
-            foreach ($order as $orderCart) {
-                $product = $this->productService()->getProductById($orderCart['productId']);
-                $product->addOrderCart($orderCart);
-                $user->addOrder($product);
-            }
-        }
-    }
-
     public function getUserBySesId($sessionId)
     {
         $user = $this->userDao()->getUserBySesId($sessionId);
         $user = $this->userMapper()->map($user);
-        //$this->relationWithOrder($user);
         $this->saveUserInSession($user);
         return $user;
     }

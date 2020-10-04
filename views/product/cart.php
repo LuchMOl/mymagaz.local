@@ -3,6 +3,7 @@
 namespace app\views\product;
 
 require_once("../views/layouts/header.php");
+//var_dump($curentUser);
 ?>
 
 <main class="ps-main">
@@ -20,32 +21,32 @@ require_once("../views/layouts/header.php");
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (!empty($curentUser->order)) : ?>
-                            <?php foreach ($curentUser->order as $key => $product) : ?>
+                        <?php if (!$cart->isEmpty()) : ?>
+                            <?php foreach ($cart->getProducts() as $product) : ?>
                                 <tr>
                                     <td>
                                         <a class="ps-product__preview" href="product-detail.html">
-                                            <img class="mr-15 cart-image" src="/images/products/<?= $product->imageName; ?>" alt="">
-                                            <?= $product->name ?>
-                                            (color: <?= $product->colors[$product->orderCart['colorId']]; ?> )
-                                            size: <?= $product->sizes[$product->orderCart['sizeId']]; ?>
+                                            <img class="mr-15 cart-image" src="<?= $product->getImgPath(); ?>" alt="">
+                                            <?= $product->name; ?>
+                                            (color: <?= $product->colors[$product->getColorId()]; ?> )
+                                            size: <?= $product->sizes[$product->getSizeId()]; ?>
                                         </a>
                                     </td>
                                     <td>
-                                        <?= $product->price ?> UAH
+                                        <span><?= $product->price ?></span> UAH
                                     </td>
                                     <td>
-                                        <div class="form-group--number">
+                                        <div class="form-group--number" data-cart-row-id="<?= $product->getCartRowId(); ?>">
                                             <button class="minus"><span>-</span></button>
-                                            <input class="form-control" type="text" value="<?= $product->orderCart['quantity'] ?>">
+                                            <input class="form-control" type="text" value="<?= $product->getQuantity(); ?>">
                                             <button class="plus"><span>+</span></button>
                                         </div>
                                     </td>
                                     <td>
-                                        <?= $product->price * $product->orderCart['quantity']; ?>
+                                        <span><?= $product->getCartPrice(); ?></span> UAH
                                     </td>
                                     <td>
-                                        <a href="/cart/delete/?orderItemId=<?= $key; ?>">
+                                        <a href="/cart/delete/?cartRowId=<?= $product->getCartRowId(); ?>">
                                             <div class="ps-remove">
                                             </div>
                                         </a>
@@ -73,7 +74,7 @@ require_once("../views/layouts/header.php");
                         </div>
                     </div>
                     <div class="ps-cart__total">
-                        <h3>Total Price: <span> <?= $totalPrice; ?> $</span></h3><a class="ps-btn" href="checkout.html">Process to checkout<i class="ps-icon-next"></i></a>
+                        <h3>Total Price: <span> <?= $cart->getProductsPrice(); ?> UAH</span></h3><a class="ps-btn" href="checkout.html">Process to checkout<i class="ps-icon-next"></i></a>
                     </div>
                 </div>
             </div>

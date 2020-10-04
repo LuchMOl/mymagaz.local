@@ -15,6 +15,55 @@ class Product
     public $orderCart = [];
     public $orderColor = [];
     public $orderSize = [];
+    private $colorId;
+    private $sizeId;
+    private $quantity;
+    private $cartRowId;
+
+    public function getCartRowId()
+    {
+        return $this->cartRowId;
+    }
+
+    public function setCartRowId($cartRowId)
+    {
+        $this->cartRowId = $cartRowId;
+    }
+
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getColorId()
+    {
+        return $this->colorId;
+    }
+
+    public function getSizeId()
+    {
+        return $this->sizeId;
+    }
+
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    public function setColorId($colorId)
+    {
+        $this->colorId = $colorId;
+    }
+
+    public function setSizeId($sizeId)
+    {
+        $this->sizeId = $sizeId;
+    }
+
+    public function setQuantity($quantity)
+    {
+        $this->quantity = $quantity;
+    }
 
     public function setId($id)
     {
@@ -62,11 +111,6 @@ class Product
     public function addOrderCart($productCartForm)
     {
         $this->orderCart = $productCartForm;
-    }
-
-    public function addQuantity($quantity)
-    {
-        $this->quantity = $quantity;
     }
 
     public function isChanged($editedProduct)
@@ -148,19 +192,15 @@ class Product
         return $isChanged;
     }
 
-    public function isChangedContentProductsTable($editedProduct)
-    {
-        $isChangedProductName = $this->name != $editedProduct->name ? true : false;
-        $isChangedProductPrice = $this->price != $editedProduct->price ? true : false;
-
-        $isChange = ($isChangedProductName || $isChangedProductPrice) ? true : false;
-        return $isChange;
-    }
-
     public function getImgPath()
     {
         $imageDir = '/images/products/';
         return $imageDir . (empty($this->imageName) ? 'no_photo.jpg' : $this->imageName);
+    }
+
+    public function getCartPrice()
+    {
+        return $this->price * $this->quantity;
     }
 
 }

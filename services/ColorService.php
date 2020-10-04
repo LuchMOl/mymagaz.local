@@ -17,25 +17,25 @@ class colorService
         return $this->colorDao;
     }
 
-    public function getAllcolors()
+    public function getAllColors()
     {
-        $allcolors = $this->colorDao()->getAllcolors();
-        return $allcolors;
+        $allColors = $this->colorDao()->getAllColors();
+        return $allColors;
     }
 
-    public function addcolor($colorName, $uploadedFile)
+    public function addColor($colorName, $uploadedFile)
     {
-        $this->uploadcolorImage($colorName, $uploadedFile);
+        $this->uploadColorImage($colorName, $uploadedFile);
         $this->colorDao()->insertImage($colorName);
     }
 
-    public function uploadcolorImage($colorName, $uploadedFile)
+    public function uploadColorImage($colorName, $uploadedFile)
     {
         if (file_exists($uploadedFile['tmp_name'])) {
 
             $colorImageExtention = pathinfo($uploadedFile['name'], PATHINFO_EXTENSION);
-            $uploadedcolorFileName = $colorName . '.' . $colorImageExtention;
-            $colorImageDestination = '../web/images/products/color' . $uploadedcolorFileName;
+            $uploadedColorFileName = $colorName . '.' . $colorImageExtention;
+            $colorImageDestination = '../web/images/products/color' . $uploadedColorFileName;
 
             return move_uploaded_file($uploadedFile['tmp_name'], $colorImageDestination);
         } else {
@@ -43,15 +43,15 @@ class colorService
         }
     }
 
-    public function getcolorById($id)
+    public function getColorById($id)
     {
-        $color = $this->colorDao()->getcolorById($id);
-        $color = $this->checkcolorFileExistence($color);
+        $color = $this->colorDao()->getColorById($id);
+        $color = $this->checkColorFileExistence($color);
 
         return $color;
     }
 
-    public function checkcolorFileExistence($color)
+    public function checkColorFileExistence($color)
     {
 
         $dir = 'images/products/colors/';
@@ -61,21 +61,19 @@ class colorService
         return $color;
     }
 
-    public function isChangedcolorEdit($curentcolor, $editedcolor)
+    public function isChangedColorEdit($curentColor, $editedColor)
     {
-        if ($curentcolor['color'] != $editedcolor['color']) {
-            $this->colorDao()->eidtcolorName($editedcolor);
+        if ($curentColor['color'] != $editedColor['color']) {
+            $this->colorDao()->eidtColorName($editedColor);
         } else {
-            hash_file('md5', $curentcolor['colorImage']);
-            hash_file('md5', $editedcolor);
+            hash_file('md5', $curentColor['colorImage']);
+            hash_file('md5', $editedColor);
 
 
-            $curentcolorImage = $dir . $curentcolor['color'] . '.jpg';
-            $editedcolorImage =
-
-            hash_file('md5', 'image.png');
+            $curentColorImage = $dir . $curentColor['color'] . '.jpg';
+            $editedColorImage = hash_file('md5', 'image.png');
         }
-        uploadcolorImage($colorName, $uploadedFile);
+        uploadColorImage($colorName, $uploadedFile);
     }
 
 }

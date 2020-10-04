@@ -3,21 +3,11 @@
 namespace app\controllers;
 
 use app\services\CartService;
-use app\services\UserService;
 
 class CartController
 {
 
     private $cartService;
-    private $userService;
-
-    public function userService()
-    {
-        if ($this->userService === NULL) {
-            $this->userService = new UserService();
-        }
-        return $this->userService;
-    }
 
     public function cartService()
     {
@@ -42,16 +32,25 @@ class CartController
         if (in_array('', $productCartForm)) {
             die('something went wrong');
         }
-        $this->cartService()->addOrder($productCartForm);
+        $this->cartService()->addProduct($productCartForm);
         header("Location: /cart");
     }
 
     public function actionDelete()
     {
-        if (isset($_GET['orderItemId'])) {
-            $this->cartService()->deleteOrderItem($_GET['orderItemId']);
+        if (isset($_GET['cartRowId'])) {
+            $this->cartService()->deleteCartRow($_GET['cartRowId']);
             header("Location: " . $_SERVER['HTTP_REFERER']);
         }
+    }
+
+    public function actionUpdate()
+    {
+        $updatedDataFromCart = $this->cartService()->updateQuntity($_POST);
+
+        $result['products'] = $updatedDataFromCart;
+        header('Content-Type: application/json');
+        echo json_encode($result); die;
     }
 
 }

@@ -6,8 +6,7 @@ use app\services\UserService;
 
 $userService = new UserService();
 $curentUser = $userService->getCurrentUser();
-$totalPrice = 0;
-$countOrder = !empty($curentUser->order) ? count($curentUser->order) : '0';
+$cart = $curentUser->getCart();
 //var_dump($curentUser);
 ?>
 <!DOCTYPE html>

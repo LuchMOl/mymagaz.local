@@ -23,12 +23,17 @@ DROP TABLE IF EXISTS `cart`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cart` (
-  `user_id` tinyint(3) unsigned NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` tinyint(3) unsigned DEFAULT NULL,
+  `guest_sess_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `product_id` tinyint(3) unsigned NOT NULL,
   `color_id` tinyint(3) unsigned NOT NULL,
   `size_id` tinyint(3) unsigned NOT NULL,
-  `quantity` tinyint(3) unsigned NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `quantity` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_id` (`user_id`,`product_id`,`color_id`,`size_id`) USING BTREE,
+  UNIQUE KEY `guest_sess_id` (`guest_sess_id`,`product_id`,`color_id`,`size_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +42,7 @@ CREATE TABLE `cart` (
 
 LOCK TABLES `cart` WRITE;
 /*!40000 ALTER TABLE `cart` DISABLE KEYS */;
-INSERT INTO `cart` VALUES (1,1,2,4,1),(1,1,6,5,1),(1,3,1,2,1),(1,5,4,1,1),(1,4,3,3,1);
+INSERT INTO `cart` VALUES (4,1,NULL,1,2,4,9);
 /*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,7 +235,7 @@ CREATE TABLE `session_user` (
 
 LOCK TABLES `session_user` WRITE;
 /*!40000 ALTER TABLE `session_user` DISABLE KEYS */;
-INSERT INTO `session_user` VALUES (1,'71lfheb3p8irq4054jj9h713n5'),(2,'4cq9n88l4k12k0i71jd4209fn6');
+INSERT INTO `session_user` VALUES (1,'71lfheb3p8irq4054jj9h713n5'),(2,'4cq9n88l4k12k0i71jd4209fn6'),(3,'bh46skss8dhprksj65hcgomsj2'),(4,'d2mpj39tsiqg1e30c7460d6b47'),(5,'1qln0nqe7qndvejtcr7at0bvi0');
 /*!40000 ALTER TABLE `session_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -272,7 +277,7 @@ CREATE TABLE `users` (
   `name` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -281,7 +286,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin@mymagaz.local','admin','admin'),(2,'user@mymagaz.local','user','user');
+INSERT INTO `users` VALUES (1,'admin@mymagaz.local','admin','admin'),(2,'user@mymagaz.local','user','user'),(3,'test@mymagaz.local','test','test'),(4,'123@mymagaz.local','123','123'),(5,'456@mymagaz.local','456','456');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -294,4 +299,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-09-23 19:09:04
+-- Dump completed on 2020-10-04 13:22:34

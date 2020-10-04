@@ -21,7 +21,7 @@ require_once("../views/layouts/header.php");
                     <div class="ps-product__thumbnail">
 
                         <div class="ps-product__image">
-                            <div class="item"><img class="zoom" src="<?= $product->getImgPath(); ?>" alt="" data-zoom-image="images/shoe-detail/1.jpg"></div>
+                            <div class="item"><img class="zoom" src="<?= $singleProduct->getImgPath(); ?>" alt="" data-zoom-image="images/shoe-detail/1.jpg"></div>
                         </div>
                     </div>
                     <div class="ps-product__thumbnail--mobile">
@@ -30,17 +30,17 @@ require_once("../views/layouts/header.php");
                     </div>
                     <div class="ps-product__info">
 
-                        <h1><?= $product->name; ?></h1>
+                        <h1><?= $singleProduct->name; ?></h1>
                         <p class="ps-product__category">
-                            <?php foreach ($product->categories as $category) : ?>
+                            <?php foreach ($singleProduct->categories as $category) : ?>
                                 <a href="/catalog/<?= $category->id; ?>"><?= $category->name; ?></a> |
                             <?php endforeach; ?>
-                        <h3 class="ps-product__price"><?= $product->price; ?> uah</h3>
+                        <h3 class="ps-product__price"><?= $singleProduct->price; ?> uah</h3>
 
                         <div class="ps-product__block ps-product__style">
                             <h4>CHOOSE YOUR STYLE</h4>
                             <ul>
-                                <?php foreach ($product->colors as $key => $color) : ?>
+                                <?php foreach ($singleProduct->colors as $key => $color) : ?>
                                     <li><a class="colorElement" href="#" data-color-id="<?= $key; ?>"><img src="/images/products/colors/<?= $color; ?>.jpg" alt=""></a></li>
                                 <?php endforeach; ?>
                             </ul>
@@ -49,7 +49,7 @@ require_once("../views/layouts/header.php");
                             <h4>CHOOSE SIZE</h4>
                             <select id="sizeSelect" class="ps-select selectpicker">
                                 <option value="0">Select Size</option>
-                                <?php foreach ($product->sizes as $key => $size) : ?>
+                                <?php foreach ($singleProduct->sizes as $key => $size) : ?>
                                     <option value="<?= $key; ?>"><?= $size; ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -59,7 +59,7 @@ require_once("../views/layouts/header.php");
                         </div>
                         <div class="ps-product__shopping"><a class="ps-btn mb-10 addToCartBtn" href="">Add to cart<i class="ps-icon-next"></i></a>
                             <form id="productCartForm" method="POST" action="/cart/add/">
-                                <input type="hidden" name="productId" value="<?= $product->id ?>">
+                                <input type="hidden" name="productId" value="<?= $singleProduct->id ?>">
                                 <input type="hidden" name="colorId" value="">
                                 <input type="hidden" name="sizeId" value="">
                                 <input type="hidden" name="quantity" value="">
