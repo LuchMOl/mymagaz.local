@@ -12,8 +12,18 @@ class ProductForm
     public $colors = [];
     public $sizes = [];
     public $price;
+    private $currencyId;
+    public function getCurrencyId()
+    {
+        return $this->currencyId;
+    }
 
-    public function setId($id)
+    public function setCurrencyId($currencyId)
+    {
+        $this->currencyId = $currencyId;
+    }
+
+        public function setId($id)
     {
         $this->id = $id;
     }

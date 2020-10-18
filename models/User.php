@@ -3,27 +3,49 @@
 namespace app\models;
 
 use app\services\CartService;
+use app\services\CurrencyService;
 
 class User
 {
 
     public $id;
-    private $guestSessId;
     public $email;
     public $password;
     public $name;
     public $sessionId;
     public $orderCart;
     public $cart;
+    private $currency;
 
-    public function getGuestSessId()
+    public function setCurrency($user)
     {
-        return $this->sessionId;
+        $currencyService = new CurrencyService();
+
+        if (!$this->isGuest()) {
+            $this->currency = $currencyService->getCurrencyById($user['currencyId']);
+        } else {
+            $this->currency = $currencyService->getCurrencyByDefault();
+        }
     }
 
-    public function setGuestSessId($guestSessId)
+    public function getCurrency()
     {
-        $this->guestSessId = $guestSessId;
+        return $this->currency;
+    }
+
+    public function changeCurrenсy($currency)
+    {
+        $this->currency = $currency;
+    }
+
+    public function getCurrencyId()
+    {
+        return $this->currency->getId();
+    }
+
+    public function getSessionId()
+    {
+        return $this->sessionId;
     }
 
     public function getId()

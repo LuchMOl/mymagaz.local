@@ -3,7 +3,7 @@ $(document).ready(function () {
     var plus = $('.form-group--number .plus');
     var minus = $('.form-group--number .minus');
     var totalPrice = $('.ps-cart__total').children('h3').children('span').contents();
-    var headerTotalPrice = $('.ps-cart__total').children('p').children('span');
+    var headerTotalPrice = $('.ps-cart__total').children('p').children('span').contents();
 
     plus.on('click', function () {
         var button = $(this);
@@ -12,17 +12,15 @@ $(document).ready(function () {
         var rowSumm = button.closest('td').next('td').children('span').contents();
         var headerRow = $(".ps-cart-item__content[data-cart-row-id='" + cartRowId + "']").find('i');
 
-        //data('cartRowId') === cartRowId
-        console.log(headerRow);
-
+        console.log(headerRow[1]);
 
         $.post("/cart/update/", {"cartRowId": cartRowId, "action": action}, function (response) {
             button.parent().find('input').val(response.products.quantity);
             rowSumm[0]['nodeValue'] = response.products.rowSumm;
-            totalPrice[0]['data'] = response.products.totalPrice + ' UAH';
-            headerTotalPrice[1]['innerHTML'] = response.products.totalPrice + ' UAH';
+            totalPrice[0]['data'] = response.products.totalPrice;
+            headerTotalPrice[1]['data'] = response.products.totalPrice;
             headerRow[0]['innerHTML'] = response.products.quantity;
-            headerRow[1]['innerHTML'] = response.products.rowSumm + ' UAH';
+            headerRow[1]['innerHTML'] = response.products.rowSumm;
         });
 
     });
@@ -40,10 +38,10 @@ $(document).ready(function () {
             $.post("/cart/update/", {"cartRowId": cartRowId, "action": action}, function (response) {
                 button.parent().find('input').val(response.products.quantity);
                 rowSumm[0]['nodeValue'] = response.products.rowSumm;
-                totalPrice[0]['data'] = response.products.totalPrice + ' UAH';
-                headerTotalPrice[1]['innerHTML'] = response.products.totalPrice + ' UAH';
+                totalPrice[0]['data'] = response.products.totalPrice;
+                headerTotalPrice[1]['data'] = response.products.totalPrice;
                 headerRow[0]['innerHTML'] = response.products.quantity;
-                headerRow[1]['innerHTML'] = response.products.rowSumm + ' UAH';
+                headerRow[1]['innerHTML'] = response.products.rowSumm;
             });
         }
         ;

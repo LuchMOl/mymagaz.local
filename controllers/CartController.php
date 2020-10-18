@@ -46,7 +46,7 @@ class CartController
 
     public function actionUpdate()
     {
-        $updatedDataFromCart = $this->cartService()->updateQuntity($_POST);
+        $updatedDataFromCart = $this->cartService()->updateQuantity($_POST);
 
         $result['products'] = $updatedDataFromCart;
         header('Content-Type: application/json');

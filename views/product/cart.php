@@ -33,7 +33,7 @@ require_once("../views/layouts/header.php");
                                         </a>
                                     </td>
                                     <td>
-                                        <span><?= $product->price ?></span> UAH
+                                        <span><?= $product->price ?></span> <?= $curentUser->getCurrency()->getTitle() ?>
                                     </td>
                                     <td>
                                         <div class="form-group--number" data-cart-row-id="<?= $product->getCartRowId(); ?>">
@@ -43,7 +43,7 @@ require_once("../views/layouts/header.php");
                                         </div>
                                     </td>
                                     <td>
-                                        <span><?= $product->getCartPrice(); ?></span> UAH
+                                        <span><?= $product->getCartPrice(); ?></span> <?= $curentUser->getCurrency()->getTitle(); ?>
                                     </td>
                                     <td>
                                         <a href="/cart/delete/?cartRowId=<?= $product->getCartRowId(); ?>">
@@ -74,7 +74,7 @@ require_once("../views/layouts/header.php");
                         </div>
                     </div>
                     <div class="ps-cart__total">
-                        <h3>Total Price: <span> <?= $cart->getProductsPrice(); ?> UAH</span></h3><a class="ps-btn" href="checkout.html">Process to checkout<i class="ps-icon-next"></i></a>
+                        <h3>Total Price: <span> <?= $cart->getProductsPrice(); ?> <span> <?= $curentUser->getCurrency()->getTitle(); ?></span></span></h3><a class="ps-btn" href="checkout.html">Process to checkout<i class="ps-icon-next"></i></a>
                     </div>
                 </div>
             </div>

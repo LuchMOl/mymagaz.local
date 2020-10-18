@@ -35,7 +35,7 @@ require_once("../views/layouts/header.php");
                             <?php foreach ($singleProduct->categories as $category) : ?>
                                 <a href="/catalog/<?= $category->id; ?>"><?= $category->name; ?></a> |
                             <?php endforeach; ?>
-                        <h3 class="ps-product__price"><?= $singleProduct->price; ?> uah</h3>
+                        <h3 class="ps-product__price"><?= $singleProduct->price; ?> <?= $singleProduct->getCurrencyTitle() ?></h3>
 
                         <div class="ps-product__block ps-product__style">
                             <h4>CHOOSE YOUR STYLE</h4>

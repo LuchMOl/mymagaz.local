@@ -14,6 +14,7 @@ class ProductMapper
         $product->setId($data['id']);
         $product->setName($data['name']);
         $product->setPrice($data['price']);
+        $product->setCurrencyId($data['currencyId']);
 
         return $product;
     }

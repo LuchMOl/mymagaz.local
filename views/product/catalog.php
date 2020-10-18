@@ -55,7 +55,7 @@ $imageDir = '/images/products/';
                                     </div>
                                 </div>
                                 <h4><a href="/catalog/<?= $categoryId; ?>/?id=<?= $product->id; ?>"><?= $product->name; ?></a></h4>
-                                <p class="arrival-product-price"><?= $product->price; ?> грн.</p>
+                                <p class="arrival-product-price"><?= $product->price; ?> <?= $curentUser->getCurrency()->getTitle(); ?></p>
                             </div>
                         </div>
                     <?php endif; ?>

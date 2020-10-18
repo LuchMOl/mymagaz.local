@@ -7,8 +7,8 @@ class ProductDao extends BaseDao
 
     public function insertProduct($product)
     {
-        $sql = 'INSERT INTO products (name, price) VALUES (:name, :price)';
-        $params = ['name' => $product->name, 'price' => $product->price];
+        $sql = 'INSERT INTO products (name, price, currency_id) VALUES (:name, :price, :currency_id)';
+        $params = ['name' => $product->name, 'price' => $product->price, 'currency_id' => $product->getCurrencyId()];
         $write = $this->execute($sql, $params);
         $lastInsertId = $write ? $this->insert_ID() : false;
         return $lastInsertId;
@@ -64,7 +64,9 @@ class ProductDao extends BaseDao
 
     public function getProductById($editedProductId)
     {
-        $sql = "SELECT * FROM products WHERE id = $editedProductId";
+        $sql = "SELECT id, name, price, currency_id as currencyId "
+                . "FROM products "
+                . "WHERE id = $editedProductId";
         $rowFromProductsTable = $this->getRow($sql);
         return $rowFromProductsTable;
     }
@@ -100,8 +102,8 @@ class ProductDao extends BaseDao
 
     public function editProduct($product)
     {
-        $sql = "UPDATE products SET name = :name, price = :price WHERE id = :id";
-        $params = ['name' => $product->name, 'price' => $product->price, 'id' => $product->id];
+        $sql = "UPDATE products SET name = :name, price = :price, currency_id = :currency_id WHERE id = :id";
+        $params = ['name' => $product->name, 'price' => $product->price, 'currency_id' => $product->getCurrencyId(), 'id' => $product->id];
         $update = $this->execute($sql, $params);
         return $update;
     }
@@ -160,7 +162,8 @@ class ProductDao extends BaseDao
 
     public function getProductsThisCategory($categoryId)
     {
-        $sql = "SELECT * FROM products p "
+        $sql = "SELECT id, name, price, currency_id as currencyId "
+                . "FROM products p "
                 . "INNER JOIN product_category p_c "
                 . "ON p.id = p_c.product_id "
                 . "WHERE p_c.category_id = $categoryId";
@@ -169,7 +172,8 @@ class ProductDao extends BaseDao
 
     public function getAllProducts($ids = [])
     {
-        $sql = "SELECT * FROM products";
+        $sql = "SELECT id, name, price, currency_id as currencyId "
+                . "FROM products";
         if (!empty($ids)) {
             $sql .= ' WHERE id IN(' . join(',', $ids) . ')';
         }

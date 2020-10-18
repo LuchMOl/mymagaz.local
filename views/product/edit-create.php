@@ -5,6 +5,7 @@ namespace app\views\product;
 use app\services\colorService;
 use app\services\SizeService;
 use app\models\Product;
+use app\services\CurrencyService;
 
 require_once '../views/layouts/admin/header.php';
 
@@ -17,6 +18,9 @@ $price = $modeEdit ? $product->price : '';
 $maxQuantitycolorItemInRow = 6;
 $count = 0;
 $title = $modeCreate ? 'Добавить товар' : 'Редактировать товар';
+
+$currencyService = new CurrencyService();
+$allCurrencies = $currencyService->getAllCurrency();
 ?>
 
 <div class='container'><br><p><a href = '/product/'>< Работа с товарами</a> |
@@ -44,8 +48,8 @@ $title = $modeCreate ? 'Добавить товар' : 'Редактироват
         <hr>
 
         <h4>Выбрать цвет</h4>
-        <?php foreach ($allcolors as $color): ?>
-        <?php $checked = ''; ?>
+        <?php foreach ($allColors as $color): ?>
+            <?php $checked = ''; ?>
             <?php foreach ($product->colors as $key => $productcolor): ?>
                 <?php if ($color['id'] == $key): ?>
                     <?php $checked = 'checked'; ?>
@@ -67,7 +71,7 @@ $title = $modeCreate ? 'Добавить товар' : 'Редактироват
 
         <h4>Выбрать размер</h4>
         <?php foreach ($allSizes as $size): ?>
-        <?php $checked = ''; ?>
+            <?php $checked = ''; ?>
             <?php foreach ($product->sizes as $key => $productSize): ?>
                 <?php if ($size['id'] == $key): ?>
                     <?php $checked = 'checked'; ?>
@@ -84,8 +88,15 @@ $title = $modeCreate ? 'Добавить товар' : 'Редактироват
         <hr>
 
         <h4>Указать цену</h4>
-        <input name = 'price' type = 'number' value = "<?= $price; ?>" min="0"> Цена<br><br>
+        <input name = 'price' type = 'number' value = "<?= $product->price; ?>" min="0"> Цена
+
+        <select name = 'currencyId'>
+            <?php foreach ($allCurrencies as $currency) : ?>
+                <option value = '<?= $currency->getId(); ?>' <?= $currency->getId() == $product->getCurrencyId() ? 'selected' : ''; ?>><?= $currency->getCcy(); ?></option>
+            <?php endforeach; ?>
+        </select> Валюта
         <hr>
+
         <input name = 'submitProductForm' type = submit value = 'Подтвердить'>
 
     </form><br>

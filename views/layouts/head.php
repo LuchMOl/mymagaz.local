@@ -7,6 +7,7 @@ use app\services\UserService;
 $userService = new UserService();
 $curentUser = $userService->getCurrentUser();
 $cart = $curentUser->getCart();
+//var_dump($cart);
 //var_dump($curentUser);
 ?>
 <!DOCTYPE html>

@@ -7,7 +7,7 @@ class UserDao extends BaseDao
 
     public function getUser($email, $password)
     {
-        $sql = "SELECT u.id, u.email, u.password, u.name, s.session_id as sessionId "
+        $sql = "SELECT u.id, u.email, u.password, u.name, u.currency_id as currencyId, s.session_id as sessionId "
                 . "FROM users u "
                 . "INNER JOIN session_user s "
                 . "ON u.id = s.user_id "
@@ -28,22 +28,16 @@ class UserDao extends BaseDao
 
     public function insertUser($user)
     {
-        $sql = "INSERT INTO users (email, name, password) "
-                . "VALUES (:email, :name, :password)";
-        $params = ['email' => $user->email, 'name' => $user->name, 'password' => $user->password];
+        $sql = "INSERT INTO users (email, name, password, currency_id) "
+                . "VALUES (:email, :name, :password, :currency_id)";
+        $params = ['email' => $user->email,
+            'name' => $user->name,
+            'password' => $user->password,
+            'currency_id' => $user->getCurrencyId()];
         $write = $this->execute($sql, $params);
         $lastInsertId = $write ? $this->insert_ID() : false;
         $user->id = $lastInsertId;
         return $this->insertSesId($user);
-    }
-
-    public function getOrder($user)
-    {
-        $sql = "SELECT product_id as productId, color_id as colorId, size_id as sizeId, quantity "
-                . "FROM cart "
-                . "WHERE user_id = $user->id";
-        $order = $this->getAll($sql);
-        return $order;
     }
 
     public function insertSesId($user)
@@ -56,7 +50,7 @@ class UserDao extends BaseDao
 
     public function getUserBySesId($sessionId)
     {
-        $sql = "SELECT u.id, u.email, u.password, u.name, s.session_id as sessionId "
+        $sql = "SELECT u.id, u.email, u.password, u.name, s.session_id as sessionId, u.currency_id as currencyId"
                 . "FROM users u "
                 . "INNER JOIN session_user s "
                 . "ON u.id = s.user_id "
@@ -64,6 +58,13 @@ class UserDao extends BaseDao
         $params = ['session_id' => $sessionId];
         $user = $this->getRow($sql, $params);
         return $user;
+    }
+
+    public function byDefaultCurrencyForUser($user, $currencyId)
+    {
+        $sql = "UPDATE users SET currency_id = :currency_id WHERE id = :id";
+        $params = ['currency_id' => $currencyId, 'id' => $user->getId()];
+        $this->execute($sql, $params);
     }
 
 }

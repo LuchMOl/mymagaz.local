@@ -11,6 +11,23 @@ a:hover {
 img {
     width: 100%;
 }
+
+.currency {
+    width: 1170px;
+    margin: 0 auto;
+    text-transform: uppercase;
+}
+
+.currency_table th{
+    padding: 15px 30px;
+    border: solid 1px;
+}
+.currency_table td{
+    padding: 5px 10px;
+    border: solid 1px;
+    text-align: center;
+}
+
 .color{
     display: inline-block;
     margin-top: 10px;

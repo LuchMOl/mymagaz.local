@@ -9,6 +9,7 @@ use app\dao\SizeDao;
 use app\dao\mapper\CategoryMapper;
 use app\dao\mapper\ProductMapper;
 use app\services\CategoryService;
+use app\services\CurrencyService;
 
 class ProductService
 {
@@ -18,6 +19,7 @@ class ProductService
     private $colorDao;
     private $sizeDao;
     private $productMapper;
+    private $currencyService;
 
     public function productDao()
     {
@@ -59,16 +61,12 @@ class ProductService
         return $this->productMapper;
     }
 
-    public function mapProduct($productArray)
+    public function CurrencyService()
     {
-        $product = $this->productMapper()->map($productArray);
-        $product->addCategories($productArray['categories']);
-        $product->addImageName($productArray['imageName']);
-        $product->addColors($productArray['colors']);
-        $product->addSizes($productArray['sizes']);
-        $product->setPrice($productArray['price']);
-
-        return $product;
+        if ($this->currencyService === NULL) {
+            $this->currencyService = new CurrencyService();
+        }
+        return $this->currencyService;
     }
 
     public function writeFile($file)
@@ -129,6 +127,14 @@ class ProductService
         return isset($products[$id]) ? $products[$id] : false;
     }
 
+    public function getProductForEdit($id)
+    {
+        $product = $this->productDao()->getProductById($id);
+        $product = $this->ProductMapper()->map($product);
+        $this->relationsWithComponents([$product]);
+        return $product;
+    }
+
     public function getCategoryById($categoryId)
     {
         $categoryMapper = new CategoryMapper();
@@ -148,6 +154,7 @@ class ProductService
                 $products[$product->id] = $product;
             }
             $this->relationsWithImageName($products);
+            $this->CurrencyService()->convertPrice($products);
         } else {
             $products = $this->getEmptyProduct();
         }
@@ -168,10 +175,9 @@ class ProductService
             $product = $this->productMapper()->map($row);
             $products[$product->id] = $product;
         }
-        $this->relationsWithCategories($products);
-        $this->relationsWithImageName($products);
-        $this->relationsWithColors($products);
-        $this->relationsWithSizes($products);
+        $this->relationsWithComponents($products);
+
+        $this->CurrencyService()->convertPrice($products);
 
         return $products;
     }
@@ -179,6 +185,14 @@ class ProductService
     public function getAllProducts()
     {
         return $this->getProducts();
+    }
+
+    public function relationsWithComponents($products)
+    {
+        $this->relationsWithCategories($products);
+        $this->relationsWithImageName($products);
+        $this->relationsWithColors($products);
+        $this->relationsWithSizes($products);
     }
 
     public function relationsWithCategories($products)

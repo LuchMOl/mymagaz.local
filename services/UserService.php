@@ -6,6 +6,7 @@ use app\dao\mapper\UserMapper;
 use app\dao\UserDao;
 use app\dao\CartDao;
 use app\services\ProductService;
+use app\services\CurrencyService;
 
 class UserService
 {
@@ -14,6 +15,15 @@ class UserService
     private $cartDao;
     private $userMapper;
     private $productService;
+    private $currencyService;
+
+    public function currencyService()
+    {
+        if ($this->currencyService === NULL) {
+            $this->currencyService = new CurrencyService();
+        }
+        return $this->currencyService;
+    }
 
     public function userDao()
     {
@@ -100,6 +110,18 @@ class UserService
             $this->saveUserInSession($currentUser);
         }
         return $currentUser;
+    }
+
+    public function byDefaultCurrencyForUser($currencyId)
+    {
+        $user = $this->getCurrentUser();
+        $currency = $this->currencyService()->getCurrencyById($currencyId);
+        $user->changeCurrenсy($currency);
+        $this->saveUserInSession($user);
+
+        if (!$user->isGuest()) {
+            $this->userDao()->byDefaultCurrencyForUser($user, $currencyId);
+        }
     }
 
 }

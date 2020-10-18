@@ -2,7 +2,12 @@
 
 namespace app\views\layouts;
 
+use app\services\CurrencyService;
+
 require_once 'head.php';
+
+$currencyService = new CurrencyService();
+$allCurrency = $currencyService->getAllCurrency();
 ?>
 <div class="header--sidebar"></div>
 <header class="header">
@@ -14,14 +19,26 @@ require_once 'head.php';
                 </div>
                 <div class="col-lg-6 col-md-4 col-sm-6 col-xs-12 ">
                     <div class="header__actions"><a href="/user/">Login & Regiser</a>
-                        <div class="btn-group ps-dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">USD<i class="fa fa-angle-down"></i></a>
+                        <div class="btn-group ps-dropdown">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <?= $curentUser->getCurrency()->getCcy(); ?><i class="fa fa-angle-down"></i>
+                            </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#"><img src="/images/flag/usa.svg" alt=""> USD</a></li>
-                                <li><a href="#"><img src="/images/flag/singapore.svg" alt=""> SGD</a></li>
-                                <li><a href="#"><img src="/images/flag/japan.svg" alt=""> JPN</a></li>
+                                <?php foreach ($allCurrency as $currency) : ?>
+                                    <?php if ($currency->getActive()) : ?>
+                                        <li>
+                                            <a href="/currency/byDefaultCurrencyForUser/?currencyId=<?= $currency->getId(); ?>&uri=<?= $_SERVER['REQUEST_URI']; ?>">
+                                                <img src="/images/flag/<?= $currency->getCcy(); ?>.svg" alt=""> <?= $currency->getCcy(); ?>
+                                            </a>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                             </ul>
                         </div>
-                        <div class="btn-group ps-dropdown"><a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language<i class="fa fa-angle-down"></i></a>
+                        <div class="btn-group ps-dropdown">
+                            <a class="dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Language<i class="fa fa-angle-down"></i>
+                            </a>
                             <ul class="dropdown-menu">
                                 <li><a href="#">English</a></li>
                                 <li><a href="#">Japanese</a></li>
@@ -59,20 +76,26 @@ require_once 'head.php';
                         <div class="ps-cart__content">
                             <?php if (!$cart->isEmpty()) : ?>
                                 <?php foreach ($cart->getProducts() as $product) : ?>
-                                    <div class="ps-cart-item"><a class="ps-cart-item__close" href="/cart/delete/?cartRowId=<?= $product->getCartRowId(); ?>"></a>
-                                        <div class="ps-cart-item__thumbnail"><a href="product-detail.html"></a><img src="<?= $product->getImgPath(); ?>" alt=""></div>
+                                    <div class="ps-cart-item">
+                                        <a class="ps-cart-item__close" href="/cart/delete/?cartRowId=<?= $product->getCartRowId(); ?>"></a>
+                                        <div class="ps-cart-item__thumbnail">
+                                            <a href="product-detail.html"></a>
+                                            <img src="<?= $product->getImgPath(); ?>" alt="">
+                                        </div>
                                         <div class="ps-cart-item__content" data-cart-row-id="<?= $product->getCartRowId(); ?>" ><a class="ps-cart-item__title" href="product-detail.html"><?= $product->name; ?></a>
-                                            <p><span>Quantity:<i><?= $product->getQuantity(); ?></i></span><span>Total:<i><?= $product->getCartPrice(); ?> UAH</i></span></p>
+                                            <p><span>Quantity:<i><?= $product->getQuantity(); ?></i></span>
+                                                <span>Total:<i><?= $product->getCartPrice(); ?></span> <?= $curentUser->getCurrency()->getTitle(); ?></i>
+                                            </p>
                                         </div>
                                     </div>
                                 <?php endforeach; ?>
+                                <div class="ps-cart__total">
+                                    <p>Number of items:<span><?= count($cart->getProducts()); ?></span></p>
+                                    <p>Item Total:<span><?= $cart->getProductsPrice(); ?> <span><?= $curentUser->getCurrency()->getTitle(); ?></span></span></p>
+                                </div>
                             <?php else : ?>
                                 <p>Корзина пуста</p>
                             <?php endif; ?>
-                        </div>
-                        <div class="ps-cart__total">
-                            <p>Number of items:<span><?= count($cart->getProducts()); ?></span></p>
-                            <p>Item Total:<span><?= $cart->getProductsPrice(); ?> UAH</span></p>
                         </div>
                         <div class="ps-cart__footer"><a class="ps-btn" href="/cart">Check out<i class="ps-icon-arrow-left"></i></a></div>
                     </div>

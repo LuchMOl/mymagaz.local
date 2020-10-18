@@ -73,6 +73,19 @@ $curentUser = $userService->getCurrentUser();
                             </ul>
                         </div>
                     </div>
+                    <div class="shop-category nav navbar-nav navbar-left">
+                        <!-- Single button -->
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-shop-category dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Currency <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a href="/currency/">Show All</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/currency/createNew/">Create</a></li>
+                            </ul>
+                        </div>
+                    </div>
                     <!--
                                         <div class="shop-category nav navbar-nav navbar-left">
                     <!-- Single button ->

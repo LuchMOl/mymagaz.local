@@ -16,7 +16,8 @@ class UserMapper
         $user->setName($data);
         $user->setPassword($data);
         $user->setSessionId($data);
-        
+        $user->setCurrency($data);
+
         return $user;
     }
 

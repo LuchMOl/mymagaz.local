@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\services\ProductService;
+use app\dao\ProductDao;
 use app\services\CategoryService;
 use app\services\colorService;
 use app\services\SizeService;
@@ -16,6 +17,7 @@ class ProductController
 {
 
     private $productService;
+    private $productDao;
     private $categoryService;
     private $colorService;
     private $sizeService;
@@ -27,6 +29,14 @@ class ProductController
             $this->productService = new ProductService();
         }
         return $this->productService;
+    }
+
+    public function productDao()
+    {
+        if ($this->productDao === NULL) {
+            $this->productDao = new ProductDao();
+        }
+        return $this->productDao;
     }
 
     public function categoryService()
@@ -87,7 +97,7 @@ class ProductController
         $mesage = '';
         $mode = 'create';
 
-        $allcolors = $this->colorService()->getAllcolors();
+        $allColors = $this->colorService()->getAllColors();
         $allSizes = $this->sizeService()->getAllSizes();
 
         if (isset($_POST['submitProductForm'])) {
@@ -115,8 +125,8 @@ class ProductController
 
         if (isset($_GET['editId'])) {
 
-            $product = $this->productService()->getProductById($_GET['editId']);
-            $allcolors = $this->colorService()->getAllcolors();
+            $product = $this->productService()->getProductForEdit($_GET['editId']);
+            $allColors = $this->colorService()->getAllColors();
             $allSizes = $this->sizeService()->getAllSizes();
 
             if (isset($_POST['submitProductForm'])) {
@@ -128,10 +138,8 @@ class ProductController
                         !empty($_FILES) ? $this->productService()->uploadProductImage($_FILES['productImage'], $product->imageName) : '';
                         $_POST ['imageName'] = $product->imageName;
                     }
-
                     $editedProduct = $this->ProductFormMapper()->map($_POST);
                     $editedProduct->setId($product->id);
-
                     $editProduct = $this->productService()->editProduct($editedProduct);
 
                     $editProduct ? header('Location: /product/catalog/') : $mesage = 'Не записало в базу.';
@@ -143,17 +151,6 @@ class ProductController
         } else {
             header("Location: /product/catalog/");
         }
-    }
-
-    public function actionTestxls()
-    {
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $sheet->setCellValue('A1', 'Hello World !');
-
-        $writer = new Xlsx($spreadsheet);
-        $writer->save(dirname(__DIR__) . '/hello world.xlsx');
-        die('done');
     }
 
 }

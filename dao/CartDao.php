@@ -6,16 +6,22 @@ class CartDao extends BaseDao
 {
 
     public function getCart($user)
-    {   //Gnoll
+    {
         if ($user->isGuest()) {
             $dbColumn = 'guest_sess_id';
-            $id = $user->getGuestSessId();
+            $id = $user->getSessionId();
         } else {
             $dbColumn = 'user_id';
             $id = $user->getId();
         }
 
-        $sql = "SELECT id, user_id as userId, guest_sess_id as guestSessId, product_id as productId, color_id as colorId, size_id as sizeId, quantity "
+        $sql = "SELECT id, "
+                . "user_id as userId, "
+                . "guest_sess_id as guestSessId, "
+                . "product_id as productId, "
+                . "color_id as colorId, "
+                . "size_id as sizeId, "
+                . "quantity "
                 . "FROM cart "
                 . "WHERE $dbColumn = :user_id";
         $params = [':user_id' => $id];
@@ -23,29 +29,28 @@ class CartDao extends BaseDao
         return $order;
     }
 
-    public function saveCart($cart)
-    {   //Gnoll
-        if ($cart->isGuestCart()) {
-            $dbColumn = 'guest_sess_id';
-            $id = $cart->getGuestSessId();
-        } else {
-            $dbColumn = 'user_id';
-            $id = $cart->getUserId();
-        }
-        $sql = "DELETE FROM cart WHERE $dbColumn = '$id'";
-        $this->execute($sql);
-        foreach ($cart->getProducts() as $product) {
-            $sql = "INSERT INTO cart (user_id, guest_sess_id, product_id, color_id, size_id, quantity) "
-                    . "VALUES (:user_id, :guest_sess_id, :product_id, :color_id, :size_id, :quantity) "
-                    . "ON DUPLICATE KEY UPDATE quantity = quantity + :quantity";
-            $params = ['user_id' => $cart->getUserId(),
-                'guest_sess_id' => $cart->getGuestSessId(),
-                'product_id' => $product->getId(),
-                'color_id' => $product->getColorId(),
-                'size_id' => $product->getSizeId(),
-                'quantity' => $product->getQuantity()];
+    public function addProduct($user, $productCartForm)
+    {
+        $userId = ($user->isGuest()) ? NULL : $user->getId();
+        $sessId = ($user->isGuest()) ? $user->getSessionId() : NULL;
+        $sql = "INSERT INTO cart (user_id, guest_sess_id, product_id, color_id, size_id, quantity) "
+                . "VALUES (:user_id, :guest_sess_id, :product_id, :color_id, :size_id, :quantity) "
+                . "ON DUPLICATE KEY UPDATE quantity = quantity + :quantity";
+        $params = ['user_id' => $userId,
+            'guest_sess_id' => $sessId,
+            'product_id' => $productCartForm['productId'],
+            'color_id' => $productCartForm['colorId'],
+            'size_id' => $productCartForm['sizeId'],
+            'quantity' => $productCartForm['quantity']];
 
-            $write = $this->execute($sql, $params);
+        $write = $this->execute($sql, $params);
+    }
+
+    public function saveCart($user, $guest, $guestCart)
+    {
+        $this->eraseCart($guest->getSessionId());
+        foreach ($guestCart as $product) {
+            $this->addProduct($user, $product);
         }
     }
 
@@ -59,17 +64,16 @@ class CartDao extends BaseDao
         return $delete;
     }
 
-    public function eraseCart($guestCart)
+    public function eraseCart($guestSessionId)
     {
         $sql = "DELETE FROM cart "
                 . "WHERE guest_sess_id = :guest_sess_id";
-        $params = ['guest_sess_id' => $guestCart->getGuestSessId()];
+        $params = ['guest_sess_id' => $guestSessionId];
 
-        $delete = $this->execute($sql, $params);
-        return $delete;
+        $this->execute($sql, $params);
     }
 
-    public function updateQuntity($cartRowId, $action)
+    public function updateQuantity($cartRowId, $action)
     {
         $sql = "UPDATE cart "
                 . "SET quantity = quantity $action 1 "

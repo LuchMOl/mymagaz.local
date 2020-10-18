@@ -19,6 +19,33 @@ class Product
     private $sizeId;
     private $quantity;
     private $cartRowId;
+    private $currencyId;
+    private $currency;
+
+    public function getCurrencyId()
+    {
+        return $this->currencyId;
+    }
+
+    public function setCurrencyId($currencyId)
+    {
+        $this->currencyId = $currencyId;
+    }
+
+    public function setCurrency($currency)
+    {
+        $this->currency = $currency;
+    }
+
+    public function getCurrency()
+    {
+        return $this->currency;
+    }
+
+    public function replaceCurrency($currency)
+    {
+        $this->currency = $currency;
+    }
 
     public function getCartRowId()
     {
@@ -78,6 +105,11 @@ class Product
     public function setPrice($price)
     {
         $this->price = $price;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
     }
 
     public function addCategories($categories)
@@ -201,6 +233,11 @@ class Product
     public function getCartPrice()
     {
         return $this->price * $this->quantity;
+    }
+
+    public function getCurrencyTitle()
+    {
+        return $this->currency->getTitle();
     }
 
 }

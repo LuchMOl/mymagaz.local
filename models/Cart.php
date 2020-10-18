@@ -32,7 +32,7 @@ class Cart
     public function setUserId($user)
     {
         if ($user->isGuest()) {
-            $this->guestSessId = $user->getGuestSessId();
+            $this->guestSessId = $user->getSessionId();
         } else {
             $this->userId = $user->getId();
         }

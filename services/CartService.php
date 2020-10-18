@@ -60,14 +60,7 @@ class CartService
     public function addProduct($productCartForm)
     {
         $user = $this->userService()->getCurrentUser();
-
-        $product = $this->productService()->getProductById($productCartForm['productId']);
-
-        $cart = $this->getCart($user);
-        $cart->addProduct($product, $productCartForm);
-        $this->cartDao()->saveCart($cart);
-
-        $this->userService()->saveUserInSession($user);
+        $this->cartDao()->addProduct($user, $productCartForm);
     }
 
     public function deleteCartRow($cartRowId)
@@ -77,44 +70,39 @@ class CartService
 
     public function combineCarts($user)
     {
-        $cart = $this->getCart($user);
         $curentUser = $this->userService()->getCurrentUser();
         if ($curentUser->isGuest()) {
-            $guestCart = $this->getCart($curentUser);
-            if (!$guestCart->isEmpty()) {
-                $cart->combineWithGuestCart($guestCart->getProducts());
-                $this->cartDao()->eraseCart($guestCart);
-                $this->cartDao()->saveCart($cart);
-            }
+            $guestCart = $this->cartDao()->getCart($curentUser);
+            $this->cartDao()->saveCart($user, $curentUser, $guestCart);
         }
     }
 
-    public function updateQuntity($post)
+    public function updateQuantity($post)
     {
-        $update = $this->cartDao()->updateQuntity($post['cartRowId'], $post['action']);
+        $update = $this->cartDao()->updateQuantity($post['cartRowId'], $post['action']);
         if ($update) {
-            $quantityAndPricesFromCart = $this->cartDao()->getQuantityAndPrices($post['cartRowId']);
-            $summs = $this->getSumms($post['cartRowId'], $quantityAndPricesFromCart);
-            return $summs;
+            $updatedDataFromCart = $this->getSumms($post['cartRowId']);
+            return $updatedDataFromCart;
         }
     }
 
-    public function getSumms($cartRowId, $quantityAndPricesFromCart)
+    public function getSumms($cartRowId)
     {
-        $totalPrice = 0;
-        foreach ($quantityAndPricesFromCart as $row) {
-            $totalPrice = $row['price'] * $row['quantity'] + $totalPrice;
-            if ($row['id'] == $cartRowId) {
-                $quantity = $row['quantity'];
-                $rowSumm = $row['price'] * $row['quantity'];
+        $user = $this->userService()->getCurrentUser();
+        $cart = $this->getCart($user);
+
+        foreach ($cart->getProducts() as $product) {
+            if ($product->getCartRowId() == $cartRowId) {
+                $quantity = $product->getQuantity();
+                $rowSumm = $product->getPrice() * $quantity;
             }
         }
-        $updatedDataFromCart = [
+        $summs = [
             'cartRowId' => $cartRowId,
             'quantity' => $quantity,
             'rowSumm' => $rowSumm,
-            'totalPrice' => $totalPrice];
-        return $updatedDataFromCart;
+            'totalPrice' => $cart->getProductsPrice()];
+        return $summs;
     }
 
 }

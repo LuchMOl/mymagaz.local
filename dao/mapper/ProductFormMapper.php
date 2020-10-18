@@ -17,6 +17,7 @@ class ProductFormMapper
         $productForm->setcolors($data);
         $productForm->setSizes($data);
         $productForm->setPrice($data);
+        $productForm->setCurrencyId($data['currencyId']);
 
         return $productForm;
     }
